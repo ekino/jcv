@@ -1,0 +1,12 @@
+{
+  "field_1": "some value",
+  "field_2": "{#uuid#}",
+  "date": "{#date_time_format:iso_instant#}",
+  "other_fields": [{
+    "id": "1",
+    "link": "{#url#}"
+  }, {
+    "id": "2",
+    "link": "{#url_ending:query?param1=true#}"
+  }]
+}

@@ -1,0 +1,25 @@
+{
+  "field_1": "some value",
+  "contains_validator_field": "Hello world!",
+  "starts_with_validator_field": "Hello world!",
+  "ends_with_validator_field": "Hello world!",
+  "regex_validator_field": "Hellowurld !!!",
+  "uuid_validator_field": "40dc4613-3b58-413a-ac91-cb6fff9a89fd",
+  "not_null_validator_field": true,
+  "not_empty_validator_field": " ",
+  "url_validator_field": "http://some.url:9999/path",
+  "url_ending_with_validator_field": "http://some.url:9999/path?param",
+  "url_regex_validator_field": "http://some.url:9999/path?param",
+  "templated_url_validator_field": "http://some.url:9999/path{?param}",
+  "templated_url_ending_with_validator_field": "http://some.url:9999/path{?param}",
+  "boolean_type_validator_field": true,
+  "string_type_validator_field": "some text",
+  "number_type_validator_field": 12.345,
+  "array_type_validator_field": ["Value 1", "Value 2"],
+  "object_type_validator_field": {
+    "some_sub_field": "some value"
+  },
+  "date_time_format": "03 02 2011",
+  "date_time_format_with_locale": "3 févr. 2011",
+  "date_time_predefined_format": "10:15:30+01:00"
+}

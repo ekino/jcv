@@ -1,0 +1,23 @@
+{
+  "field_1": "some value",
+  "contains_validator_field": "{#contains:llo wor#}",
+  "starts_with_validator_field": "{#starts_with:Hello#}",
+  "ends_with_validator_field": "{#ends_with:world!#}",
+  "regex_validator_field": "{#regex:.*llo ?w.r.*#}",
+  "uuid_validator_field": "{#uuid#}",
+  "not_null_validator_field": "{#not_null#}",
+  "not_empty_validator_field": "{#not_empty#}",
+  "url_validator_field": "{#url#}",
+  "url_ending_with_validator_field": "{#url_ending:/path?param#}",
+  "url_regex_validator_field": "{#url_regex:^.+some\\.url.+/path\\?param$#}",
+  "templated_url_validator_field": "{#templated_url#}",
+  "templated_url_ending_with_validator_field": "{#templated_url_ending:/path{?param}#}",
+  "boolean_type_validator_field": "{#boolean_type#}",
+  "string_type_validator_field": "{#string_type#}",
+  "number_type_validator_field": "{#number_type#}",
+  "array_type_validator_field": "{#array_type#}",
+  "object_type_validator_field": "{#object_type#}",
+  "date_time_format": "{#date_time_format:dd MM yyyy#}",
+  "date_time_format_with_locale": "{#date_time_format:d MMM uuu;fr-FR#}",
+  "date_time_predefined_format": "{#date_time_format:iso_time#}"
+}
