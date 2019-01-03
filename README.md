@@ -2,6 +2,8 @@
 
 JSON Content Validator (JCV) allows you to compare JSON contents with embedded validation.
 
+[![Build Status](https://travis-ci.org/ekino/jcv.svg?branch=master)](https://travis-ci.org/ekino/jcv)
+
 ## Table of contents
 
 * [Summary](#summary)
