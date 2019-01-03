@@ -24,3 +24,57 @@ allprojects {
         "assertk-jvm.version" to "0.12"
     )
 }
+
+subprojects {
+
+    apply<MavenPublishPlugin>()
+
+    configure<PublishingExtension> {
+        publications {
+            create<MavenPublication>("mavenJava") {
+                pom {
+                    name.set("JCV")
+                    description.set("JSON Content Validator (JCV) allows you to compare JSON contents with embedded validation.")
+                    url.set("https://github.com/ekino/jcv")
+                    licenses {
+                        license {
+                            name.set("MIT License (MIT)")
+                            url.set("https://opensource.org/licenses/mit-license")
+                        }
+                    }
+                    developers {
+                        developer {
+                            name.set("Léo Millon")
+                            email.set("leo.millon@ekino.com")
+                            organization.set("ekino")
+                            organizationUrl.set("https://www.ekino.com/")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/ekino/jcv.git")
+                        developerConnection.set("scm:git:ssh://github.com:ekino/jcv.git")
+                        url.set("https://github.com/ekino/jcv")
+                    }
+                    organization {
+                        name.set("ekino")
+                        url.set("https://www.ekino.com/")
+                    }
+                }
+                repositories {
+                    maven {
+                        val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                        val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+                        url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+
+                        val ossrhUsername: String by project
+                        val ossrhPassword: String by project
+                        credentials {
+                            username = ossrhUsername
+                            password = ossrhPassword
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

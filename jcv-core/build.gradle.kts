@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     `java-library`
-    `maven-publish`
+    signing
     jacoco
     id("org.jmailen.kotlinter") version "1.20.1"
     id("org.jetbrains.dokka") version "0.9.17"
@@ -51,12 +51,16 @@ val dokkaJar by tasks.creating(Jar::class) {
 
 publishing {
     publications {
-        create("default", MavenPublication::class.java) {
+        named<MavenPublication>("mavenJava") {
             from(components["java"])
             artifact(sourcesJar)
             artifact(dokkaJar)
         }
     }
+}
+
+signing {
+    sign(publishing.publications["mavenJava"])
 }
 
 dependencies {
