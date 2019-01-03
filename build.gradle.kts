@@ -1,6 +1,10 @@
+import net.researchgate.release.ReleaseExtension
+import net.researchgate.release.ReleasePlugin
+
 plugins {
     base
     kotlin("jvm") version "1.3.10" apply false
+    id("net.researchgate.release") version "2.6.0"
 }
 
 allprojects {
@@ -28,6 +32,7 @@ allprojects {
 subprojects {
 
     apply<MavenPublishPlugin>()
+    apply<ReleasePlugin>()
 
     configure<PublishingExtension> {
         publications {
