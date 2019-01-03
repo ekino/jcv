@@ -71,8 +71,8 @@ subprojects {
                         val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
                         url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
 
-                        val ossrhUsername: String by project
-                        val ossrhPassword: String by project
+                        val ossrhUsername: String? by project
+                        val ossrhPassword: String? by project
                         credentials {
                             username = ossrhUsername
                             password = ossrhPassword
