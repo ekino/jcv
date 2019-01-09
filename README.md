@@ -59,6 +59,8 @@ The expected JSON with embedded validation :
 }
 ```
 
+More examples available here : [ekino/jcv-examples](https://github.com/ekino/jcv-examples)
+
 ## Quick start
 
 ### Core module
