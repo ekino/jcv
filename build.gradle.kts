@@ -9,7 +9,7 @@ plugins {
 
 allprojects {
     group = "com.ekino.oss.jcv"
-    version = "1.1.0"
+    version = "1.2.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
