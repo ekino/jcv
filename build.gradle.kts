@@ -23,7 +23,7 @@ allprojects {
         "commons-io.version" to "2.6",
         "jsonassert.version" to "1.5.0",
         "assertj.version" to "3.9.1",
-        "hamcrest-junit.version" to "2.0.0.0",
+        "hamcrest.version" to "2.1",
         "junit-jupiter.version" to "5.2.0",
         "assertk-jvm.version" to "0.12"
     )

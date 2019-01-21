@@ -55,7 +55,7 @@ dependencies {
 
     api(project(":jcv-core"))
     implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-    implementation(group = "org.hamcrest", name = "hamcrest-junit", version = "${prop("hamcrest-junit.version")}")
+    implementation(group = "org.hamcrest", name = "hamcrest", version = "${prop("hamcrest.version")}")
 
     testImplementation(kotlin("stdlib-jdk8", version = "${prop("kotlin.version")}"))
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "${prop("junit-jupiter.version")}")
@@ -63,6 +63,6 @@ dependencies {
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "${prop("junit-jupiter.version")}")
 
     testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-    testImplementation(group = "org.hamcrest", name = "hamcrest-junit", version = "${prop("hamcrest-junit.version")}")
+    testImplementation(group = "org.hamcrest", name = "hamcrest", version = "${prop("hamcrest.version")}")
     testImplementation(group = "commons-io", name = "commons-io", version = "${prop("commons-io.version")}")
 }

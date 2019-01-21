@@ -163,7 +163,7 @@ A JCV module that supports [Hamcrest](https://github.com/hamcrest/JavaHamcrest).
 
 ```java
 import static com.ekino.oss.jcv.assertion.hamcrest.JsonMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 
 @Test
 void testContainsValidator() throws JSONException {
@@ -188,8 +188,8 @@ Maven
   </dependency>
   <dependency>
     <groupId>org.hamcrest</groupId>
-    <artifactId>hamcrest-junit</artifactId>
-    <version>2.0.0.0</version>
+    <artifactId>hamcrest</artifactId>
+    <version>2.1</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -207,7 +207,7 @@ Gradle
 dependencies {
   ...
   testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-  testImplementation 'org.hamcrest:hamcrest-junit:2.0.0.0'
+  testImplementation 'org.hamcrest:hamcrest:2.1'
   testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.1.0-SNAPSHOT'
   ...
 }

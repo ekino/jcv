@@ -3,17 +3,18 @@
  */
 package com.ekino.oss.jcv.assertion.hamcrest;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import com.ekino.oss.jcv.core.validator.Validators;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.ValueMatcherException;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import static com.ekino.oss.jcv.assertion.hamcrest.JsonMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JsonCompareMatcherTest {
 
