@@ -1,4 +1,3 @@
-import net.researchgate.release.ReleaseExtension
 import net.researchgate.release.ReleasePlugin
 
 plugins {
@@ -73,12 +72,12 @@ subprojects {
                 }
                 repositories {
                     maven {
-                        val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-                        val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-                        url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-
+                        val ossrhUrl: String? by project
                         val ossrhUsername: String? by project
                         val ossrhPassword: String? by project
+
+                        url = uri(ossrhUrl ?: "")
+
                         credentials {
                             username = ossrhUsername
                             password = ossrhPassword
