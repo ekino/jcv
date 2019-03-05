@@ -28,6 +28,13 @@ allprojects {
     )
 }
 
+tasks.create("printVersion") {
+    doLast {
+        val version: String by project
+        println(version)
+    }
+}
+
 subprojects {
 
     apply<MavenPublishPlugin>()
