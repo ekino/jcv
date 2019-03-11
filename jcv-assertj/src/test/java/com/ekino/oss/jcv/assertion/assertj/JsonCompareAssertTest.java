@@ -4,12 +4,12 @@
 package com.ekino.oss.jcv.assertion.assertj;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import com.ekino.oss.jcv.core.validator.Validators;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.ValueMatcherException;
 
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 class JsonCompareAssertTest {
 
     @Test
-    void should_match_with_default_comparator() throws JSONException {
+    void should_match_with_default_comparator() {
         assertThatJson("{\"field_name\": \"hello world!\"}")
             .isValidAgainst("{\"field_name\": \"{#contains:llo wor#}\"}");
     }
@@ -41,14 +41,14 @@ class JsonCompareAssertTest {
     }
 
     @Test
-    void should_validate_sample_json() throws IOException, JSONException {
+    void should_validate_sample_json() {
 
         assertThatJson(loadJson("test_sample_json_actual.json"))
             .isValidAgainst(loadJson("test_sample_json_expected.json"));
     }
 
     @Test
-    void should_match_with_prefix() throws IOException, JSONException {
+    void should_match_with_prefix() {
 
         assertThatJson(loadJson("test_prefix_matcher_actual.json"))
             .using(Validators.forPath("child.child.level", (actual, expected) -> actual.equals(9999)))
@@ -80,7 +80,11 @@ class JsonCompareAssertTest {
             .hasMessageStartingWith("field_2: Value should be 'THE_VALUE'");
     }
 
-    private static String loadJson(String fileName) throws IOException {
-        return IOUtils.resourceToString("/" + fileName, StandardCharsets.UTF_8);
+    private static String loadJson(String fileName) {
+        try {
+            return IOUtils.resourceToString("/" + fileName, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

@@ -3,14 +3,15 @@
  */
 package com.ekino.oss.jcv.assertion.hamcrest;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+
 import com.ekino.oss.jcv.core.validator.Validators;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.ValueMatcherException;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import static com.ekino.oss.jcv.assertion.hamcrest.JsonMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -49,7 +50,7 @@ class JsonCompareMatcherTest {
     }
 
     @Test
-    void should_validate_sample_json() throws IOException {
+    void should_validate_sample_json() {
 
         assertThat(
             loadJson("test_sample_json_actual.json"),
@@ -96,7 +97,11 @@ class JsonCompareMatcherTest {
         );
     }
 
-    private static String loadJson(String fileName) throws IOException {
-        return IOUtils.resourceToString("/" + fileName, StandardCharsets.UTF_8);
+    private static String loadJson(String fileName) {
+        try {
+            return IOUtils.resourceToString("/" + fileName, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

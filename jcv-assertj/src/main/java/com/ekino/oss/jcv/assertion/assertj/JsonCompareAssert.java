@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import com.ekino.oss.jcv.assertion.assertj.exception.JsonParseException;
 import com.ekino.oss.jcv.core.JsonComparator;
 import com.ekino.oss.jcv.core.JsonValidator;
 import com.ekino.oss.jcv.core.validator.Validators;
@@ -118,15 +119,19 @@ public class JsonCompareAssert extends AbstractAssert<JsonCompareAssert, String>
      * @throws JSONException if the actual or expected string is not a valid JSON format.
      * @see JSONCompare#compareJSON(String, String, JSONComparator)
      */
-    public JsonCompareAssert isValidAgainst(String expectedJson) throws JSONException {
+    public JsonCompareAssert isValidAgainst(String expectedJson) {
 
         isNotNull();
 
         Objects.requireNonNull(jsonComparator, "Json comparator definition is missing");
 
-        JSONCompareResult result = JSONCompare.compareJSON(expectedJson, actual, jsonComparator);
-        if (!result.passed()) {
-            failWithMessage(result.getMessage());
+        try {
+            JSONCompareResult result = JSONCompare.compareJSON(expectedJson, actual, jsonComparator);
+            if (!result.passed()) {
+                failWithMessage(result.getMessage());
+            }
+        } catch (JSONException e) {
+            throw new JsonParseException("Error with provided JSON Strings", e);
         }
 
         return this;
