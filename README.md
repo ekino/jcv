@@ -100,6 +100,38 @@ dependencies {
 }
 ```
 
+Note:
+
+Do not forget to add the maven snapshots repository for SNAPSHOT versions :
+
+Maven
+```xml
+<repositories>
+  ...
+  <repository>
+    <id>maven-snapshots</id>
+    <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    <layout>default</layout>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
+  ...
+</repositories>
+```
+
+Gradle
+```groovy
+repositories {
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+}
+```
+
 ### AssertJ module
 
 A JCV module that supports [AssertJ](https://github.com/joel-costigliola/assertj-core).
