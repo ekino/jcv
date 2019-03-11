@@ -83,7 +83,7 @@ Maven
   <dependency>
     <groupId>com.ekino.oss.jcv</groupId>
     <artifactId>jcv-core</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <scope>test</scope>
   </dependency>
   ...
@@ -95,7 +95,7 @@ Gradle
 dependencies {
   ...
   testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-  testImplementation 'com.ekino.oss.jcv:jcv-core:1.2.0-SNAPSHOT'
+  testImplementation 'com.ekino.oss.jcv:jcv-core:1.2.0'
   ...
 }
 ```
@@ -169,7 +169,7 @@ Maven
   <dependency>
     <groupId>com.ekino.oss.jcv</groupId>
     <artifactId>jcv-assertj</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <scope>test</scope>
   </dependency>
   ...
@@ -182,7 +182,7 @@ dependencies {
   ...
   testImplementation 'org.skyscreamer:jsonassert:1.5.0'
   testImplementation 'org.assertj:assertj-core:3.9.1'
-  testImplementation 'com.ekino.oss.jcv:jcv-assertj:1.2.0-SNAPSHOT'
+  testImplementation 'com.ekino.oss.jcv:jcv-assertj:1.2.0'
   ...
 }
 ```
@@ -227,7 +227,7 @@ Maven
   <dependency>
     <groupId>com.ekino.oss.jcv</groupId>
     <artifactId>jcv-hamcrest</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <scope>test</scope>
   </dependency>
   ...
@@ -240,7 +240,7 @@ dependencies {
   ...
   testImplementation 'org.skyscreamer:jsonassert:1.5.0'
   testImplementation 'org.hamcrest:hamcrest:2.1'
-  testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.2.0-SNAPSHOT'
+  testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.2.0'
   ...
 }
 ```
@@ -666,7 +666,7 @@ Expected JSON :
 <tr>
     <td><code>basic_iso_date</code></td>
     <td>Basic ISO date</td>
-    <td><code>201.2.0-SNAPSHOT3</code></td>
+    <td><code>20111203</code></td>
 </tr>
 <tr>
     <td><code>iso_local_date</code></td>
