@@ -1,4 +1,4 @@
-Changelog of {#JCV#}.
+# Changelog of {#JCV#}
 
 ## Unreleased
 ### GitHub [#1](https://github.com/ekino/jcv/issues/1) Provide a changelog    *enhancement*  
@@ -10,6 +10,11 @@ Changelog of {#JCV#}.
 
 
 ### No issue
+
+**Init CHANGELOG.md**
+
+
+[407ebcdfce48cb8](https://github.com/ekino/jcv/commit/407ebcdfce48cb8) Léo Millon *2019-03-11 13:31:39*
 
 **Switch to Gradle Wrapper 5.2.1**
 
