@@ -135,3 +135,6 @@ gradle-app.setting
 
 
 # End of https://www.gitignore.io/api/java,kotlin,gradle,intellij+all
+
+# Gradle changelog plugin
+.okhttpcache/

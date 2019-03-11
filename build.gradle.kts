@@ -1,9 +1,11 @@
 import net.researchgate.release.ReleasePlugin
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 
 plugins {
     base
     kotlin("jvm") version "1.3.10" apply false
     id("net.researchgate.release") version "2.6.0"
+    id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "1.60"
 }
 
 allprojects {
@@ -32,6 +34,11 @@ tasks.create("printVersion") {
         val version: String by project
         println(version)
     }
+}
+
+tasks.create<GitChangelogTask>("gitChangelogTask") {
+    file = File("CHANGELOG.md")
+    templateContent = file("template_changelog.mustache").readText()
 }
 
 subprojects {
