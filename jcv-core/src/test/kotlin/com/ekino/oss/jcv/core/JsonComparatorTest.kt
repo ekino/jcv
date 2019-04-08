@@ -3,8 +3,8 @@
  */
 package com.ekino.oss.jcv.core
 
-import assertk.assert
 import assertk.assertAll
+import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -57,8 +57,8 @@ class JsonComparatorTest {
             loadJson("test_sample_json_expected.json")
         ) {
             assertAll {
-                assert(it.passed()).isTrue()
-                assert(it.message).isNullOrEmpty()
+                assertThat(it.passed()).isTrue()
+                assertThat(it.message).isNullOrEmpty()
             }
         }
     }
@@ -71,8 +71,8 @@ class JsonComparatorTest {
             loadJson("test_default_validators_expected.json")
         ) {
             assertAll {
-                assert(it.passed()).isTrue()
-                assert(it.message).isNullOrEmpty()
+                assertThat(it.passed()).isTrue()
+                assertThat(it.message).isNullOrEmpty()
             }
         }
     }
@@ -86,8 +86,8 @@ class JsonComparatorTest {
             comparator(Validators.forPath("child.child.level") { actual, _ -> actual == 9999 })
         ) {
             assertAll {
-                assert(it.passed()).isTrue()
-                assert(it.message).isNullOrEmpty()
+                assertThat(it.passed()).isTrue()
+                assertThat(it.message).isNullOrEmpty()
             }
         }
     }
@@ -111,8 +111,8 @@ class JsonComparatorTest {
             })
         ) {
             assertAll {
-                assert(it.passed()).isFalse()
-                assert(it.message).isEqualTo(
+                assertThat(it.passed()).isFalse()
+                assertThat(it.message).isEqualTo(
                     """field_2: Value should be 'THE_VALUE'
 Expected: THE_VALUE
      got: {#someSpecificValue#}
@@ -124,7 +124,7 @@ Expected: THE_VALUE
     @Test
     fun `unknown date time format language tag`() {
 
-        assert {
+        assertThat {
             compare(
                 """{"field_name": "3 Feb 2011"}""",
                 """{"field_name": "{#date_time_format:d MMM uuu;some_TAG#}"}"""
@@ -138,14 +138,14 @@ Expected: THE_VALUE
     @Test
     fun `unknown date time format pattern`() {
 
-        assert {
+        assertThat {
             compare(
                 """{"field_name": "2011-12-03T10:15:30Z"}""",
                 """{"field_name": "{#date_time_format:some_unknown_pattern#}"}"""
             )
         }.thrownError {
             isInstanceOf(IllegalArgumentException::class.java)
-            message().isNotNull { it.startsWith("Unknown pattern") }
+            message().isNotNull().startsWith("Unknown pattern")
         }
     }
 
@@ -319,8 +319,8 @@ Expected: {#date_time_format:iso_instant#}
                     expectedJson = expected
                 ) {
                     assertAll {
-                        assert(it.passed()).isFalse()
-                        assert(it.message).isEqualTo(error)
+                        assertThat(it.passed()).isFalse()
+                        assertThat(it.message).isEqualTo(error)
                     }
                 }
             }

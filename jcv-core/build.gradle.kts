@@ -70,9 +70,7 @@ dependencies {
     implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
 
     testImplementation(kotlin("stdlib-jdk8", version = "${prop("kotlin.version")}"))
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "${prop("junit-jupiter.version")}")
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params", version = "${prop("junit-jupiter.version")}")
-    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "${prop("junit-jupiter.version")}")
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "${prop("junit-jupiter.version")}")
 
     testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
     testImplementation(group = "com.willowtreeapps.assertk", name = "assertk-jvm", version = "${prop("assertk-jvm.version")}") {
