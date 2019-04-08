@@ -3,7 +3,7 @@
  */
 package com.ekino.oss.jcv.core.validator
 
-import assertk.assert
+import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
@@ -23,19 +23,19 @@ class ValidatorTemplateManagerTest {
 
         val manager = ValidatorTemplateManager("{#my_validator#}")
 
-        assert(manager.extractId()).isEqualTo("my_validator")
+        assertThat(manager.extractId()).isEqualTo("my_validator")
     }
 
     @Test
     fun `validator id extraction`() {
 
-        assert(defaultTemplateManager.extractId()).isEqualTo("my_validator")
+        assertThat(defaultTemplateManager.extractId()).isEqualTo("my_validator")
     }
 
     @Test
     fun `parameters extraction`() {
 
-        assert(defaultTemplateManager.extractParameters()).containsExactly(
+        assertThat(defaultTemplateManager.extractParameters()).containsExactly(
                 "some ; param 1",
                 "and another one \\; ...",
                 "and the last one"
@@ -48,17 +48,17 @@ class ValidatorTemplateManagerTest {
         val manager = defaultTemplateManager
 
         manager.extractParameter(0).let {
-            assert(it.isPresent).isTrue()
-            assert(it.get()).contains("some ; param 1")
+            assertThat(it.isPresent).isTrue()
+            assertThat(it.get()).contains("some ; param 1")
         }
         manager.extractParameter(1).let {
-            assert(it.isPresent).isTrue()
-            assert(it.get()).contains("and another one \\; ...")
+            assertThat(it.isPresent).isTrue()
+            assertThat(it.get()).contains("and another one \\; ...")
         }
         manager.extractParameter(2).let {
-            assert(it.isPresent).isTrue()
-            assert(it.get()).contains("and the last one")
+            assertThat(it.isPresent).isTrue()
+            assertThat(it.get()).contains("and the last one")
         }
-        assert(manager.extractParameter(3).isPresent).isFalse()
+        assertThat(manager.extractParameter(3).isPresent).isFalse()
     }
 }

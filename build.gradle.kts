@@ -18,14 +18,14 @@ allprojects {
 
     registerProperties(
         "kotlin.version" to "1.3.10",
-        "lombok.version" to "1.18.4",
-        "jackson.version" to "2.9.6",
+        "lombok.version" to "1.18.6",
+        "jackson.version" to "2.9.8",
         "commons-io.version" to "2.6",
         "jsonassert.version" to "1.5.0",
-        "assertj.version" to "3.9.1",
+        "assertj.version" to "3.12.2",
         "hamcrest.version" to "2.1",
-        "junit-jupiter.version" to "5.2.0",
-        "assertk-jvm.version" to "0.12"
+        "junit-jupiter.version" to "5.4.2",
+        "assertk-jvm.version" to "0.13"
     )
 }
 
