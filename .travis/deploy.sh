@@ -13,7 +13,7 @@ openssl aes-256-cbc -K $encrypted_329e0007fbf5_key -iv $encrypted_329e0007fbf5_i
 
 if [[ "${PROJECT_VERSION}" =~ .*-SNAPSHOT$ ]]; then
     ./gradlew publish -PossrhUrl="${PUBLISH_SNAPSHOT_REPO_URL}" -PossrhUsername="${PUBLISH_REPO_USERNAME}" -PossrhPassword="${PUBLISH_REPO_PASSWORD}" -Psigning.keyId="${GPG_KEY_ID}" -Psigning.password="${GPG_PASSPHRASE}" -Psigning.secretKeyRingFile="${SIGN_FILE_PATH}"
-elif [[ ! "${PROJECT_VERSION}" =~ .*-SNAPSHOT$ && "${TRAVIS_TAG}" =~ ^([0-9])+\.([0-9])+(\.([0-9])+)*(-[a-zA-Z0-9_-]+)*$ ]]; then
+elif [[ "${TRAVIS_TAG}" =~ ^([0-9])+\.([0-9])+(\.([0-9])+)*(-[a-zA-Z0-9_-]+)*$ ]]; then
     ./gradlew checkSnapshotDependencies publish -PossrhUrl="${PUBLISH_RELEASE_REPO_URL}" -PossrhUsername="${PUBLISH_REPO_USERNAME}" -PossrhPassword="${PUBLISH_REPO_PASSWORD}" -Psigning.keyId="${GPG_KEY_ID}" -Psigning.password="${GPG_PASSPHRASE}" -Psigning.secretKeyRingFile="${SIGN_FILE_PATH}"
 else
     echo "The version and/or the tag are invalid : Nothing to deploy"
