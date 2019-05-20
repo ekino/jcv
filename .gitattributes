@@ -1,0 +1,2 @@
+# Windows does not like LF in bat files
+*.bat text eol=crlf
