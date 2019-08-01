@@ -17,6 +17,7 @@ import assertk.assertions.startsWith
 import assertk.tableOf
 import com.ekino.oss.jcv.core.validator.Validators
 import org.apache.commons.io.IOUtils
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONCompare
 import org.skyscreamer.jsonassert.JSONCompareMode
@@ -324,5 +325,98 @@ Expected: {#date_time_format:iso_instant#}
                     }
                 }
             }
+    }
+
+    /**
+     * Tests about array with simple values assertions with validators as expected elements in non-strict order.
+     */
+    @Nested
+    inner class ArrayWithSimpleValuesTest {
+
+        @Test
+        fun `should handle validators in arrays with simple values`() {
+
+            compare(
+                loadJson("array_with_simple_values/test_actual.json"),
+                loadJson("array_with_simple_values/test_expected.json")
+            ) {
+                assertAll {
+                    assertThat(it.passed()).isTrue()
+                    assertThat(it.message).isNullOrEmpty()
+                }
+            }
+        }
+
+        @Test
+        fun `should throw an error if element count does not match between the two arrays`() {
+
+            compare(
+                """
+                {
+                    "some_array": [
+                        "value_1",
+                        "value_2",
+                        "value_3"
+                    ]
+                }
+                """.trimIndent(),
+                """
+                {
+                    "some_array": [
+                        "{#contains:value_#}"
+                    ]
+                }
+                """.trimIndent()
+            ) {
+                assertAll {
+                    assertThat(it.passed()).isFalse()
+                    assertThat(it.message).isEqualTo("some_array[]: Expected 1 values but got 3")
+                }
+            }
+        }
+
+        @Test
+        fun `should throw a detailed error if some elements did not match`() {
+
+            compare(
+                """
+                {
+                    "some_array": [
+                        "cd820a36-aa32-42ea-879d-293ba5f3c1e5",
+                        "value_1",
+                        "hello",
+                        "value_3",
+                        "839ceac0-2e60-4405-b27c-db2ac753d809"
+                    ]
+                }
+                """.trimIndent(),
+                """
+                {
+                    "some_array": [
+                        "value_1",
+                        "{#uuid#}",
+                        "{#uuid#}",
+                        "value_2",
+                        "{#contains:value_#}"
+                    ]
+                }
+                """.trimIndent()
+            ) {
+                assertAll {
+                    assertThat(it.passed()).isFalse()
+                    assertThat(it.message).isEqualTo(
+                        """
+                        some_array[2]
+                        Unexpected: hello
+                         ; some_array[0] -> value_1 matched with: [[1] -> value_1]
+                        some_array[1] -> {#uuid#} matched with: [[0] -> cd820a36-aa32-42ea-879d-293ba5f3c1e5,[4] -> 839ceac0-2e60-4405-b27c-db2ac753d809]
+                        some_array[2] -> {#uuid#} matched with: [[0] -> cd820a36-aa32-42ea-879d-293ba5f3c1e5,[4] -> 839ceac0-2e60-4405-b27c-db2ac753d809]
+                        some_array[3] -> value_2 matched with: []
+                        some_array[4] -> {#contains:value_#} matched with: [[3] -> value_3]
+                        """.trimIndent()
+                    )
+                }
+            }
+        }
     }
 }
