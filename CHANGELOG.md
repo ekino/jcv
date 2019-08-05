@@ -1,6 +1,6 @@
 # Changelog of {#JCV#}
 
-## Unreleased
+## 1.3.0
 ### GitHub [#1](https://github.com/ekino/jcv/issues/1) Provide a changelog    *enhancement*  
 
 **Add git changelog generator plugin (#1)**
@@ -10,6 +10,46 @@
 
 
 ### No issue
+
+**Release 1.3.0**
+
+
+[f5b94cc5c918379](https://github.com/ekino/jcv/commit/f5b94cc5c918379) Léo Millon *2019-08-05 13:03:02*
+
+**[FIX] Handle validators in arrays with simple values**
+
+
+[000b122c6c69ebc](https://github.com/ekino/jcv/commit/000b122c6c69ebc) Léo Millon *2019-08-05 10:20:49*
+
+**[CI] Remove redundant check on project version**
+
+
+[a54849d68acebf6](https://github.com/ekino/jcv/commit/a54849d68acebf6) Léo Millon *2019-05-20 08:17:40*
+
+**[CHORE] Upgrade Kotlin to 1.3.31**
+
+
+[11bf05af17d4117](https://github.com/ekino/jcv/commit/11bf05af17d4117) Clement Stoquart *2019-05-14 10:00:07*
+
+**[CHORE] Upgrade Gradle to 5.4.1**
+
+
+[cb2e5006a9988d4](https://github.com/ekino/jcv/commit/cb2e5006a9988d4) Clement Stoquart *2019-05-14 09:47:52*
+
+**[CHORE] Upgrade all dependencies to last stable releases**
+
+
+[be04ea61e1317d1](https://github.com/ekino/jcv/commit/be04ea61e1317d1) Clement Stoquart *2019-04-08 08:11:05*
+
+**Move detailed documentation into the wiki section**
+
+
+[ad702132b7218f0](https://github.com/ekino/jcv/commit/ad702132b7218f0) Léo Millon *2019-03-11 15:16:35*
+
+**Fix changelog template**
+
+
+[92a4ad892e437c4](https://github.com/ekino/jcv/commit/92a4ad892e437c4) Léo Millon *2019-03-11 13:34:34*
 
 **Init CHANGELOG.md**
 
