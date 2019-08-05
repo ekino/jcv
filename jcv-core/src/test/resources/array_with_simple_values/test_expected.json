@@ -1,0 +1,14 @@
+{
+  "array_1": [
+    "value_3",
+    "value_1",
+    "value_2"
+  ],
+  "array_2": [
+    "value_1",
+    "{#uuid#}",
+    "{#uuid#}",
+    "{#starts_with:hel#}",
+    "{#contains:value_#}"
+  ]
+}
