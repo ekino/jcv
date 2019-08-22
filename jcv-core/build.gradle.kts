@@ -32,7 +32,7 @@ tasks.withType<KotlinCompile> {
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
-    classifier = "sources"
+    archiveClassifier.set("sources")
     from(sourceSets["main"].allSource)
 }
 
@@ -45,7 +45,7 @@ val dokka by tasks.getting(DokkaTask::class) {
 val dokkaJar by tasks.creating(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "Assembles Kotlin docs with Dokka"
-    classifier = "javadoc"
+    archiveClassifier.set("javadoc")
     from(dokka)
 }
 
