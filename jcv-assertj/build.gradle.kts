@@ -1,4 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
@@ -15,65 +16,66 @@ configurations {
     }
 }
 
-sourceSets {
-    main {
-        java.srcDir("src/main/java")
-    }
+val sourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allJava)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+val javadocJar by tasks.registering(Jar::class) {
+    dependsOn("dokka")
+    archiveClassifier.set("javadoc")
+    from(buildDir.resolve("dokka"))
 }
 
 tasks {
-    test {
-        testLogging.showExceptions = true
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjvm-default=compatibility")
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+        jvmArgs("-Duser.language=en")
+    }
+
+    withType<DokkaTask> {
+        reportUndocumented = false
+    }
+
+    artifacts {
+        archives(jar)
+        archives(sourcesJar)
+        archives(javadocJar)
     }
 }
 
-val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets["main"].allSource)
-}
-
-val dokka by tasks.getting(DokkaTask::class) {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-    jdkVersion = 8
-}
-
-val dokkaJar by tasks.creating(Jar::class) {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Assembles Kotlin docs with Dokka"
-    archiveClassifier.set("javadoc")
-    from(dokka)
-}
+val publicationName = "mavenJava"
 
 publishing {
     publications {
-        named<MavenPublication>("mavenJava") {
+        named<MavenPublication>(publicationName) {
+            artifact(sourcesJar.get())
+            artifact(javadocJar.get())
+
             from(components["java"])
-            artifact(sourcesJar)
-            artifact(dokkaJar)
         }
     }
 }
 
 signing {
-    sign(publishing.publications["mavenJava"])
+    sign(publishing.publications[publicationName])
 }
 
 dependencies {
 
-    compileOnly(group = "org.projectlombok", name = "lombok", version = "${prop("lombok.version")}")
-    annotationProcessor(group = "org.projectlombok", name = "lombok", version = "${prop("lombok.version")}")
+    implementation(kotlin("stdlib-jdk8"))
 
     api(project(":jcv-core"))
     implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
     implementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
 
-    testImplementation(kotlin("stdlib-jdk8", version = "${prop("kotlin.version")}"))
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "${prop("junit-jupiter.version")}")
 
     testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
