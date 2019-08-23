@@ -5,7 +5,7 @@ plugins {
     `java-library`
     signing
     jacoco
-    id("org.jmailen.kotlinter") version "1.25.1"
+    id("org.jmailen.kotlinter") version "2.1.1"
     id("org.jetbrains.dokka") version "0.9.18"
 }
 

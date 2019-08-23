@@ -60,7 +60,7 @@ class JsonCompareAssertTest {
 
         assertThatThrownBy(() ->
             assertThatJson(loadJson("test_validator_id_in_value_matcher_actual_invalid.json"))
-                .using(Validators.templatedValidator(
+                .using(Validators.<String>templatedValidator(
                     "someSpecificValue",
                     (actual, expected) -> {
                         String specificValue = "THE_VALUE";

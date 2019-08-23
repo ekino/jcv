@@ -6,7 +6,7 @@ plugins {
     `java-library`
     signing
     jacoco
-    id("org.jmailen.kotlinter") version "1.25.1"
+    id("org.jmailen.kotlinter") version "2.1.1"
     id("org.jetbrains.dokka") version "0.9.18"
 }
 
@@ -16,65 +16,67 @@ configurations {
     }
 }
 
-sourceSets {
-    main {
-        java.srcDir("src/main/java")
+val sourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allJava)
+}
+
+val javadocJar by tasks.registering(Jar::class) {
+    dependsOn("dokka")
+    archiveClassifier.set("javadoc")
+    from(buildDir.resolve("dokka"))
+}
+
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjvm-default=compatibility")
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+        jvmArgs("-Duser.language=en")
+    }
+
+    withType<DokkaTask> {
+        reportUndocumented = false
+    }
+
+    artifacts {
+        archives(jar)
+        archives(sourcesJar)
+        archives(javadocJar)
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets["main"].allSource)
-}
-
-val dokka by tasks.getting(DokkaTask::class) {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-    jdkVersion = 8
-}
-
-val dokkaJar by tasks.creating(Jar::class) {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Assembles Kotlin docs with Dokka"
-    archiveClassifier.set("javadoc")
-    from(dokka)
-}
+val publicationName = "mavenJava"
 
 publishing {
     publications {
-        named<MavenPublication>("mavenJava") {
+        named<MavenPublication>(publicationName) {
+            artifact(sourcesJar.get())
+            artifact(javadocJar.get())
+
             from(components["java"])
-            artifact(sourcesJar)
-            artifact(dokkaJar)
         }
     }
 }
 
 signing {
-    sign(publishing.publications["mavenJava"])
+    sign(publishing.publications[publicationName])
 }
 
 dependencies {
-    compileOnly(group = "org.projectlombok", name = "lombok", version = "${prop("lombok.version")}")
-    annotationProcessor(group = "org.projectlombok", name = "lombok", version = "${prop("lombok.version")}")
-
+    implementation(kotlin("stdlib-jdk8", version = "${prop("kotlin.version")}"))
+    implementation(kotlin("reflect", version = "${prop("kotlin.version")}"))
     implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
 
-    testImplementation(kotlin("stdlib-jdk8", version = "${prop("kotlin.version")}"))
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "${prop("junit-jupiter.version")}")
 
     testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
     testImplementation(group = "com.willowtreeapps.assertk", name = "assertk-jvm", version = "${prop("assertk-jvm.version")}") {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
     }
-    testImplementation(group = "commons-io", name = "commons-io", version = "${prop("commons-io.version")}")
 }

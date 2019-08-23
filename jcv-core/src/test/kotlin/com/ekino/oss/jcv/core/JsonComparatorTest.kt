@@ -3,10 +3,12 @@
  */
 package com.ekino.oss.jcv.core
 
+import assertk.all
 import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
@@ -16,15 +18,14 @@ import assertk.assertions.message
 import assertk.assertions.startsWith
 import assertk.tableOf
 import com.ekino.oss.jcv.core.validator.Validators
-import org.apache.commons.io.IOUtils
+import java.util.Objects
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONCompare
 import org.skyscreamer.jsonassert.JSONCompareMode
 import org.skyscreamer.jsonassert.JSONCompareResult
+import org.skyscreamer.jsonassert.ValueMatcher
 import org.skyscreamer.jsonassert.ValueMatcherException
-import java.nio.charset.StandardCharsets
-import java.util.Objects
 
 class JsonComparatorTest {
 
@@ -32,7 +33,7 @@ class JsonComparatorTest {
         private val comparator = comparator()
 
         private fun comparator(
-            vararg validators: JsonValidator<Any> = Validators.defaultValidators().toTypedArray(),
+            vararg validators: JsonValidator<*> = Validators.defaultValidators().toTypedArray(),
             mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE
         ) = JsonComparator(mode, validators.toList())
 
@@ -46,7 +47,7 @@ class JsonComparatorTest {
         }
 
         private fun loadJson(fileName: String): String {
-            return IOUtils.resourceToString("/$fileName", StandardCharsets.UTF_8)
+            return this::class.java.getResource("/$fileName").readText()
         }
     }
 
@@ -84,7 +85,7 @@ class JsonComparatorTest {
         compare(
             loadJson("test_prefix_matcher_actual.json"),
             loadJson("test_prefix_matcher_expected.json"),
-            comparator(Validators.forPath("child.child.level") { actual, _ -> actual == 9999 })
+            comparator(Validators.forPath("child.child.level", ValueMatcher<Any> { actual, _ -> actual == 9999 }))
         ) {
             assertAll {
                 assertThat(it.passed()).isTrue()
@@ -99,17 +100,19 @@ class JsonComparatorTest {
         compare(
             loadJson("test_validator_id_in_value_matcher_actual_invalid.json"),
             loadJson("test_validator_id_in_value_matcher_expected.json"),
-            comparator(Validators.templatedValidator("someSpecificValue") { actual, _ ->
-                val specificValue = "THE_VALUE"
-                if (specificValue == actual) {
-                    return@templatedValidator true
+            comparator(Validators.templatedValidator("someSpecificValue", object : JsonValueComparator<String> {
+                override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+                    val specificValue = "THE_VALUE"
+                    if (specificValue == actual) {
+                        return true
+                    }
+                    throw ValueMatcherException(
+                        "Value should be '$specificValue'",
+                        specificValue,
+                        Objects.toString(actual)
+                    )
                 }
-                throw ValueMatcherException(
-                    "Value should be '$specificValue'",
-                    specificValue,
-                    Objects.toString(actual)
-                )
-            })
+            }))
         ) {
             assertAll {
                 assertThat(it.passed()).isFalse()
@@ -130,7 +133,7 @@ Expected: THE_VALUE
                 """{"field_name": "3 Feb 2011"}""",
                 """{"field_name": "{#date_time_format:d MMM uuu;some_TAG#}"}"""
             )
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(IllegalArgumentException::class.java)
             hasMessage("Invalid language tag some_TAG")
         }
@@ -144,7 +147,7 @@ Expected: THE_VALUE
                 """{"field_name": "2011-12-03T10:15:30Z"}""",
                 """{"field_name": "{#date_time_format:some_unknown_pattern#}"}"""
             )
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(IllegalArgumentException::class.java)
             message().isNotNull().startsWith("Unknown pattern")
         }

@@ -22,9 +22,9 @@ import static java.util.Objects.*;
 public class JsonMatcherBuilder {
 
     private JSONCompareMode mode;
-    private List<JsonValidator> validators;
+    private List<JsonValidator<?>> validators;
 
-    protected JsonMatcherBuilder(JSONCompareMode mode, List<JsonValidator> validators) {
+    protected JsonMatcherBuilder(JSONCompareMode mode, List<JsonValidator<?>> validators) {
         this.mode = requireNonNull(mode);
         this.validators = new LinkedList<>(requireNonNull(validators));
     }
@@ -63,7 +63,7 @@ public class JsonMatcherBuilder {
      * @see Validators#defaultValidators()
      * @see #validators(JsonValidator[])
      */
-    public JsonMatcherBuilder validators(List<JsonValidator> validators) {
+    public JsonMatcherBuilder validators(List<JsonValidator<?>> validators) {
         this.validators = new LinkedList<>(requireNonNull(validators));
         return this;
     }
@@ -78,7 +78,7 @@ public class JsonMatcherBuilder {
      * @see Validators#defaultValidators()
      * @see #validators(List)
      */
-    public JsonMatcherBuilder validators(JsonValidator... validators) {
+    public JsonMatcherBuilder validators(JsonValidator<?>... validators) {
         return validators(Arrays.asList(validators));
     }
 

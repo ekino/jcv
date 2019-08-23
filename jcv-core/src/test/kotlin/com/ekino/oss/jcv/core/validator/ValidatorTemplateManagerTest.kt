@@ -7,8 +7,8 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
 
 class ValidatorTemplateManagerTest {
@@ -48,17 +48,17 @@ class ValidatorTemplateManagerTest {
         val manager = defaultTemplateManager
 
         manager.extractParameter(0).let {
-            assertThat(it.isPresent).isTrue()
-            assertThat(it.get()).contains("some ; param 1")
+            assertThat(it).isNotNull()
+            assertThat(it!!).contains("some ; param 1")
         }
         manager.extractParameter(1).let {
-            assertThat(it.isPresent).isTrue()
-            assertThat(it.get()).contains("and another one \\; ...")
+            assertThat(it).isNotNull()
+            assertThat(it!!).contains("and another one \\; ...")
         }
         manager.extractParameter(2).let {
-            assertThat(it.isPresent).isTrue()
-            assertThat(it.get()).contains("and the last one")
+            assertThat(it).isNotNull()
+            assertThat(it!!).contains("and the last one")
         }
-        assertThat(manager.extractParameter(3).isPresent).isFalse()
+        assertThat(manager.extractParameter(3)).isNull()
     }
 }

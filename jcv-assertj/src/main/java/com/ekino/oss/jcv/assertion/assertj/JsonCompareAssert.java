@@ -65,7 +65,7 @@ public class JsonCompareAssert extends AbstractAssert<JsonCompareAssert, String>
      *
      * @see #using(JsonComparator)
      */
-    public JsonCompareAssert using(JSONCompareMode mode, JsonValidator... validators) {
+    public JsonCompareAssert using(JSONCompareMode mode, JsonValidator<?>... validators) {
         return using(mode, Arrays.asList(validators));
     }
 
@@ -79,7 +79,7 @@ public class JsonCompareAssert extends AbstractAssert<JsonCompareAssert, String>
      *
      * @see #using(JsonComparator)
      */
-    public JsonCompareAssert using(JSONCompareMode mode, List<JsonValidator> validators) {
+    public JsonCompareAssert using(JSONCompareMode mode, List<JsonValidator<?>> validators) {
         return new JsonCompareAssert(actual, new JsonComparator(mode, validators));
     }
 
@@ -92,7 +92,7 @@ public class JsonCompareAssert extends AbstractAssert<JsonCompareAssert, String>
      *
      * @see #using(JsonComparator)
      */
-    public JsonCompareAssert using(JsonValidator... validators) {
+    public JsonCompareAssert using(JsonValidator<?>... validators) {
         return using(Arrays.asList(validators));
     }
 
@@ -105,7 +105,7 @@ public class JsonCompareAssert extends AbstractAssert<JsonCompareAssert, String>
      *
      * @see #using(JsonComparator)
      */
-    public JsonCompareAssert using(List<JsonValidator> validators) {
+    public JsonCompareAssert using(List<JsonValidator<?>> validators) {
         return using(JSONCompareMode.NON_EXTENSIBLE, validators);
     }
 
