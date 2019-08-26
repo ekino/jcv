@@ -10,54 +10,70 @@ plugins {
     id("org.jetbrains.dokka") version "0.9.18"
 }
 
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+configurations {
+    implementation {
+        resolutionStrategy.failOnVersionConflict()
+    }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-val sourcesJar by tasks.creating(Jar::class) {
+val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
-    from(sourceSets["main"].allSource)
+    from(sourceSets.main.get().allJava)
 }
 
-val dokka by tasks.getting(DokkaTask::class) {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-    jdkVersion = 8
-}
-
-val dokkaJar by tasks.creating(Jar::class) {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Assembles Kotlin docs with Dokka"
+val javadocJar by tasks.registering(Jar::class) {
+    dependsOn("dokka")
     archiveClassifier.set("javadoc")
-    from(dokka)
+    from(buildDir.resolve("dokka"))
 }
+
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjvm-default=compatibility")
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+        jvmArgs("-Duser.language=en")
+    }
+
+    withType<DokkaTask> {
+        reportUndocumented = false
+    }
+
+    artifacts {
+        archives(jar)
+        archives(sourcesJar)
+        archives(javadocJar)
+    }
+}
+
+val publicationName = "mavenJava"
 
 publishing {
     publications {
-        named<MavenPublication>("mavenJava") {
+        named<MavenPublication>(publicationName) {
+            artifact(sourcesJar.get())
+            artifact(javadocJar.get())
+
             from(components["java"])
-            artifact(sourcesJar)
-            artifact(dokkaJar)
         }
     }
 }
 
 signing {
-    sign(publishing.publications["mavenJava"])
+    sign(publishing.publications[publicationName])
 }
 
 dependencies {
-    compileOnly(group = "org.projectlombok", name = "lombok", version = "${prop("lombok.version")}")
-
     api(project(":jcv-core"))
+    implementation(kotlin("stdlib-jdk8"))
     implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
     implementation(group = "org.hamcrest", name = "hamcrest", version = "${prop("hamcrest.version")}")
 
-    testImplementation(kotlin("stdlib-jdk8", version = "${prop("kotlin.version")}"))
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "${prop("junit-jupiter.version")}")
 
     testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
