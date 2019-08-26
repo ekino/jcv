@@ -18,7 +18,6 @@ import assertk.assertions.message
 import assertk.assertions.startsWith
 import assertk.tableOf
 import com.ekino.oss.jcv.core.validator.Validators
-import java.util.Objects
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONCompare
@@ -26,6 +25,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode
 import org.skyscreamer.jsonassert.JSONCompareResult
 import org.skyscreamer.jsonassert.ValueMatcher
 import org.skyscreamer.jsonassert.ValueMatcherException
+import java.util.Objects
 
 class JsonComparatorTest {
 
@@ -33,7 +33,7 @@ class JsonComparatorTest {
         private val comparator = comparator()
 
         private fun comparator(
-            vararg validators: JsonValidator<*> = Validators.defaultValidators().toTypedArray(),
+            vararg validators: JsonValidator<out Any?> = Validators.defaultValidators().toTypedArray(),
             mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE
         ) = JsonComparator(mode, validators.toList())
 

@@ -19,22 +19,26 @@ object Initializers {
      *
      * @return the validator
      */
+    @JvmStatic
     fun <T> parameterizedValidator(
         id: String,
         comparatorInitializer: TemplatedComparatorInitializer<T>
     ): JsonValidator<T> =
         DefaultParameterizedTemplateValidator(id, comparatorInitializer)
 
+    @JvmStatic
     fun <T> comparatorWithoutParameter(comparatorInitializer: NoParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> =
         object : TemplatedComparatorInitializer<T> {
             override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> =
                 comparatorInitializer.initComparator()
         }
 
+    @JvmStatic
     fun <T> comparatorWith1Parameter(comparatorInitializer: OneParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> {
         return comparatorWith1Parameter(true, comparatorInitializer)
     }
 
+    @JvmStatic
     fun <T> comparatorWith1Parameter(required: Boolean, comparatorInitializer: OneParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> =
         object : TemplatedComparatorInitializer<T> {
             override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
@@ -43,6 +47,7 @@ object Initializers {
             }
         }
 
+    @JvmStatic
     fun <T> comparatorWith2Parameters(param1Required: Boolean, param2Required: Boolean, comparatorInitializer: TwoParametersComparatorInitializer<T>): TemplatedComparatorInitializer<T> {
         return object : TemplatedComparatorInitializer<T> {
             override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
@@ -65,6 +70,7 @@ object Initializers {
         return parameter
     }
 
+    @JvmStatic
     @SafeVarargs
     fun <T> allOf(vararg initializers: TemplatedComparatorInitializer<in T>): TemplatedComparatorInitializer<T> =
         object : TemplatedComparatorInitializer<T> {
@@ -77,6 +83,7 @@ object Initializers {
             }
         }
 
+    @JvmStatic
     @SafeVarargs
     fun <T> anyOf(vararg initializers: TemplatedComparatorInitializer<in T>): TemplatedComparatorInitializer<T> =
         object : TemplatedComparatorInitializer<T> {

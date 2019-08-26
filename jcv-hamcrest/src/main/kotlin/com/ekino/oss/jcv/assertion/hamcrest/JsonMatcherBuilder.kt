@@ -63,7 +63,7 @@ class JsonMatcherBuilder {
      * @see Validators.defaultValidators
      * @see .validators
      */
-    fun validators(validators: List<JsonValidator<*>>): JsonMatcherBuilder {
+    fun <T : JsonValidator<*>> validators(validators: List<T>): JsonMatcherBuilder {
         this.validators = validators
         return this
     }
@@ -78,7 +78,8 @@ class JsonMatcherBuilder {
      * @see Validators.defaultValidators
      * @see .validators
      */
-    fun validators(vararg validators: JsonValidator<*>): JsonMatcherBuilder {
+    @SafeVarargs
+    fun <T : JsonValidator<*>> validators(vararg validators: T): JsonMatcherBuilder {
         return validators(validators.toList())
     }
 

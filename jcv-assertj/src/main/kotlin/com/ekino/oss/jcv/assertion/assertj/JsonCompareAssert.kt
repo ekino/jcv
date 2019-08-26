@@ -60,7 +60,8 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @see .using
      */
-    fun using(mode: JSONCompareMode, vararg validators: JsonValidator<*>): JsonCompareAssert {
+    @SafeVarargs
+    fun <T : JsonValidator<*>> using(mode: JSONCompareMode, vararg validators: T): JsonCompareAssert {
         return using(mode, validators.toList())
     }
 
@@ -74,7 +75,7 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @see .using
      */
-    fun using(mode: JSONCompareMode, validators: List<JsonValidator<*>>): JsonCompareAssert {
+    fun <T : JsonValidator<*>> using(mode: JSONCompareMode, validators: List<T>): JsonCompareAssert {
         return JsonCompareAssert(actual, JsonComparator(mode, validators))
     }
 
@@ -87,7 +88,8 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @see .using
      */
-    fun using(vararg validators: JsonValidator<*>): JsonCompareAssert {
+    @SafeVarargs
+    fun <T : JsonValidator<*>> using(vararg validators: T): JsonCompareAssert {
         return using(validators.toList())
     }
 
@@ -100,7 +102,7 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @see .using
      */
-    fun using(validators: List<JsonValidator<*>>): JsonCompareAssert {
+    fun <T : JsonValidator<*>> using(validators: List<T>): JsonCompareAssert {
         return using(JSONCompareMode.NON_EXTENSIBLE, validators)
     }
 

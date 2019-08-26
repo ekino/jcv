@@ -29,13 +29,13 @@ import java.util.Objects
  *
  * @author Leo Millon
  */
-class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<*>>) : DefaultComparator(mode) {
+class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out Any?>>) : DefaultComparator(mode) {
 
     companion object {
         private const val IGNORED_PATH = ""
     }
 
-    private val validators: List<JsonValidator<*>>
+    private val validators: List<JsonValidator<out Any?>>
 
     init {
         this.validators = LinkedList(validators)
@@ -64,8 +64,8 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<*>>) 
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun asCustomization(it: JsonValidator<*>) =
-        Customization(IGNORED_PATH, it.valueComparator as ValueMatcher<Any>)
+    private fun asCustomization(it: JsonValidator<out Any?>) =
+        Customization(IGNORED_PATH, it.valueComparator as ValueMatcher<Any>?)
 
     @Throws(JSONException::class)
     override fun compareJSONArrayOfJsonObjects(key: String, expected: JSONArray, actual: JSONArray, result: JSONCompareResult) {
