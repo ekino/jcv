@@ -22,3 +22,10 @@ interface NoParameterComparatorInitializer<T> {
      */
     fun initComparator(): ValueMatcher<T>
 }
+
+typealias KNoParameterComparatorInitializer<T> = () -> ValueMatcher<T>
+
+fun <T> asNoParameterComparatorInitializer(initializer: KNoParameterComparatorInitializer<T>) =
+    object : NoParameterComparatorInitializer<T> {
+        override fun initComparator(): ValueMatcher<T> = initializer()
+    }

@@ -24,3 +24,10 @@ interface OneParameterComparatorInitializer<T> {
      */
     fun initComparator(parameter: String?): ValueMatcher<T>
 }
+
+typealias KOneParameterComparatorInitializer<T> = (parameter: String?) -> ValueMatcher<T>
+
+fun <T> asOneParameterComparatorInitializer(initializer: KOneParameterComparatorInitializer<T>) =
+    object : OneParameterComparatorInitializer<T> {
+        override fun initComparator(parameter: String?): ValueMatcher<T> = initializer(parameter)
+    }

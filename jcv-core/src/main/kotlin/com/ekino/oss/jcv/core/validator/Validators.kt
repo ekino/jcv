@@ -21,8 +21,8 @@ import com.ekino.oss.jcv.core.initializer.Initializers.comparatorWith1Parameter
 import com.ekino.oss.jcv.core.initializer.Initializers.comparatorWith2Parameters
 import com.ekino.oss.jcv.core.initializer.Initializers.comparatorWithoutParameter
 import com.ekino.oss.jcv.core.initializer.Initializers.parameterizedValidator
-import com.ekino.oss.jcv.core.initializer.NoParameterComparatorInitializer
-import com.ekino.oss.jcv.core.initializer.OneParameterComparatorInitializer
+import com.ekino.oss.jcv.core.initializer.asNoParameterComparatorInitializer
+import com.ekino.oss.jcv.core.initializer.asOneParameterComparatorInitializer
 import org.json.JSONArray
 import org.json.JSONObject
 import org.skyscreamer.jsonassert.ValueMatcher
@@ -83,35 +83,19 @@ object Validators {
         return listOf(
             parameterizedValidator(
                 "contains",
-                comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                    override fun initComparator(parameter: String?): ValueMatcher<String> {
-                        return ContainsComparator(parameter!!)
-                    }
-                })
+                comparatorWith1Parameter(asOneParameterComparatorInitializer { ContainsComparator(it!!) })
             ),
             parameterizedValidator(
                 "starts_with",
-                comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                    override fun initComparator(parameter: String?): ValueMatcher<String> {
-                        return StartsWithComparator(parameter!!)
-                    }
-                })
+                comparatorWith1Parameter(asOneParameterComparatorInitializer { StartsWithComparator(it!!) })
             ),
             parameterizedValidator(
                 "ends_with",
-                comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                    override fun initComparator(parameter: String?): ValueMatcher<String> {
-                        return EndsWithComparator(parameter!!)
-                    }
-                })
+                comparatorWith1Parameter(asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
             ),
             parameterizedValidator(
                 "regex",
-                comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                    override fun initComparator(parameter: String?): ValueMatcher<String> {
-                        return RegexComparator(Pattern.compile(parameter!!))
-                    }
-                })
+                comparatorWith1Parameter(asOneParameterComparatorInitializer { RegexComparator(Pattern.compile(it!!)) })
             ),
             templatedValidator("uuid", UUIDComparator()),
             templatedValidator("not_null", NotNullComparator()),
@@ -120,62 +104,30 @@ object Validators {
             parameterizedValidator(
                 "url_ending",
                 allOf(
-                    comparatorWithoutParameter(object : NoParameterComparatorInitializer<String> {
-                        override fun initComparator(): ValueMatcher<String> {
-                            return URLComparator()
-                        }
-                    }),
-                    comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                        override fun initComparator(parameter: String?): ValueMatcher<String> {
-                            return EndsWithComparator(parameter!!)
-                        }
-                    })
+                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::URLComparator)),
+                    comparatorWith1Parameter(asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
                 )
             ),
             parameterizedValidator(
                 "url_regex",
                 allOf(
-                    comparatorWithoutParameter(object : NoParameterComparatorInitializer<String> {
-                        override fun initComparator(): ValueMatcher<String> {
-                            return URLComparator()
-                        }
-                    }),
-                    comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                        override fun initComparator(parameter: String?): ValueMatcher<String> {
-                            return RegexComparator(Pattern.compile(parameter!!))
-                        }
-                    })
+                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::URLComparator)),
+                    comparatorWith1Parameter(asOneParameterComparatorInitializer { RegexComparator(Pattern.compile(it!!)) })
                 )
             ),
             templatedValidator("templated_url", TemplatedURLComparator()),
             parameterizedValidator(
                 "templated_url_ending",
                 allOf(
-                    comparatorWithoutParameter(object : NoParameterComparatorInitializer<String> {
-                        override fun initComparator(): ValueMatcher<String> {
-                            return TemplatedURLComparator()
-                        }
-                    }),
-                    comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                        override fun initComparator(parameter: String?): ValueMatcher<String> {
-                            return EndsWithComparator(parameter!!)
-                        }
-                    })
+                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::TemplatedURLComparator)),
+                    comparatorWith1Parameter(asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
                 )
             ),
             parameterizedValidator(
                 "templated_url_regex",
                 allOf(
-                    comparatorWithoutParameter(object : NoParameterComparatorInitializer<String> {
-                        override fun initComparator(): ValueMatcher<String> {
-                            return TemplatedURLComparator()
-                        }
-                    }),
-                    comparatorWith1Parameter(object : OneParameterComparatorInitializer<String> {
-                        override fun initComparator(parameter: String?): ValueMatcher<String> {
-                            return RegexComparator(Pattern.compile(parameter!!))
-                        }
-                    })
+                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::TemplatedURLComparator)),
+                    comparatorWith1Parameter(asOneParameterComparatorInitializer { RegexComparator(Pattern.compile(it!!)) })
                 )
             ),
             type("boolean_type", Boolean::class.java),
@@ -185,7 +137,11 @@ object Validators {
             type("object_type", JSONObject::class.java),
             parameterizedValidator(
                 "date_time_format",
-                comparatorWith2Parameters(param1Required = true, param2Required = false, comparatorInitializer = DateTimeFormatComparatorInitializer())
+                comparatorWith2Parameters(
+                    param1Required = true,
+                    param2Required = false,
+                    comparatorInitializer = DateTimeFormatComparatorInitializer()
+                )
             )
         )
     }

@@ -25,3 +25,10 @@ interface TwoParametersComparatorInitializer<T> {
      */
     fun initComparator(param1: String?, param2: String?): ValueMatcher<T>
 }
+
+typealias KTwoParametersComparatorInitializer<T> = (param1: String?, param2: String?) -> ValueMatcher<T>
+
+fun <T> KTwoParametersComparatorInitializer<T>.asTwoParametersComparatorInitializer() =
+    object : TwoParametersComparatorInitializer<T> {
+        override fun initComparator(param1: String?, param2: String?): ValueMatcher<T> = invoke(param1, param2)
+    }
