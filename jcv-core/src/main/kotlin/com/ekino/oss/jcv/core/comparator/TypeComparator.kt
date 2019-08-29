@@ -5,7 +5,6 @@ package com.ekino.oss.jcv.core.comparator
 
 import com.ekino.oss.jcv.core.JsonValueComparator
 import org.skyscreamer.jsonassert.ValueMatcherException
-import java.util.Objects
 
 class TypeComparator(private val expectedType: Class<*>) : JsonValueComparator<Any> {
 
@@ -13,6 +12,6 @@ class TypeComparator(private val expectedType: Class<*>) : JsonValueComparator<A
         if (expectedType.kotlin.isInstance(actual)) {
             return true
         }
-        throw ValueMatcherException("Invalid value type", Objects.toString(expected), Objects.toString(actual))
+        throw ValueMatcherException("Invalid value type", expected.toString(), actual.toString())
     }
 }

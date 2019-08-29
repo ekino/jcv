@@ -83,19 +83,21 @@ object Validators {
         return listOf(
             parameterizedValidator(
                 "contains",
-                comparatorWith1Parameter(asOneParameterComparatorInitializer { ContainsComparator(it!!) })
+                comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer { ContainsComparator(it!!) })
             ),
             parameterizedValidator(
                 "starts_with",
-                comparatorWith1Parameter(asOneParameterComparatorInitializer { StartsWithComparator(it!!) })
+                comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer { StartsWithComparator(it!!) })
             ),
             parameterizedValidator(
                 "ends_with",
-                comparatorWith1Parameter(asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
+                comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
             ),
             parameterizedValidator(
                 "regex",
-                comparatorWith1Parameter(asOneParameterComparatorInitializer { RegexComparator(Pattern.compile(it!!)) })
+                comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer {
+                    RegexComparator(Pattern.compile(it!!))
+                })
             ),
             templatedValidator("uuid", UUIDComparator()),
             templatedValidator("not_null", NotNullComparator()),
@@ -104,30 +106,34 @@ object Validators {
             parameterizedValidator(
                 "url_ending",
                 allOf(
-                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::URLComparator)),
-                    comparatorWith1Parameter(asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
+                    comparatorWithoutParameter(initializer = asNoParameterComparatorInitializer(::URLComparator)),
+                    comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
                 )
             ),
             parameterizedValidator(
                 "url_regex",
                 allOf(
-                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::URLComparator)),
-                    comparatorWith1Parameter(asOneParameterComparatorInitializer { RegexComparator(Pattern.compile(it!!)) })
+                    comparatorWithoutParameter(initializer = asNoParameterComparatorInitializer(::URLComparator)),
+                    comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer {
+                        RegexComparator(Pattern.compile(it!!))
+                    })
                 )
             ),
             templatedValidator("templated_url", TemplatedURLComparator()),
             parameterizedValidator(
                 "templated_url_ending",
                 allOf(
-                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::TemplatedURLComparator)),
-                    comparatorWith1Parameter(asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
+                    comparatorWithoutParameter(initializer = asNoParameterComparatorInitializer(::TemplatedURLComparator)),
+                    comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer { EndsWithComparator(it!!) })
                 )
             ),
             parameterizedValidator(
                 "templated_url_regex",
                 allOf(
-                    comparatorWithoutParameter(asNoParameterComparatorInitializer(::TemplatedURLComparator)),
-                    comparatorWith1Parameter(asOneParameterComparatorInitializer { RegexComparator(Pattern.compile(it!!)) })
+                    comparatorWithoutParameter(initializer = asNoParameterComparatorInitializer(::TemplatedURLComparator)),
+                    comparatorWith1Parameter(initializer = asOneParameterComparatorInitializer {
+                        RegexComparator(Pattern.compile(it!!))
+                    })
                 )
             ),
             type("boolean_type", Boolean::class.java),
@@ -140,7 +146,7 @@ object Validators {
                 comparatorWith2Parameters(
                     param1Required = true,
                     param2Required = false,
-                    comparatorInitializer = DateTimeFormatComparatorInitializer()
+                    initializer = DateTimeFormatComparatorInitializer()
                 )
             )
         )

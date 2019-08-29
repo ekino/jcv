@@ -3,9 +3,6 @@
  */
 package com.ekino.oss.jcv.core.validator
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-
 /**
  * Manager of templated validator format.
  * Example : `{#some_id:first parameter;the next \; parameter;the last one...#}`
@@ -15,12 +12,14 @@ import java.util.regex.Pattern
 class ValidatorTemplateManager(private val value: String?) {
 
     companion object {
-
-        private val VALIDATOR_TEMPLATE_PATTERN = Pattern.compile("^\\{#(.+)#}$")
-        private val PARAMETERS_PATTERN = Pattern.compile("^(?<id>[\\w-_.]+)(:(?<parameters>([^;]+)?(;([^;])+)*))?$")
+        private val VALIDATOR_TEMPLATE_REGEX = "^\\{#(.+)#}$".toRegex()
+        private val PARAMETERS_REGEX = "^(?<id>[\\w-_.]+)(:(?<parameters>([^;]+)?(;([^;])+)*))?$".toRegex()
+        private val PARAMETER_SEPARATOR_REGEX = "(?<!\\\\);".toRegex()
     }
 
-    private var extractedTemplate: String? = null
+    private val extractedTemplate: String? by lazy {
+        value?.let { VALIDATOR_TEMPLATE_REGEX.find(it) }?.groups?.get(1)?.value
+    }
 
     /**
      * A method to test if the template format is valid.
@@ -30,10 +29,6 @@ class ValidatorTemplateManager(private val value: String?) {
     val isValidTemplate: Boolean
         get() = extractTemplateContent() != null
 
-    private fun templateMatcher(): Matcher? {
-        return value?.let { VALIDATOR_TEMPLATE_PATTERN.matcher(it) }
-    }
-
     /**
      * Extract the validator definition.
      *
@@ -41,14 +36,7 @@ class ValidatorTemplateManager(private val value: String?) {
      *
      * @return the template content, or null (if format is invalid)
      */
-    fun extractTemplateContent(): String? {
-
-        if (extractedTemplate == null) {
-            extractedTemplate = templateMatcher()?.takeIf { it.matches() }?.group(1)
-        }
-
-        return extractedTemplate
-    }
+    fun extractTemplateContent(): String? = extractedTemplate
 
     /**
      * Extract the validator id.
@@ -57,11 +45,11 @@ class ValidatorTemplateManager(private val value: String?) {
      *
      * @return the validator id, or null (if format is invalid)
      */
-    fun extractId(): String? {
-        return parameterMatcher()
-            ?.takeIf { it.matches() }
-            ?.group("id")
-    }
+    fun extractId(): String? = extractedTemplate
+        ?.let { PARAMETERS_REGEX.matchEntire(it) }
+        ?.groups
+        ?.get("id")
+        ?.value
 
     /**
      * Extract the validator parameters.
@@ -75,14 +63,15 @@ class ValidatorTemplateManager(private val value: String?) {
      *
      * @return the ordered list of parameters, or empty (if format is invalid)
      */
-    fun extractParameters(): List<String> {
-        return parameterMatcher()
-            ?.takeIf { it.matches() }
-            ?.group("parameters")
-            ?.let { it -> it.split("(?<!\\\\);".toRegex()).dropLastWhile { it.isEmpty() }.toList() }
-            ?.map { it.replace("\\\\;".toRegex(), ";") }
-            .orEmpty()
-    }
+    fun extractParameters(): List<String> = extractedTemplate
+        ?.let { PARAMETERS_REGEX.matchEntire(it) }
+        ?.groups
+        ?.get("parameters")
+        ?.value
+        ?.split(PARAMETER_SEPARATOR_REGEX)
+        ?.dropLastWhile { it.isEmpty() }
+        ?.map { it.replace("\\\\;".toRegex(), ";") }
+        .orEmpty()
 
     /**
      * Extract the validator parameters.
@@ -96,13 +85,6 @@ class ValidatorTemplateManager(private val value: String?) {
     fun extractParameter(index: Int): String? {
         val parameters = extractParameters()
 
-        return index
-            .takeIf { it in 0 until parameters.size }
-            ?.let { parameters[it] }
-    }
-
-    private fun parameterMatcher(): Matcher? {
-        return extractTemplateContent()
-            ?.let { PARAMETERS_PATTERN.matcher(it) }
+        return if (index in parameters.indices) parameters[index] else null
     }
 }

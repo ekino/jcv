@@ -14,7 +14,7 @@ object Initializers {
      * Prepare "parameterized" validator for a given comparator.
      *
      * @param id the validator id
-     * @param comparatorInitializer the comparator init with the parameter
+     * @param initializer the comparator init with the parameter
      * @param <T>                   the field value type
      *
      * @return the validator
@@ -22,50 +22,53 @@ object Initializers {
     @JvmStatic
     fun <T> parameterizedValidator(
         id: String,
-        comparatorInitializer: TemplatedComparatorInitializer<T>
+        initializer: TemplatedComparatorInitializer<T>
     ): JsonValidator<T> =
-        DefaultParameterizedTemplateValidator(id, comparatorInitializer)
+        DefaultParameterizedTemplateValidator(id, initializer)
 
     @JvmStatic
-    fun <T> comparatorWithoutParameter(comparatorInitializer: NoParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> =
+    fun <T> comparatorWithoutParameter(initializer: NoParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> =
         object : TemplatedComparatorInitializer<T> {
             override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> =
-                comparatorInitializer.initComparator()
+                initializer.initComparator()
         }
 
     @JvmStatic
-    fun <T> comparatorWith1Parameter(comparatorInitializer: OneParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> {
-        return comparatorWith1Parameter(true, comparatorInitializer)
-    }
-
-    @JvmStatic
-    fun <T> comparatorWith1Parameter(required: Boolean, comparatorInitializer: OneParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> =
+    @JvmOverloads
+    fun <T> comparatorWith1Parameter(
+        required: Boolean = true,
+        initializer: OneParameterComparatorInitializer<T>
+    ): TemplatedComparatorInitializer<T> =
         object : TemplatedComparatorInitializer<T> {
             override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
                 val parameter = getOrThrowParameter(0, required, validatorTemplateManager)
-                return comparatorInitializer.initComparator(parameter)
+                return initializer.initComparator(parameter)
             }
         }
 
     @JvmStatic
-    fun <T> comparatorWith2Parameters(param1Required: Boolean, param2Required: Boolean, comparatorInitializer: TwoParametersComparatorInitializer<T>): TemplatedComparatorInitializer<T> {
+    fun <T> comparatorWith2Parameters(
+        param1Required: Boolean = true,
+        param2Required: Boolean = true,
+        initializer: TwoParametersComparatorInitializer<T>
+    ): TemplatedComparatorInitializer<T> {
         return object : TemplatedComparatorInitializer<T> {
             override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
                 val parameter1 = getOrThrowParameter(0, param1Required, validatorTemplateManager)
                 val parameter2 = getOrThrowParameter(1, param2Required, validatorTemplateManager)
-                return comparatorInitializer.initComparator(parameter1, parameter2)
+                return initializer.initComparator(parameter1, parameter2)
             }
         }
     }
 
-    private fun getOrThrowParameter(index: Int, required: Boolean, validatorTemplateManager: ValidatorTemplateManager): String? {
+    private fun getOrThrowParameter(
+        index: Int,
+        required: Boolean,
+        validatorTemplateManager: ValidatorTemplateManager
+    ): String? {
         val parameter = validatorTemplateManager.extractParameter(index)
-        if (required && parameter == null) {
-            throw IllegalArgumentException(String.format(
-                "No parameter at index %s found in validator '%s'",
-                index,
-                validatorTemplateManager.extractTemplateContent()
-            ))
+        require(!(required && parameter == null)) {
+            "No parameter at index $index found in validator '${validatorTemplateManager.extractTemplateContent()}'"
         }
         return parameter
     }

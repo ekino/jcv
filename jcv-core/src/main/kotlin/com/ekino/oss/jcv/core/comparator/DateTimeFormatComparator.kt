@@ -15,9 +15,7 @@ class DateTimeFormatComparator(private val dateTimeFormatter: DateTimeFormatter)
             dateTimeFormatter.parse(actual)
             return true
         } catch (e: DateTimeParseException) {
-            throw ValueMatcherException(
-                "Invalid date time format",
-                e, expected, actual)
+            throw ValueMatcherException("Invalid date time format", e, expected, actual)
         }
     }
 }

@@ -19,10 +19,7 @@ import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.formatUniqueKey
 import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.getKeys
 import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.isSimpleValue
 import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.jsonArrayToList
-import java.util.ArrayList
-import java.util.HashSet
 import java.util.LinkedList
-import java.util.Objects
 
 /**
  * Custom [JSONComparator].
@@ -30,10 +27,6 @@ import java.util.Objects
  * @author Leo Millon
  */
 class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out Any?>>) : DefaultComparator(mode) {
-
-    companion object {
-        private const val IGNORED_PATH = ""
-    }
 
     private val validators: List<JsonValidator<out Any?>>
 
@@ -44,57 +37,69 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
     @Throws(JSONException::class)
     override fun compareValues(prefix: String, expectedValue: Any?, actualValue: Any?, result: JSONCompareResult) {
 
-        val matchingValueCustomization = validators
+        validators
             .firstOrNull { it.contextMatcher.matches(prefix, expectedValue, actualValue) }
             ?.let { asCustomization(it) }
-
-        if (matchingValueCustomization != null) {
-            try {
-                if (!matchingValueCustomization.matches(prefix, actualValue, expectedValue, result)) {
-                    result.fail(prefix, expectedValue, actualValue)
+            ?.let {
+                try {
+                    if (!it.matches(prefix, actualValue, expectedValue, result)) {
+                        result.fail(prefix, expectedValue, actualValue)
+                    }
+                } catch (e: ValueMatcherException) {
+                    result.fail(prefix, e)
                 }
-            } catch (e: ValueMatcherException) {
-                result.fail(prefix, e)
+                return
             }
-
-            return
-        }
-
-        super.compareValues(prefix, expectedValue, actualValue, result)
+            ?: super.compareValues(prefix, expectedValue, actualValue, result)
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun asCustomization(it: JsonValidator<out Any?>) =
-        Customization(IGNORED_PATH, it.valueComparator as ValueMatcher<Any>?)
+        Customization("", it.valueComparator as ValueMatcher<Any>?)
 
     @Throws(JSONException::class)
-    override fun compareJSONArrayOfJsonObjects(key: String, expected: JSONArray, actual: JSONArray, result: JSONCompareResult) {
+    override fun compareJSONArrayOfJsonObjects(
+        key: String,
+        expected: JSONArray,
+        actual: JSONArray,
+        result: JSONCompareResult
+    ) {
         val uniqueKey = findUniqueKey(expected)
         if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
             // An expensive last resort
             recursivelyCompareJSONArray(key, expected, actual, result)
             return
         }
+
         val expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey)
         val actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey)
-        for (id in expectedValueMap.keys) {
-            if (!actualValueMap.containsKey(id)) {
-                result.missing(formatUniqueKey(key, uniqueKey, id), expectedValueMap[id])
-                continue
+
+        expectedValueMap
+            .asSequence()
+            .forEach { (expectedId, expectedValue) ->
+                if (!actualValueMap.containsKey(expectedId)) {
+                    result.missing(formatUniqueKey(key, uniqueKey, expectedId), expectedValue)
+                    return@forEach
+                }
+                val actualValue = actualValueMap[expectedId]
+                compareValues(formatUniqueKey(key, uniqueKey, expectedId), expectedValue, actualValue, result)
             }
-            val expectedValue = expectedValueMap[id]
-            val actualValue = actualValueMap[id]
-            compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, result)
-        }
-        for (id in actualValueMap.keys) {
-            if (!expectedValueMap.containsKey(id)) {
-                result.unexpected(formatUniqueKey(key, uniqueKey, id), actualValueMap[id])
+
+        actualValueMap
+            .asSequence()
+            .filterNot { (actualId, _) -> expectedValueMap.containsKey(actualId) }
+            .forEach { (actualId, actualValue) ->
+                result.unexpected(formatUniqueKey(key, uniqueKey, actualId), actualValue)
             }
-        }
     }
 
     @Throws(JSONException::class)
-    override fun compareJSONArrayOfSimpleValues(key: String, expected: JSONArray, actual: JSONArray, result: JSONCompareResult) {
+    override fun compareJSONArrayOfSimpleValues(
+        key: String,
+        expected: JSONArray,
+        actual: JSONArray,
+        result: JSONCompareResult
+    ) {
         val expectedElements = jsonArrayToList(expected)
         val actualElements = jsonArrayToList(actual)
 
@@ -105,59 +110,61 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
             return
         }
 
-        val actualValueMatchedIndexes = HashSet<Int>()
+        val actualValueMatchedIndexes = mutableSetOf<Int>()
         val matchingByValue = getMatchingByValue(parsedExpectedElements, actualElements, actualValueMatchedIndexes)
-        val matchingByValidator = getExpectedElementCollectionMap(parsedExpectedElements, key, actualElements, actualValueMatchedIndexes)
+        val matchingByValidator =
+            getExpectedElementCollectionMap(parsedExpectedElements, key, actualElements, actualValueMatchedIndexes)
 
-        val totalMatched = matchingByValue.values.asSequence().filterNotNull().count() + matchingByValidator.values.asSequence().flatten().distinct().count()
+        val totalMatched =
+            matchingByValue.values.asSequence().filterNotNull().count() + matchingByValidator.values.asSequence().flatten().distinct().count()
 
-        if (totalMatched != actualElements.size) {
-
-            val allMatches = sequenceOf(
-                matchingByValue.entries.asSequence()
-                    .map { entry -> entry.key to entry.value?.let { listOf(it) }.orEmpty() },
-                matchingByValidator.entries.asSequence().map { it.toPair() }
-            )
-                .flatten()
-                .toMap()
-
-            val allMatchedActualIndexes = allMatches.values.asSequence()
-                .flatten()
-                .mapNotNull { it.index }
-                .toSet()
-
-            (0 until actualElements.size)
-                .asSequence()
-                .filterNot { allMatchedActualIndexes.contains(it) }
-                .forEach { actualIndex -> result.unexpected("$key[$actualIndex]", actualElements[actualIndex]) }
-
-            val detailedMatchingDebugMessage = allMatches
-                .entries
-                .asSequence()
-                .sortedBy { it.key.index }
-                .map { entry ->
-                    val expectedElt = entry.key
-                    val matchedElements = entry.value.joinToString(",", "[", "]") { "[" + it.index + "] -> " + it.value }
-                    key + "[" + expectedElt.index + "] -> " + expectedElt.key + " matched with: " + matchedElements
-                }
-                .joinToString("\n")
-            result.fail(detailedMatchingDebugMessage)
+        if (totalMatched == actualElements.size) {
+            return
         }
+
+        val allMatches = sequenceOf(
+            matchingByValue.asSequence()
+                .map { (key, value) -> key to value?.let { listOf(it) }.orEmpty() },
+            matchingByValidator.asSequence().map { it.toPair() }
+        )
+            .flatten()
+            .toMap()
+
+        val allMatchedActualIndexes = allMatches.values.asSequence()
+            .flatten()
+            .mapNotNull { it.index }
+            .toSet()
+
+        actualElements
+            .forEachIndexed { index, actualElement ->
+                actualElement
+                    .takeUnless { allMatchedActualIndexes.contains(index) }
+                    ?.also { result.unexpected("$key[$index]", it) }
+            }
+
+        val detailedMatchingDebugMessage = allMatches
+            .asSequence()
+            .sortedBy { it.key.index }
+            .map { (expectedElt, value) ->
+                val matchedElements = value
+                    .joinToString(",", "[", "]") { "[" + it.index + "] -> " + it.value }
+                key + "[" + expectedElt.index + "] -> " + expectedElt.key + " matched with: " + matchedElements
+            }
+            .joinToString("\n")
+
+        result.fail(detailedMatchingDebugMessage)
     }
 
     private fun parseExpectedElements(key: String, expectedElements: List<Any>): List<ExpectedElement> {
-        val parsedExpectedElements = ArrayList<ExpectedElement>()
-        for (i in expectedElements.indices) {
-            val expectedElement = expectedElements[i]
-            parsedExpectedElements.add(ExpectedElement(
-                i,
-                expectedElement,
+        return expectedElements
+            .asSequence()
+            .mapIndexed { index, expectedElement ->
                 validators
                     .firstOrNull { it.contextMatcher.matches(key, expectedElement, null) }
                     ?.let { asCustomization(it) }
-            ))
-        }
-        return parsedExpectedElements
+                    .let { ExpectedElement(index, expectedElement, it) }
+            }
+            .toList()
     }
 
     private fun getMatchingByValue(
@@ -165,22 +172,21 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
         actualElements: List<Any>,
         actualValueMatchedIndexes: MutableSet<Int>
     ): Map<ExpectedElement, ActualElement?> {
-        return parsedExpectedElements.asSequence()
-            .filter { !it.hasCustomization() }
-            .map { expectedElement ->
-                for (i in actualElements.indices) {
-                    if (actualValueMatchedIndexes.contains(i)) {
-                        continue
+        return parsedExpectedElements
+            .asSequence()
+            .filterNot { it.hasCustomization() }
+            .associateWith { expectedElement ->
+                actualElements
+                    .asSequence()
+                    .mapIndexedNotNull { index, actualElement ->
+                        actualElement
+                            .takeUnless { actualValueMatchedIndexes.contains(index) }
+                            ?.takeIf { it -> expectedElement.key == it }
+                            ?.also { actualValueMatchedIndexes.add(index) }
+                            ?.let { ActualElement(index, actualElement) }
                     }
-                    val actualElement = actualElements[i]
-                    if (expectedElement.key == actualElement) {
-                        actualValueMatchedIndexes.add(i)
-                        return@map expectedElement to ActualElement(i, actualElement)
-                    }
-                }
-                expectedElement to null
+                    .firstOrNull()
             }
-            .toMap()
     }
 
     private fun getExpectedElementCollectionMap(
@@ -189,59 +195,38 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
         actualElements: List<Any>,
         actualValueMatchedIndexes: Set<Int>
     ): Map<ExpectedElement, Collection<ActualElement>> {
-        return parsedExpectedElements.asSequence()
+        return parsedExpectedElements
+            .asSequence()
             .filter { it.hasCustomization() }
-            .map { expectedElement ->
-                val matched = HashSet<ActualElement>()
-                for (i in actualElements.indices) {
-                    if (actualValueMatchedIndexes.contains(i)) {
-                        continue
+            .associateWith { expectedElement ->
+                actualElements
+                    .asSequence()
+                    .mapIndexedNotNull { index, actualElement ->
+                        actualElement
+                            .takeUnless { actualValueMatchedIndexes.contains(index) }
+                            ?.takeIf { it ->
+                                try {
+                                    expectedElement.customization
+                                        ?.matches(key, it, expectedElement.key, JSONCompareResult())
+                                        ?: false
+                                } catch (e: ValueMatcherException) {
+                                    false
+                                }
+                            }
+                            ?.let { ActualElement(index, it) }
                     }
-                    val actualElement = actualElements[i]
-                    try {
-                        if (expectedElement.customization!!.matches(key, actualElement, expectedElement.key, JSONCompareResult())) {
-                            matched.add(ActualElement(i, actualElement))
-                        }
-                    } catch (e: ValueMatcherException) {
-                        // Do nothing
-                    }
-                }
-                expectedElement to matched
+                    .toSet()
             }
-            .toMap()
     }
 
-    private class ExpectedElement constructor(internal val index: Int?, internal val key: Any, internal val customization: Customization?) {
+    private data class ExpectedElement(val index: Int?, val key: Any, val customization: Customization?) {
 
-        internal fun hasCustomization(): Boolean {
+        fun hasCustomization(): Boolean {
             return customization != null
         }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other == null || javaClass != other.javaClass) return false
-            val that = other as ExpectedElement?
-            return index == that!!.index && key == that.key
-        }
-
-        override fun hashCode(): Int {
-            return Objects.hash(index, key)
-        }
     }
 
-    private class ActualElement internal constructor(internal val index: Int?, internal val value: Any) {
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other == null || javaClass != other.javaClass) return false
-            val that = other as ActualElement?
-            return index == that!!.index && value == that.value
-        }
-
-        override fun hashCode(): Int {
-            return Objects.hash(index, value)
-        }
-    }
+    private data class ActualElement(val index: Int?, val value: Any)
 
     /**
      * @see org.skyscreamer.jsonassert.comparator.JSONCompareUtil.findUniqueKey
@@ -249,12 +234,8 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
     @Throws(JSONException::class)
     private fun findUniqueKey(expected: JSONArray): String? {
         // Find a unique key for the object (id, name, whatever)
-        val o = expected.get(0) as JSONObject // There's at least one at this point
-        for (candidate in getKeys(o)) {
-            if (isUsableAsUniqueKey(candidate, expected)) return candidate
-        }
-        // No usable unique key :-(
-        return null
+        return getKeys((expected[0] as JSONObject))
+            .firstOrNull { isUsableAsUniqueKey(it, expected) } // if null, no usable unique key :-(
     }
 
     /**
@@ -262,25 +243,20 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
      */
     @Throws(JSONException::class)
     private fun isUsableAsUniqueKey(candidate: String, array: JSONArray): Boolean {
-        val seenValues = HashSet<Any>()
+        val seenValues = mutableSetOf<Any>()
         for (i in 0 until array.length()) {
-            val item = array.get(i)
-            if (item is JSONObject) {
-                if (item.has(candidate)) {
-                    val value = item.get(candidate)
-                    // rewrite original code to evict validator templates from valid unique key
-                    if (isSimpleValue(value) && !seenValues.contains(value) && !ValidatorTemplateManager(value.toString()).isValidTemplate) {
-                        seenValues.add(value)
-                    } else {
-                        return false
-                    }
-                } else {
-                    return false
-                }
-            } else {
-                return false
-            }
+            array[i]
+                .takeIfInstanceOf<JSONObject>()
+                ?.takeIf { it.has(candidate) }
+                ?.let { it[candidate] }
+                ?.takeIf { isSimpleValue(it) && !seenValues.contains(it) && !ValidatorTemplateManager(it.toString()).isValidTemplate }
+                ?.also { seenValues.add(it) }
+                ?: return false
         }
         return true
+    }
+
+    private inline fun <reified T> Any?.takeIfInstanceOf(): T? {
+        return if (this is T) this else null
     }
 }

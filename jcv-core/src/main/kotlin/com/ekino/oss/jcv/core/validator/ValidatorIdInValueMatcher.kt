@@ -5,7 +5,7 @@ package com.ekino.oss.jcv.core.validator
 
 import com.ekino.oss.jcv.core.JsonContextMatcher
 
-internal class ValidatorIdInValueMatcher(val validatorId: String) : JsonContextMatcher {
+internal class ValidatorIdInValueMatcher(private val validatorId: String) : JsonContextMatcher {
 
     override fun matches(prefix: String, expectedValue: Any?, actualValue: Any?): Boolean {
         return expectedValue
