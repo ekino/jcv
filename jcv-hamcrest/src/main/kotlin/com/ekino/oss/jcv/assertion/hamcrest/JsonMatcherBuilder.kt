@@ -34,9 +34,8 @@ class JsonMatcherBuilder {
          * `validators` are [Validators.defaultValidators]
          */
         @JvmStatic
-        fun create(): JsonMatcherBuilder {
-            return JsonMatcherBuilder(JSONCompareMode.NON_EXTENSIBLE, Validators.defaultValidators())
-        }
+        fun create(): JsonMatcherBuilder =
+            JsonMatcherBuilder(JSONCompareMode.NON_EXTENSIBLE, Validators.defaultValidators())
     }
 
     /**
@@ -90,7 +89,6 @@ class JsonMatcherBuilder {
      *
      * @return the matcher
      */
-    fun build(expectedJson: String): JsonCompareMatcher {
-        return JsonCompareMatcher(JsonComparator(mode, validators), expectedJson)
-    }
+    fun build(expectedJson: String): JsonCompareMatcher =
+        JsonCompareMatcher(JsonComparator(mode, validators), expectedJson)
 }
