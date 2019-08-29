@@ -31,12 +31,10 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
          * @return the created assertion object
          */
         @JvmStatic
-        fun assertThatJson(actualJson: String): JsonCompareAssert {
-            return JsonCompareAssert(
-                actualJson,
-                JsonComparator(JSONCompareMode.NON_EXTENSIBLE, Validators.defaultValidators())
-            )
-        }
+        fun assertThatJson(actualJson: String) = JsonCompareAssert(
+            actualJson,
+            JsonComparator(JSONCompareMode.NON_EXTENSIBLE, Validators.defaultValidators())
+        )
     }
 
     /**
@@ -46,9 +44,7 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @return `this` assertion object
      */
-    fun using(comparator: JsonComparator): JsonCompareAssert {
-        return JsonCompareAssert(actual, comparator)
-    }
+    fun using(comparator: JsonComparator) = JsonCompareAssert(actual, comparator)
 
     /**
      * Creates a new instance of `[JsonCompareAssert] with a custom configuration` with the same actual value.
@@ -61,9 +57,8 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      * @see .using
      */
     @SafeVarargs
-    fun <T : JsonValidator<*>> using(mode: JSONCompareMode, vararg validators: T): JsonCompareAssert {
-        return using(mode, validators.toList())
-    }
+    fun <T : JsonValidator<*>> using(mode: JSONCompareMode, vararg validators: T) =
+        using(mode, validators.toList())
 
     /**
      * Creates a new instance of `[JsonCompareAssert] with a custom configuration` with the same actual value.
@@ -75,9 +70,8 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @see .using
      */
-    fun <T : JsonValidator<*>> using(mode: JSONCompareMode, validators: List<T>): JsonCompareAssert {
-        return JsonCompareAssert(actual, JsonComparator(mode, validators))
-    }
+    fun <T : JsonValidator<*>> using(mode: JSONCompareMode, validators: List<T>) =
+        JsonCompareAssert(actual, JsonComparator(mode, validators))
 
     /**
      * Creates a new instance of `[JsonCompareAssert] with a custom configuration` with the same actual value.
@@ -89,9 +83,7 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      * @see .using
      */
     @SafeVarargs
-    fun <T : JsonValidator<*>> using(vararg validators: T): JsonCompareAssert {
-        return using(validators.toList())
-    }
+    fun <T : JsonValidator<*>> using(vararg validators: T) = using(validators.toList())
 
     /**
      * Creates a new instance of `[JsonCompareAssert] with a custom configuration` with the same actual value.
@@ -102,9 +94,8 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      *
      * @see .using
      */
-    fun <T : JsonValidator<*>> using(validators: List<T>): JsonCompareAssert {
-        return using(JSONCompareMode.NON_EXTENSIBLE, validators)
-    }
+    fun <T : JsonValidator<*>> using(validators: List<T>) =
+        using(JSONCompareMode.NON_EXTENSIBLE, validators)
 
     /**
      * Verifies that the actual JSON value is valid against the given JSON.
@@ -123,10 +114,9 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
         Objects.requireNonNull<Any>(jsonComparator, "Json comparator definition is missing")
 
         try {
-            val result = JSONCompare.compareJSON(expectedJson, actual, jsonComparator)
-            if (!result.passed()) {
-                failWithMessage(result.message)
-            }
+            JSONCompare.compareJSON(expectedJson, actual, jsonComparator)
+                .takeUnless { it.passed() }
+                ?.also { failWithMessage(it.message) }
         } catch (e: JSONException) {
             throw JsonParseException("Error with provided JSON Strings", e)
         }
