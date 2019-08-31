@@ -18,12 +18,14 @@ import assertk.assertions.message
 import assertk.assertions.startsWith
 import assertk.tableOf
 import com.ekino.oss.jcv.core.validator.Validators
+import com.ekino.oss.jcv.core.validator.comparator
+import com.ekino.oss.jcv.core.validator.forPathPrefix
+import com.ekino.oss.jcv.core.validator.validator
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONCompare
 import org.skyscreamer.jsonassert.JSONCompareMode
 import org.skyscreamer.jsonassert.JSONCompareResult
-import org.skyscreamer.jsonassert.ValueMatcher
 import org.skyscreamer.jsonassert.ValueMatcherException
 import java.util.Objects
 
@@ -85,7 +87,7 @@ class JsonComparatorTest {
         compare(
             loadJson("test_prefix_matcher_actual.json"),
             loadJson("test_prefix_matcher_expected.json"),
-            comparator(Validators.forPath("child.child.level", ValueMatcher<Any> { actual, _ -> actual == 9999 }))
+            comparator(forPathPrefix<Any>("child.child.level", comparator { actual, _ -> actual == 9999 }))
         ) {
             assertAll {
                 assertThat(it.passed()).isTrue()
@@ -100,27 +102,30 @@ class JsonComparatorTest {
         compare(
             loadJson("test_validator_id_in_value_matcher_actual_invalid.json"),
             loadJson("test_validator_id_in_value_matcher_expected.json"),
-            comparator(Validators.templatedValidator("someSpecificValue", object : JsonValueComparator<String> {
-                override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+            comparator(validator {
+                templatedValidator<String>("someSpecificValue", comparator { actual, _ ->
                     val specificValue = "THE_VALUE"
                     if (specificValue == actual) {
-                        return true
+                        return@comparator true
                     }
                     throw ValueMatcherException(
                         "Value should be '$specificValue'",
                         specificValue,
                         Objects.toString(actual)
                     )
-                }
-            }))
+                })
+            })
         ) {
             assertAll {
                 assertThat(it.passed()).isFalse()
                 assertThat(it.message).isEqualTo(
-                    """field_2: Value should be 'THE_VALUE'
-Expected: THE_VALUE
-     got: {#someSpecificValue#}
-""")
+                    """
+                    field_2: Value should be 'THE_VALUE'
+                    Expected: THE_VALUE
+                         got: {#someSpecificValue#}
+
+                    """.trimIndent()
+                )
             }
         }
     }
@@ -160,163 +165,233 @@ Expected: THE_VALUE
             .row(
                 """{"field_name": "hello_world!"}""",
                 """{"field_name": "{#contains:llo wor#}"}""",
-                """field_name: Value should contain 'llo wor'
-Expected: {#contains:llo wor#}
-     got: hello_world!
-""")
+                """
+                field_name: Value should contain 'llo wor'
+                Expected: {#contains:llo wor#}
+                     got: hello_world!
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "hello_world!"}""",
                 """{"field_name": "{#starts_with:llo_wor#}"}""",
-                """field_name: Value should start with 'llo_wor'
-Expected: {#starts_with:llo_wor#}
-     got: hello_world!
-""")
+                """
+                field_name: Value should start with 'llo_wor'
+                Expected: {#starts_with:llo_wor#}
+                     got: hello_world!
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "hello_world!"}""",
                 """{"field_name": "{#ends_with:llo_wor#}"}""",
-                """field_name: Value should end with 'llo_wor'
-Expected: {#ends_with:llo_wor#}
-     got: hello_world!
-""")
+                """
+                field_name: Value should end with 'llo_wor'
+                Expected: {#ends_with:llo_wor#}
+                     got: hello_world!
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "hello_world!"}""",
                 """{"field_name": "{#regex:.*llo ?w.r.*#}"}""",
-                """field_name: Value does not match pattern /.*llo ?w.r.*/
-Expected: {#regex:.*llo ?w.r.*#}
-     got: hello_world!
-""")
+                """
+                field_name: Value does not match pattern /.*llo ?w.r.*/
+                Expected: {#regex:.*llo ?w.r.*#}
+                     got: hello_world!
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#uuid#}"}""",
-                """field_name: Value is not a valid UUID
-Expected: {#uuid#}
-     got: some value
-""")
+                """
+                field_name: Value is not a valid UUID
+                Expected: {#uuid#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": null}""",
                 """{"field_name": "{#not_null#}"}""",
-                """field_name: Value should not be null
-Expected: {#not_null#}
-     got: null
-""")
+                """
+                field_name: Value should not be null
+                Expected: {#not_null#}
+                     got: null
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": ""}""",
                 """{"field_name": "{#not_empty#}"}""",
-                """field_name: Value should not be empty
-Expected: {#not_empty#}""" + "\n     got: \n"
+                """
+                field_name: Value should not be empty
+                Expected: {#not_empty#}
+                     got: 
+
+                 """.trimIndent()
             )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#url#}"}""",
-                """field_name: Value is not a valid URL
-Expected: {#url#}
-     got: some value
-""")
+                """
+                field_name: Value is not a valid URL
+                Expected: {#url#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value/?param"}""",
                 """{"field_name": "{#url_ending:?param#}"}""",
-                """field_name: Value is not a valid URL
-Expected: {#url_ending:?param#}
-     got: some value/?param
-""")
+                """
+                field_name: Value is not a valid URL
+                Expected: {#url_ending:?param#}
+                     got: some value/?param
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "http://some.url:9999/path?param"}""",
                 """{"field_name": "{#url_ending:/path?param2#}"}""",
-                """field_name: Value should end with '/path?param2'
-Expected: {#url_ending:/path?param2#}
-     got: http://some.url:9999/path?param
-""")
+                """
+                field_name: Value should end with '/path?param2'
+                Expected: {#url_ending:/path?param2#}
+                     got: http://some.url:9999/path?param
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value/?param"}""",
                 """{"field_name": "{#url_regex:^.+some\\.url.+/path\\?param$#}"}""",
-                """field_name: Value is not a valid URL
-Expected: {#url_regex:^.+some\.url.+/path\?param$#}
-     got: some value/?param
-""")
+                """
+                field_name: Value is not a valid URL
+                Expected: {#url_regex:^.+some\.url.+/path\?param$#}
+                     got: some value/?param
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "http://some_url:9999/path?param"}""",
                 """{"field_name": "{#url_regex:^.+some\\.url.+/path\\?param$#}"}""",
-                """field_name: Value does not match pattern /^.+some\.url.+/path\?param$/
-Expected: {#url_regex:^.+some\.url.+/path\?param$#}
-     got: http://some_url:9999/path?param
-""")
+                """
+                field_name: Value does not match pattern /^.+some\.url.+/path\?param$/
+                Expected: {#url_regex:^.+some\.url.+/path\?param$#}
+                     got: http://some_url:9999/path?param
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#templated_url#}"}""",
-                """field_name: Value is not a valid templated URL
-Expected: {#templated_url#}
-     got: some value
-""")
+                """
+                field_name: Value is not a valid templated URL
+                Expected: {#templated_url#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value {?param}"}""",
                 """{"field_name": "{#templated_url_ending:{?param}#}"}""",
-                """field_name: Value is not a valid templated URL
-Expected: {#templated_url_ending:{?param}#}
-     got: some value {?param}
-""")
+                """
+                field_name: Value is not a valid templated URL
+                Expected: {#templated_url_ending:{?param}#}
+                     got: some value {?param}
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "http://some.url:9999/path{?param}"}""",
                 """{"field_name": "{#templated_url_ending:/path{?param2}#}"}""",
-                """field_name: Value should end with '/path{?param2}'
-Expected: {#templated_url_ending:/path{?param2}#}
-     got: http://some.url:9999/path{?param}
-""")
+                """
+                field_name: Value should end with '/path{?param2}'
+                Expected: {#templated_url_ending:/path{?param2}#}
+                     got: http://some.url:9999/path{?param}
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value/{?param}"}""",
                 """{"field_name": "{#templated_url_regex:^.+some\\.url.+\/path\\{\\?param\\}$#}"}""",
-                """field_name: Value is not a valid templated URL
-Expected: {#templated_url_regex:^.+some\.url.+/path\{\?param\}$#}
-     got: some value/{?param}
-""")
+                """
+                field_name: Value is not a valid templated URL
+                Expected: {#templated_url_regex:^.+some\.url.+/path\{\?param\}$#}
+                     got: some value/{?param}
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "http://some_url:9999/path{?param}"}""",
                 """{"field_name": "{#templated_url_regex:^.+some\\.url.+\/path\\{\\?param\\}$#}"}""",
-                """field_name: Value does not match pattern /^.+some\.url.+/path\{\?param\}$/
-Expected: {#templated_url_regex:^.+some\.url.+/path\{\?param\}$#}
-     got: http://some_url:9999/path{?param}
-""")
+                """
+                field_name: Value does not match pattern /^.+some\.url.+/path\{\?param\}$/
+                Expected: {#templated_url_regex:^.+some\.url.+/path\{\?param\}$#}
+                     got: http://some_url:9999/path{?param}
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#boolean_type#}"}""",
-                """field_name: Invalid value type
-Expected: {#boolean_type#}
-     got: some value
-""")
+                """
+                field_name: Invalid value type
+                Expected: {#boolean_type#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": true}""",
                 """{"field_name": "{#string_type#}"}""",
-                """field_name: Invalid value type
-Expected: {#string_type#}
-     got: true
-""")
+                """
+                field_name: Invalid value type
+                Expected: {#string_type#}
+                     got: true
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#number_type#}"}""",
-                """field_name: Invalid value type
-Expected: {#number_type#}
-     got: some value
-""")
+                """
+                field_name: Invalid value type
+                Expected: {#number_type#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#array_type#}"}""",
-                """field_name: Invalid value type
-Expected: {#array_type#}
-     got: some value
-""")
+                """
+                field_name: Invalid value type
+                Expected: {#array_type#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#object_type#}"}""",
-                """field_name: Invalid value type
-Expected: {#object_type#}
-     got: some value
-""")
+                """
+                field_name: Invalid value type
+                Expected: {#object_type#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .row(
                 """{"field_name": "some value"}""",
                 """{"field_name": "{#date_time_format:iso_instant#}"}""",
-                """field_name: Invalid date time format
-Expected: {#date_time_format:iso_instant#}
-     got: some value
-""")
+                """
+                field_name: Invalid date time format
+                Expected: {#date_time_format:iso_instant#}
+                     got: some value
+
+                """.trimIndent()
+            )
             .forAll { actual, expected, error ->
                 compare(
                     actualJson = actual,
