@@ -46,10 +46,7 @@ class ValidatorTemplateManager(private val value: String?) {
      * @return the validator id, or null (if format is invalid)
      */
     fun extractId(): String? = extractedTemplate
-        ?.let { PARAMETERS_REGEX.matchEntire(it) }
-        ?.groups
-        ?.get("id")
-        ?.value
+        .extractRegexGroup(PARAMETERS_REGEX, "id")
 
     /**
      * Extract the validator parameters.
@@ -64,10 +61,7 @@ class ValidatorTemplateManager(private val value: String?) {
      * @return the ordered list of parameters, or empty (if format is invalid)
      */
     fun extractParameters(): List<String> = extractedTemplate
-        ?.let { PARAMETERS_REGEX.matchEntire(it) }
-        ?.groups
-        ?.get("parameters")
-        ?.value
+        .extractRegexGroup(PARAMETERS_REGEX, "parameters")
         ?.split(PARAMETER_SEPARATOR_REGEX)
         ?.dropLastWhile { it.isEmpty() }
         ?.map { it.replace("\\\\;".toRegex(), ";") }
@@ -86,5 +80,17 @@ class ValidatorTemplateManager(private val value: String?) {
         val parameters = extractParameters()
 
         return if (index in parameters.indices) parameters[index] else null
+    }
+
+    /**
+     * Fallback method to handle regex group extraction as the stdlib-jdk8 does not support named group on MatchResult after JDK8.
+     *
+     * @see <a href="https://youtrack.jetbrains.com/issue/KT-20865">Retrieving groups by name is not supported on Java 9 even with `kotlin-stdlib-jre8` in the classpath</a>
+     */
+    private fun String?.extractRegexGroup(regex: Regex, groupName: String): String? {
+        return this
+            ?.let { regex.toPattern().matcher(it) }
+            ?.takeIf { it.matches() }
+            ?.group(groupName)
     }
 }
