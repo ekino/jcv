@@ -6,8 +6,11 @@ package com.ekino.oss.jcv.assertion.assertj;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.ekino.oss.jcv.core.JsonValidator;
 import com.ekino.oss.jcv.core.validator.Validators;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -60,24 +63,46 @@ class JsonCompareAssertTest {
 
         assertThatThrownBy(() ->
             assertThatJson(loadJson("test_validator_id_in_value_matcher_actual_invalid.json"))
-                .using(Validators.templatedValidator(
-                    "someSpecificValue",
-                    (actual, expected) -> {
-                        String specificValue = "THE_VALUE";
-                        if (specificValue.equals(actual)) {
-                            return true;
-                        }
-                        throw new ValueMatcherException(
-                            "Value should be '" + specificValue + "'",
-                            specificValue,
-                            Objects.toString(actual)
-                        );
-                    }
-                ))
+                .using(customValidator())
                 .isValidAgainst(loadJson("test_validator_id_in_value_matcher_expected.json"))
         )
             .isInstanceOf(AssertionError.class)
             .hasMessageStartingWith("field_2: Value should be 'THE_VALUE'");
+    }
+
+    @Test
+    void should_match_with_default_and_custom_validator() {
+
+        assertThatThrownBy(() ->
+            assertThatJson(loadJson("test_validator_id_in_value_matcher_actual_invalid.json"))
+                .using(defaultAndCustomValidators())
+                .isValidAgainst(loadJson("test_validator_id_in_value_matcher_expected.json"))
+        )
+            .isInstanceOf(AssertionError.class)
+            .hasMessageStartingWith("field_2: Value should be 'THE_VALUE'");
+    }
+
+    private static JsonValidator<String> customValidator() {
+        return Validators.templatedValidator(
+            "someSpecificValue",
+            (actual, expected) -> {
+                String specificValue = "THE_VALUE";
+                if (specificValue.equals(actual)) {
+                    return true;
+                }
+                throw new ValueMatcherException(
+                    "Value should be '" + specificValue + "'",
+                    specificValue,
+                    Objects.toString(actual)
+                );
+            }
+        );
+    }
+
+    private static List<JsonValidator> defaultAndCustomValidators() {
+        List<JsonValidator> validators = new ArrayList<>(Validators.defaultValidators());
+        validators.add(customValidator());
+        return validators;
     }
 
     private static String loadJson(String fileName) {
