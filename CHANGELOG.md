@@ -1,5 +1,124 @@
 # Changelog of {#JCV#}
 
+## 1.4.0
+### No issue
+
+**Release 1.4.0**
+
+
+[d4aaec3b80150ae](https://github.com/ekino/jcv/commit/d4aaec3b80150ae) Léo Millon *2019-09-10 13:52:55*
+
+**Add unary plus operator to include default validators in DSL**
+
+
+[902dc126e14c473](https://github.com/ekino/jcv/commit/902dc126e14c473) Léo Millon *2019-09-10 11:39:07*
+
+**Add Quality gate status badge to README**
+
+
+[e874d8ba336627a](https://github.com/ekino/jcv/commit/e874d8ba336627a) Léo Millon *2019-09-02 10:30:16*
+
+**Add Maven central badge to README**
+
+
+[9ca738890172f89](https://github.com/ekino/jcv/commit/9ca738890172f89) Léo Millon *2019-09-02 10:29:55*
+
+**Fix regex named group extraction for jdk versions over jdk8**
+
+
+[544ee87f2f567cc](https://github.com/ekino/jcv/commit/544ee87f2f567cc) Léo Millon *2019-09-01 08:29:04*
+
+**Add sonar tests definition**
+
+
+[ee27993371dacf0](https://github.com/ekino/jcv/commit/ee27993371dacf0) Léo Millon *2019-08-31 16:05:54*
+
+**Redefine kotlin sources for Sonar analysis**
+
+
+[3b6b2d1be7d919d](https://github.com/ekino/jcv/commit/3b6b2d1be7d919d) Léo Millon *2019-08-31 16:05:32*
+
+**Add a DSL to build validators**
+
+
+[fe7bc20b18c6243](https://github.com/ekino/jcv/commit/fe7bc20b18c6243) Léo Millon *2019-08-31 15:53:39*
+
+**Improve Kotlin implementation in jcv-hamcrest**
+
+
+[7fd917b1a17b034](https://github.com/ekino/jcv/commit/7fd917b1a17b034) Léo Millon *2019-08-29 16:41:44*
+
+**Improve Kotlin implementation in jcv-assertj**
+
+
+[0b89324b380c45a](https://github.com/ekino/jcv/commit/0b89324b380c45a) Léo Millon *2019-08-29 16:38:50*
+
+**Improve Kotlin implementation in jcv-core**
+
+
+[c9bd3722230b225](https://github.com/ekino/jcv/commit/c9bd3722230b225) Léo Millon *2019-08-29 16:30:49*
+
+**Add utilities for kotlin to implement interfaces through lambdas**
+
+
+[448200411c21b71](https://github.com/ekino/jcv/commit/448200411c21b71) Léo Millon *2019-08-28 15:03:48*
+
+**Adpat methods with generic type for Java backward compatibility**
+
+
+[0e0d4bbc36465f2](https://github.com/ekino/jcv/commit/0e0d4bbc36465f2) Léo Millon *2019-08-28 15:03:42*
+
+**Literal migration from Java to Kotlin of the hamcrest module**
+
+
+[e9dc7e2e41e24e1](https://github.com/ekino/jcv/commit/e9dc7e2e41e24e1) Léo Millon *2019-08-26 11:43:17*
+
+**Literal migration from Java to Kotlin of the core module**
+
+
+[e26fce80a5b3280](https://github.com/ekino/jcv/commit/e26fce80a5b3280) Léo Millon *2019-08-26 11:43:17*
+
+**Literal migration from Java to Kotlin of the assertj module**
+
+
+[6b9c850997ca62d](https://github.com/ekino/jcv/commit/6b9c850997ca62d) Léo Millon *2019-08-26 11:43:17*
+
+**chore: fix sonar properties**
+
+
+[4276e85b2e0ae63](https://github.com/ekino/jcv/commit/4276e85b2e0ae63) Clement Stoquart *2019-08-23 09:55:26*
+
+**chore: give hints to sonar about the project structure**
+
+
+[419a2302deb60f1](https://github.com/ekino/jcv/commit/419a2302deb60f1) Clement Stoquart *2019-08-23 09:26:51*
+
+**chore: enable sonarcloud analysis**
+
+
+[d94e51248d959d2](https://github.com/ekino/jcv/commit/d94e51248d959d2) Clement Stoquart *2019-08-23 09:05:55*
+
+**chore: replace Gradle deprecated properties**
+
+
+[88cf0a8375b2c7f](https://github.com/ekino/jcv/commit/88cf0a8375b2c7f) Clement Stoquart *2019-08-22 16:08:29*
+
+**chore: upgrade Gradle to 5.6**
+
+
+[5785c6ba94236f1](https://github.com/ekino/jcv/commit/5785c6ba94236f1) Clement Stoquart *2019-08-19 08:23:58*
+
+**Set new version to 1.4.0-SNAPSHOT**
+
+
+[4a15ef1928cbb75](https://github.com/ekino/jcv/commit/4a15ef1928cbb75) Léo Millon *2019-08-05 13:07:37*
+
+**Update Changelog**
+
+
+[b69041979e072e2](https://github.com/ekino/jcv/commit/b69041979e072e2) Léo Millon *2019-08-05 13:05:59*
+
+
 ## 1.3.0
 ### GitHub [#1](https://github.com/ekino/jcv/issues/1) Provide a changelog    *enhancement*  
 
