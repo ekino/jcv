@@ -38,6 +38,10 @@ class ValidatorsBuilder : ValidatorBuilder() {
         validators.add(this)
     }
 
+    operator fun Collection<JsonValidator<*>>.unaryPlus() {
+        validators.addAll(this)
+    }
+
     fun build() = validators.toList()
 }
 

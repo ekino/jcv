@@ -18,9 +18,11 @@ import assertk.assertions.message
 import assertk.assertions.startsWith
 import assertk.tableOf
 import com.ekino.oss.jcv.core.validator.Validators
+import com.ekino.oss.jcv.core.validator.Validators.defaultValidators
 import com.ekino.oss.jcv.core.validator.comparator
 import com.ekino.oss.jcv.core.validator.forPathPrefix
 import com.ekino.oss.jcv.core.validator.validator
+import com.ekino.oss.jcv.core.validator.validators
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONCompare
@@ -38,6 +40,11 @@ class JsonComparatorTest {
             vararg validators: JsonValidator<out Any?> = Validators.defaultValidators().toTypedArray(),
             mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE
         ) = JsonComparator(mode, validators.toList())
+
+        private fun comparator(
+            validators: List<JsonValidator<out Any?>>,
+            mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE
+        ) = JsonComparator(mode, validators)
 
         private fun compare(
             actualJson: String,
@@ -87,7 +94,12 @@ class JsonComparatorTest {
         compare(
             loadJson("test_prefix_matcher_actual.json"),
             loadJson("test_prefix_matcher_expected.json"),
-            comparator(forPathPrefix<Any>("child.child.level", comparator { actual, _ -> actual == 9999 }))
+            comparator(
+                validators {
+                    +defaultValidators()
+                    +forPathPrefix<Any>("child.child.level", comparator { actual, _ -> actual == 9999 })
+                }
+            )
         ) {
             assertAll {
                 assertThat(it.passed()).isTrue()
