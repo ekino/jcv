@@ -1,5 +1,29 @@
 # Changelog of {#JCV#}
 
+## 1.4.1
+### No issue
+
+**Release 1.4.1**
+
+
+[2c2134bf17366fe](https://github.com/ekino/jcv/commit/2c2134bf17366fe) Léo Millon *2019-09-11 12:37:06*
+
+**Move interfaces back to Java to avoid -Xjvm-default compiler arg**
+
+
+[e282a134ca14780](https://github.com/ekino/jcv/commit/e282a134ca14780) Léo Millon *2019-09-11 12:35:55*
+
+**Set new version to 1.5.0-SNAPSHOT**
+
+
+[ec246ba756a76e2](https://github.com/ekino/jcv/commit/ec246ba756a76e2) Léo Millon *2019-09-10 14:45:36*
+
+**Update Changelog**
+
+
+[2bd81272a4cd0e2](https://github.com/ekino/jcv/commit/2bd81272a4cd0e2) Léo Millon *2019-09-10 13:57:28*
+
+
 ## 1.4.0
 ### No issue
 
