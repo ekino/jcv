@@ -28,10 +28,7 @@ object Initializers {
 
     @JvmStatic
     fun <T> comparatorWithoutParameter(initializer: NoParameterComparatorInitializer<T>): TemplatedComparatorInitializer<T> =
-        object : TemplatedComparatorInitializer<T> {
-            override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> =
-                initializer.initComparator()
-        }
+        TemplatedComparatorInitializer<T> { initializer.initComparator() }
 
     @JvmStatic
     @JvmOverloads
@@ -39,11 +36,9 @@ object Initializers {
         required: Boolean = true,
         initializer: OneParameterComparatorInitializer<T>
     ): TemplatedComparatorInitializer<T> =
-        object : TemplatedComparatorInitializer<T> {
-            override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
-                val parameter = getOrThrowParameter(0, required, validatorTemplateManager)
-                return initializer.initComparator(parameter)
-            }
+        TemplatedComparatorInitializer<T> { validatorTemplateManager ->
+            val parameter = getOrThrowParameter(0, required, validatorTemplateManager)
+            initializer.initComparator(parameter)
         }
 
     @JvmStatic
@@ -52,12 +47,10 @@ object Initializers {
         param2Required: Boolean = true,
         initializer: TwoParametersComparatorInitializer<T>
     ): TemplatedComparatorInitializer<T> {
-        return object : TemplatedComparatorInitializer<T> {
-            override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
-                val parameter1 = getOrThrowParameter(0, param1Required, validatorTemplateManager)
-                val parameter2 = getOrThrowParameter(1, param2Required, validatorTemplateManager)
-                return initializer.initComparator(parameter1, parameter2)
-            }
+        return TemplatedComparatorInitializer<T> { validatorTemplateManager ->
+            val parameter1 = getOrThrowParameter(0, param1Required, validatorTemplateManager)
+            val parameter2 = getOrThrowParameter(1, param2Required, validatorTemplateManager)
+            initializer.initComparator(parameter1, parameter2)
         }
     }
 
@@ -76,26 +69,22 @@ object Initializers {
     @JvmStatic
     @SafeVarargs
     fun <T> allOf(vararg initializers: TemplatedComparatorInitializer<in T>): TemplatedComparatorInitializer<T> =
-        object : TemplatedComparatorInitializer<T> {
-            override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
-                return ValueMatcher { actual, expected ->
-                    sequenceOf(*initializers)
-                        .map { it.initComparator(validatorTemplateManager) }
-                        .all { it.equal(actual, expected) }
-                }
+        TemplatedComparatorInitializer<T> { validatorTemplateManager ->
+            ValueMatcher { actual, expected ->
+                sequenceOf(*initializers)
+                    .map { it.initComparator(validatorTemplateManager) }
+                    .all { it.equal(actual, expected) }
             }
         }
 
     @JvmStatic
     @SafeVarargs
     fun <T> anyOf(vararg initializers: TemplatedComparatorInitializer<in T>): TemplatedComparatorInitializer<T> =
-        object : TemplatedComparatorInitializer<T> {
-            override fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T> {
-                return ValueMatcher { actual, expected ->
-                    sequenceOf(*initializers)
-                        .map { it.initComparator(validatorTemplateManager) }
-                        .any { it.equal(actual, expected) }
-                }
+        TemplatedComparatorInitializer<T> { validatorTemplateManager ->
+            ValueMatcher { actual, expected ->
+                sequenceOf(*initializers)
+                    .map { it.initComparator(validatorTemplateManager) }
+                    .any { it.equal(actual, expected) }
             }
         }
 }

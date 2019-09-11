@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2019 ekino (https://www.ekino.com/)
  */
-package com.ekino.oss.jcv.core.initializer
+package com.ekino.oss.jcv.core.initializer;
 
-import org.skyscreamer.jsonassert.ValueMatcher
+import org.skyscreamer.jsonassert.ValueMatcher;
 
 /**
  * Comparator intializer given tempated validator with 2 parameters information.
@@ -13,7 +13,7 @@ import org.skyscreamer.jsonassert.ValueMatcher
  * @author Leo Millon
  */
 @FunctionalInterface
-interface TwoParametersComparatorInitializer<T> {
+public interface TwoParametersComparatorInitializer<T> {
 
     /**
      * Init a comparator using the current templated validator info.
@@ -23,5 +23,5 @@ interface TwoParametersComparatorInitializer<T> {
      *
      * @return the initalized comparator
      */
-    fun initComparator(param1: String?, param2: String?): ValueMatcher<T>
+    ValueMatcher<T> initComparator(String param1, String param2);
 }

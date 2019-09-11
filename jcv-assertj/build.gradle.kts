@@ -30,7 +30,6 @@ val javadocJar by tasks.registering(Jar::class) {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xjvm-default=compatibility")
             jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
     }

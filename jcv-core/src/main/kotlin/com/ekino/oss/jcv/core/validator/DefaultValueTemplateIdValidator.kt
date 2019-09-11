@@ -8,6 +8,5 @@ import org.skyscreamer.jsonassert.ValueMatcher
 internal class DefaultValueTemplateIdValidator<T>(validatorId: String, private val comparator: ValueMatcher<T>) :
     ValueTemplateIdValidator<T>(validatorId) {
 
-    override val valueComparator: ValueMatcher<T>
-        get() = comparator
+    override fun getValueComparator(): ValueMatcher<T> = comparator
 }

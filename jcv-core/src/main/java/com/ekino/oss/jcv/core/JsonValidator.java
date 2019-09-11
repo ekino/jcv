@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2019 ekino (https://www.ekino.com/)
  */
-package com.ekino.oss.jcv.core
+package com.ekino.oss.jcv.core;
 
-import org.skyscreamer.jsonassert.ValueMatcher
+import org.skyscreamer.jsonassert.ValueMatcher;
 
 /**
  * A validator composed of a matcher and a value comparator.
@@ -12,19 +12,19 @@ import org.skyscreamer.jsonassert.ValueMatcher
  *
  * @author Leo Millon
  */
-interface JsonValidator<T> {
+public interface JsonValidator<T> {
 
     /**
      * The context matcher.
      *
      * @return the matcher
      */
-    val contextMatcher: JsonContextMatcher
+    JsonContextMatcher getContextMatcher();
 
     /**
      * The field value comparator.
      *
      * @return the comparator
      */
-    val valueComparator: ValueMatcher<T>
+    ValueMatcher<T> getValueComparator();
 }

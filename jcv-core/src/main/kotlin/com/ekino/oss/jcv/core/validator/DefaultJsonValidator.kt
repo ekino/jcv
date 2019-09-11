@@ -8,6 +8,10 @@ import com.ekino.oss.jcv.core.JsonValidator
 import org.skyscreamer.jsonassert.ValueMatcher
 
 internal class DefaultJsonValidator<T>(
-    override val contextMatcher: JsonContextMatcher,
-    override val valueComparator: ValueMatcher<T>
-) : JsonValidator<T>
+    private val contextMatcher: JsonContextMatcher,
+    private val valueComparator: ValueMatcher<T>
+) : JsonValidator<T> {
+    override fun getContextMatcher(): JsonContextMatcher = contextMatcher
+
+    override fun getValueComparator(): ValueMatcher<T> = valueComparator
+}

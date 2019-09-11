@@ -10,6 +10,5 @@ abstract class ValueTemplateIdValidator<T>(validatorId: String) : JsonValidator<
 
     private val matcher: ValidatorIdInValueMatcher = ValidatorIdInValueMatcher(validatorId)
 
-    override val contextMatcher: JsonContextMatcher
-        get() = matcher
+    override fun getContextMatcher(): JsonContextMatcher = matcher
 }

@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2019 ekino (https://www.ekino.com/)
  */
-package com.ekino.oss.jcv.core.initializer
+package com.ekino.oss.jcv.core.initializer;
 
-import com.ekino.oss.jcv.core.validator.ValidatorTemplateManager
-import org.skyscreamer.jsonassert.ValueMatcher
+import com.ekino.oss.jcv.core.validator.ValidatorTemplateManager;
+import org.skyscreamer.jsonassert.ValueMatcher;
 
 /**
  * Comparator intializer given tempated validator information.
@@ -14,7 +14,7 @@ import org.skyscreamer.jsonassert.ValueMatcher
  * @author Leo Millon
  */
 @FunctionalInterface
-interface TemplatedComparatorInitializer<T> {
+public interface TemplatedComparatorInitializer<T> {
 
     /**
      * Init a comparator using the current templated validator info.
@@ -23,5 +23,5 @@ interface TemplatedComparatorInitializer<T> {
      *
      * @return the initalized comparator
      */
-    fun initComparator(validatorTemplateManager: ValidatorTemplateManager): ValueMatcher<T>
+    ValueMatcher<T> initComparator(ValidatorTemplateManager validatorTemplateManager);
 }
