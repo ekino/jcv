@@ -1,0 +1,18 @@
+theme: jekyll-theme-cayman
+
+title: "{#JCV#}"
+
+collections:
+  documentation:
+    output: true
+    permalink: /:collection/:title:output_ext
+    order:
+      - installation.md
+      - validators.md
+
+defaults:
+  - scope:
+      path: ""
+      type: "documentation"
+    values:
+      layout: "default"
