@@ -138,3 +138,6 @@ gradle-app.setting
 
 # Gradle changelog plugin
 .okhttpcache/
+
+### Jekyll ###
+_site/
