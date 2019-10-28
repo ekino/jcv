@@ -1,5 +1,49 @@
 # Changelog of {#JCV#}
 
+## 1.4.2
+### No issue
+
+**Release 1.4.2**
+
+
+[cc809e1e3644ba0](https://github.com/ekino/jcv/commit/cc809e1e3644ba0) Léo Millon *2019-10-28 10:28:14*
+
+**Add JSON language hints for IntelliJ String syntax rendering**
+
+
+[9b8b46648f38027](https://github.com/ekino/jcv/commit/9b8b46648f38027) Léo Millon *2019-10-28 10:18:21*
+
+**Remove LinkedList in core implementation**
+
+
+[0ee11d4303ab18b](https://github.com/ekino/jcv/commit/0ee11d4303ab18b) Léo Millon *2019-10-28 09:53:33*
+
+**Remove docs/ folder**
+
+
+[eb541dbd70c76ee](https://github.com/ekino/jcv/commit/eb541dbd70c76ee) Léo Millon *2019-09-12 16:12:09*
+
+**Set theme jekyll-theme-cayman**
+
+
+[6e7f79781db1643](https://github.com/ekino/jcv/commit/6e7f79781db1643) Léo MILLON *2019-09-12 10:39:48*
+
+**Add a '/docs' folder to enable GitHub Pages**
+
+
+[9cc7cf9454efab3](https://github.com/ekino/jcv/commit/9cc7cf9454efab3) Léo Millon *2019-09-12 10:37:23*
+
+**Set new version to 1.5.0-SNAPSHOT**
+
+
+[f02805bfe2d35cc](https://github.com/ekino/jcv/commit/f02805bfe2d35cc) Léo Millon *2019-09-11 13:30:40*
+
+**Update Changelog**
+
+
+[5112e7d24e908b5](https://github.com/ekino/jcv/commit/5112e7d24e908b5) Léo Millon *2019-09-11 13:29:05*
+
+
 ## 1.4.1
 ### No issue
 
