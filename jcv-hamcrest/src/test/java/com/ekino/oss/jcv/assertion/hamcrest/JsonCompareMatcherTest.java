@@ -26,8 +26,12 @@ class JsonCompareMatcherTest {
     void should_match_with_default_comparator(){
 
         assertThat(
+            // language=json
             "{\"field_name\": \"hello world!\"}",
-            jsonMatcher("{\"field_name\": \"{#contains:llo wor#}\"}")
+            jsonMatcher(
+                // language=json
+                "{\"field_name\": \"{#contains:llo wor#}\"}"
+            )
         );
     }
 
@@ -37,8 +41,12 @@ class JsonCompareMatcherTest {
         AssertionError error = Assertions.assertThrows(
             AssertionError.class,
             () -> assertThat(
+                // language=json
                 "{\"field_name\": \"hello_world!\"}",
-                jsonMatcher("{\"field_name\": \"{#contains:llo wor#}\"}")
+                jsonMatcher(
+                    // language=json
+                    "{\"field_name\": \"{#contains:llo wor#}\"}"
+                )
             )
         );
 
@@ -66,9 +74,13 @@ class JsonCompareMatcherTest {
 
         JsonCompareMatcher customJsonMatcher = JsonMatcherBuilder.create()
             .validators(customValidator())
-            .build("{\"field_name\": \"{#custom_notempty#}\"}");
+            .build(
+                // language=json
+                "{\"field_name\": \"{#custom_notempty#}\"}"
+            );
 
         assertThat(
+            // language=json
             "{\"field_name\": \"hello world!\"}",
             customJsonMatcher
         );
@@ -76,6 +88,7 @@ class JsonCompareMatcherTest {
         AssertionError error = Assertions.assertThrows(
             AssertionError.class,
             () -> assertThat(
+                // language=json
                 "{\"field_name\": \"\"}",
                 customJsonMatcher
             )
@@ -96,9 +109,13 @@ class JsonCompareMatcherTest {
 
         JsonCompareMatcher customJsonMatcher = JsonMatcherBuilder.create()
             .validators(defaultAndCustomValidators())
-            .build("{\"field_name\": \"{#custom_notempty#}\"}");
+            .build(
+                // language=json
+                "{\"field_name\": \"{#custom_notempty#}\"}"
+            );
 
         assertThat(
+            // language=json
             "{\"field_name\": \"hello world!\"}",
             customJsonMatcher
         );
@@ -106,6 +123,7 @@ class JsonCompareMatcherTest {
         AssertionError error = Assertions.assertThrows(
             AssertionError.class,
             () -> assertThat(
+                // language=json
                 "{\"field_name\": \"\"}",
                 customJsonMatcher
             )

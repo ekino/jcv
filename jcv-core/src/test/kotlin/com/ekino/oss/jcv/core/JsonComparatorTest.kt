@@ -147,7 +147,9 @@ class JsonComparatorTest {
 
         assertThat {
             compare(
+                // language=json
                 """{"field_name": "3 Feb 2011"}""",
+                // language=json
                 """{"field_name": "{#date_time_format:d MMM uuu;some_TAG#}"}"""
             )
         }.isFailure().all {
@@ -161,7 +163,9 @@ class JsonComparatorTest {
 
         assertThat {
             compare(
+                // language=json
                 """{"field_name": "2011-12-03T10:15:30Z"}""",
+                // language=json
                 """{"field_name": "{#date_time_format:some_unknown_pattern#}"}"""
             )
         }.isFailure().all {
@@ -175,7 +179,9 @@ class JsonComparatorTest {
 
         tableOf("actual", "expected", "error")
             .row(
+                // language=json
                 """{"field_name": "hello_world!"}""",
+                // language=json
                 """{"field_name": "{#contains:llo wor#}"}""",
                 """
                 field_name: Value should contain 'llo wor'
@@ -185,7 +191,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "hello_world!"}""",
+                // language=json
                 """{"field_name": "{#starts_with:llo_wor#}"}""",
                 """
                 field_name: Value should start with 'llo_wor'
@@ -195,7 +203,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "hello_world!"}""",
+                // language=json
                 """{"field_name": "{#ends_with:llo_wor#}"}""",
                 """
                 field_name: Value should end with 'llo_wor'
@@ -205,7 +215,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "hello_world!"}""",
+                // language=json
                 """{"field_name": "{#regex:.*llo ?w.r.*#}"}""",
                 """
                 field_name: Value does not match pattern /.*llo ?w.r.*/
@@ -215,7 +227,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#uuid#}"}""",
                 """
                 field_name: Value is not a valid UUID
@@ -225,7 +239,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": null}""",
+                // language=json
                 """{"field_name": "{#not_null#}"}""",
                 """
                 field_name: Value should not be null
@@ -235,7 +251,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": ""}""",
+                // language=json
                 """{"field_name": "{#not_empty#}"}""",
                 """
                 field_name: Value should not be empty
@@ -245,7 +263,9 @@ class JsonComparatorTest {
                  """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#url#}"}""",
                 """
                 field_name: Value is not a valid URL
@@ -255,7 +275,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value/?param"}""",
+                // language=json
                 """{"field_name": "{#url_ending:?param#}"}""",
                 """
                 field_name: Value is not a valid URL
@@ -265,7 +287,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "http://some.url:9999/path?param"}""",
+                // language=json
                 """{"field_name": "{#url_ending:/path?param2#}"}""",
                 """
                 field_name: Value should end with '/path?param2'
@@ -275,7 +299,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value/?param"}""",
+                // language=json
                 """{"field_name": "{#url_regex:^.+some\\.url.+/path\\?param$#}"}""",
                 """
                 field_name: Value is not a valid URL
@@ -285,7 +311,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "http://some_url:9999/path?param"}""",
+                // language=json
                 """{"field_name": "{#url_regex:^.+some\\.url.+/path\\?param$#}"}""",
                 """
                 field_name: Value does not match pattern /^.+some\.url.+/path\?param$/
@@ -295,7 +323,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#templated_url#}"}""",
                 """
                 field_name: Value is not a valid templated URL
@@ -305,7 +335,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value {?param}"}""",
+                // language=json
                 """{"field_name": "{#templated_url_ending:{?param}#}"}""",
                 """
                 field_name: Value is not a valid templated URL
@@ -315,7 +347,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "http://some.url:9999/path{?param}"}""",
+                // language=json
                 """{"field_name": "{#templated_url_ending:/path{?param2}#}"}""",
                 """
                 field_name: Value should end with '/path{?param2}'
@@ -325,7 +359,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value/{?param}"}""",
+                // language=json
                 """{"field_name": "{#templated_url_regex:^.+some\\.url.+\/path\\{\\?param\\}$#}"}""",
                 """
                 field_name: Value is not a valid templated URL
@@ -335,7 +371,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "http://some_url:9999/path{?param}"}""",
+                // language=json
                 """{"field_name": "{#templated_url_regex:^.+some\\.url.+\/path\\{\\?param\\}$#}"}""",
                 """
                 field_name: Value does not match pattern /^.+some\.url.+/path\{\?param\}$/
@@ -345,7 +383,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#boolean_type#}"}""",
                 """
                 field_name: Invalid value type
@@ -355,7 +395,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": true}""",
+                // language=json
                 """{"field_name": "{#string_type#}"}""",
                 """
                 field_name: Invalid value type
@@ -365,7 +407,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#number_type#}"}""",
                 """
                 field_name: Invalid value type
@@ -375,7 +419,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#array_type#}"}""",
                 """
                 field_name: Invalid value type
@@ -385,7 +431,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#object_type#}"}""",
                 """
                 field_name: Invalid value type
@@ -395,7 +443,9 @@ class JsonComparatorTest {
                 """.trimIndent()
             )
             .row(
+                // language=json
                 """{"field_name": "some value"}""",
+                // language=json
                 """{"field_name": "{#date_time_format:iso_instant#}"}""",
                 """
                 field_name: Invalid date time format
@@ -441,6 +491,7 @@ class JsonComparatorTest {
         fun `should throw an error if element count does not match between the two arrays`() {
 
             compare(
+                // language=json
                 """
                 {
                     "some_array": [
@@ -450,6 +501,7 @@ class JsonComparatorTest {
                     ]
                 }
                 """.trimIndent(),
+                // language=json
                 """
                 {
                     "some_array": [
@@ -469,6 +521,7 @@ class JsonComparatorTest {
         fun `should throw a detailed error if some elements did not match`() {
 
             compare(
+                // language=json
                 """
                 {
                     "some_array": [
@@ -480,6 +533,7 @@ class JsonComparatorTest {
                     ]
                 }
                 """.trimIndent(),
+                // language=json
                 """
                 {
                     "some_array": [

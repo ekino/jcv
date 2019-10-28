@@ -23,16 +23,28 @@ class JsonCompareAssertTest {
 
     @Test
     void should_match_with_default_comparator() {
-        assertThatJson("{\"field_name\": \"hello world!\"}")
-            .isValidAgainst("{\"field_name\": \"{#contains:llo wor#}\"}");
+        assertThatJson(
+            // language=json
+            "{\"field_name\": \"hello world!\"}"
+        )
+            .isValidAgainst(
+                // language=json
+                "{\"field_name\": \"{#contains:llo wor#}\"}"
+            );
     }
 
     @Test
     void should_not_match_with_default_comparator() {
 
         assertThatThrownBy(() ->
-            assertThatJson("{\"field_name\": \"hello_world!\"}")
-                .isValidAgainst("{\"field_name\": \"{#contains:llo wor#}\"}")
+            assertThatJson(
+                // language=json
+                "{\"field_name\": \"hello_world!\"}"
+            )
+                .isValidAgainst(
+                    // language=json
+                    "{\"field_name\": \"{#contains:llo wor#}\"}"
+                )
         )
             .isInstanceOf(AssertionError.class)
             .hasMessage(
