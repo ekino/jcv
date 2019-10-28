@@ -19,7 +19,6 @@ import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.formatUniqueKey
 import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.getKeys
 import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.isSimpleValue
 import org.skyscreamer.jsonassert.comparator.JSONCompareUtil.jsonArrayToList
-import java.util.LinkedList
 
 /**
  * Custom [JSONComparator].
@@ -28,11 +27,7 @@ import java.util.LinkedList
  */
 class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out Any?>>) : DefaultComparator(mode) {
 
-    private val validators: List<JsonValidator<out Any?>>
-
-    init {
-        this.validators = LinkedList(validators)
-    }
+    private val validators: List<JsonValidator<out Any?>> = validators.toList()
 
     @Throws(JSONException::class)
     override fun compareValues(prefix: String, expectedValue: Any?, actualValue: Any?, result: JSONCompareResult) {
