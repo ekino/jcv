@@ -1,12 +1,29 @@
 import net.researchgate.release.ReleasePlugin
 import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
+import com.moowork.gradle.node.NodePlugin
+import com.moowork.gradle.node.NodeExtension
+
 
 plugins {
     base
     kotlin("jvm") version "1.3.50" apply false
     id("net.researchgate.release") version "2.8.1"
     id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "1.64"
+    id("com.github.node-gradle.node") version "2.2.0"
 }
+
+apply<NodePlugin>()
+
+configure<NodeExtension> {
+    version = "12.13.1"
+    download = true
+    workDir = file("${project.buildDir}/.nodejs")
+}
+
+tasks.named("build") {
+    dependsOn(":npmInstall")
+}
+
 
 allprojects {
     group = "com.ekino.oss.jcv"
@@ -95,3 +112,4 @@ subprojects {
         }
     }
 }
+
