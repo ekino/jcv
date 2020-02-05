@@ -6,8 +6,8 @@ plugins {
     `java-library`
     signing
     jacoco
-    id("org.jmailen.kotlinter") version "2.1.1"
-    id("org.jetbrains.dokka") version "0.9.18"
+    id("org.jmailen.kotlinter") version "2.3.0"
+    id("org.jetbrains.dokka") version "0.10.1"
 }
 
 configurations {
@@ -40,7 +40,16 @@ tasks {
     }
 
     withType<DokkaTask> {
-        reportUndocumented = false
+        configuration {
+            reportUndocumented = false
+        }
+    }
+
+    val version: String by project
+    if (version.endsWith("-SNAPSHOT")) {
+        withType<GenerateModuleMetadata>().configureEach {
+            enabled = false
+        }
     }
 
     artifacts {
