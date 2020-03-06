@@ -3,7 +3,7 @@ import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 
 plugins {
     base
-    kotlin("jvm") version "1.3.61" apply false
+    kotlin("jvm") version "1.3.70" apply false
     id("net.researchgate.release") version "2.8.1"
     id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "1.64"
 }
@@ -17,7 +17,7 @@ allprojects {
     }
 
     registerProperties(
-        "kotlin.version" to "1.3.61",
+        "kotlin.version" to "1.3.70",
         "lombok.version" to "1.18.12",
         "jackson.version" to "2.10.1",
         "commons-io.version" to "2.6",
