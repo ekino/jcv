@@ -35,8 +35,6 @@ JCV comes with a library of pre-defined validators :
 ### Examples
 
 {% capture example_contains %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -77,8 +75,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_starts_with %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -118,8 +114,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_ends_with %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -159,8 +153,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_regex %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -196,8 +188,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_uuid %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -233,8 +223,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_not_null %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -270,8 +258,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_not_empty %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -307,8 +293,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_boolean_type %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -344,8 +328,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_string_type %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -381,8 +363,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_number_type %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -418,8 +398,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_array_type %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -455,8 +433,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_object_type %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -492,8 +468,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_url %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -533,8 +507,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_url_ending %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -574,8 +546,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_url_regex %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -611,8 +581,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_templated_url %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -652,8 +620,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_templated_url_ending %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -693,8 +659,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_templated_url_regex %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -735,8 +699,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 ### Examples
 
 {% capture example_date_time_format %}
-package com.ekino.oss.jcv.example
-
 import com.ekino.oss.jcv.assertion.assertj.JsonCompareAssert.Companion.assertThatJson
 import org.junit.Test
 
@@ -1107,5 +1069,6 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 
 <script src="https://unpkg.com/kotlin-playground@1"
         data-selector=".kotlin-code"
-        data-server="https://try-jcv.cleverapps.io">
+        data-server="https://kotlin-jcv-compiler-server.herokuapp.com"
+        data-version="1.3.72">
 </script>
