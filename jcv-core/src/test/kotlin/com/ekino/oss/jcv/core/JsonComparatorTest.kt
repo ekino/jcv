@@ -114,19 +114,24 @@ class JsonComparatorTest {
         compare(
             loadJson("test_validator_id_in_value_matcher_actual_invalid.json"),
             loadJson("test_validator_id_in_value_matcher_expected.json"),
-            comparator(validator {
-                templatedValidator<String>("someSpecificValue", comparator { actual, _ ->
-                    val specificValue = "THE_VALUE"
-                    if (specificValue == actual) {
-                        return@comparator true
-                    }
-                    throw ValueMatcherException(
-                        "Value should be '$specificValue'",
-                        specificValue,
-                        Objects.toString(actual)
+            comparator(
+                validator {
+                    templatedValidator<String>(
+                        "someSpecificValue",
+                        comparator { actual, _ ->
+                            val specificValue = "THE_VALUE"
+                            if (specificValue == actual) {
+                                return@comparator true
+                            }
+                            throw ValueMatcherException(
+                                "Value should be '$specificValue'",
+                                specificValue,
+                                Objects.toString(actual)
+                            )
+                        }
                     )
-                })
-            })
+                }
+            )
         ) {
             assertAll {
                 assertThat(it.passed()).isFalse()
@@ -260,7 +265,7 @@ class JsonComparatorTest {
                 Expected: {#not_empty#}
                      got: 
 
-                 """.trimIndent()
+                """.trimIndent()
             )
             .row(
                 // language=json

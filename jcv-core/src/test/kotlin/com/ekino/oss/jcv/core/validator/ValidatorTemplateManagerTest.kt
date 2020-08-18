@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test
 class ValidatorTemplateManagerTest {
 
     companion object {
-        private const val TEXT_VALIDATOR_VALUE = "{#my_validator:some \\; param 1;and another one \\\\; ...;and the last one#}"
+        private const val TEXT_VALIDATOR_VALUE =
+            "{#my_validator:some \\; param 1;and another one \\\\; ...;and the last one#}"
         private val defaultTemplateManager = ValidatorTemplateManager(TEXT_VALIDATOR_VALUE)
     }
 
@@ -36,9 +37,9 @@ class ValidatorTemplateManagerTest {
     fun `parameters extraction`() {
 
         assertThat(defaultTemplateManager.extractParameters()).containsExactly(
-                "some ; param 1",
-                "and another one \\; ...",
-                "and the last one"
+            "some ; param 1",
+            "and another one \\; ...",
+            "and the last one"
         )
     }
 

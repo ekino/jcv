@@ -3,9 +3,11 @@ import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 
 plugins {
     base
-    kotlin("jvm") version "1.3.70" apply false
+    kotlin("jvm") version "1.4.0" apply false
+    id("com.ekino.oss.plugin.kotlin-quality") version "2.0.0" apply false
     id("net.researchgate.release") version "2.8.1"
     id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "1.64"
+    id("org.jetbrains.dokka") version "1.4.0-rc"
 }
 
 allprojects {
@@ -17,15 +19,13 @@ allprojects {
     }
 
     registerProperties(
-        "kotlin.version" to "1.3.70",
-        "lombok.version" to "1.18.12",
-        "jackson.version" to "2.10.1",
-        "commons-io.version" to "2.6",
+        "kotlin.version" to "1.4.0",
+        "commons-io.version" to "2.7",
         "jsonassert.version" to "1.5.0",
-        "assertj.version" to "3.15.0",
+        "assertj.version" to "3.16.1",
         "hamcrest.version" to "2.2",
-        "junit-jupiter.version" to "5.6.0",
-        "assertk-jvm.version" to "0.21"
+        "junit-jupiter.version" to "5.6.2",
+        "assertk-jvm.version" to "0.22"
     )
 }
 

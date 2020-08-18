@@ -1,13 +1,11 @@
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
     `java-library`
     signing
-    jacoco
-    id("org.jmailen.kotlinter") version "2.3.0"
-    id("org.jetbrains.dokka") version "0.10.1"
+    id("com.ekino.oss.plugin.kotlin-quality")
+    id("org.jetbrains.dokka")
 }
 
 configurations {
@@ -16,13 +14,12 @@ configurations {
     }
 }
 
-val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allJava)
+java {
+    withSourcesJar()
 }
 
 val javadocJar by tasks.registering(Jar::class) {
-    dependsOn("dokka")
+    dependsOn("dokkaHtml")
     archiveClassifier.set("javadoc")
     from(buildDir.resolve("dokka"))
 }
@@ -39,15 +36,17 @@ tasks {
         jvmArgs("-Duser.language=en")
     }
 
-    withType<DokkaTask> {
-        configuration {
-            reportUndocumented = false
+    dokkaHtml {
+        dokkaSourceSets {
+            configureEach {
+                reportUndocumented = false
+                jdkVersion = 8
+            }
         }
     }
 
     artifacts {
         archives(jar)
-        archives(sourcesJar)
         archives(javadocJar)
     }
 }
@@ -57,9 +56,7 @@ val publicationName = "mavenJava"
 publishing {
     publications {
         named<MavenPublication>(publicationName) {
-            artifact(sourcesJar.get())
             artifact(javadocJar.get())
-
             from(components["java"])
         }
     }
@@ -74,10 +71,18 @@ dependencies {
     implementation(kotlin("reflect", version = "${prop("kotlin.version")}"))
     implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
 
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "${prop("junit-jupiter.version")}")
+    testImplementation(
+        group = "org.junit.jupiter",
+        name = "junit-jupiter",
+        version = "${prop("junit-jupiter.version")}"
+    )
 
     testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-    testImplementation(group = "com.willowtreeapps.assertk", name = "assertk-jvm", version = "${prop("assertk-jvm.version")}") {
+    testImplementation(
+        group = "com.willowtreeapps.assertk",
+        name = "assertk-jvm",
+        version = "${prop("assertk-jvm.version")}"
+    ) {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
     }
 }

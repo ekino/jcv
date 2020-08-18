@@ -34,7 +34,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
 
         validators
             .firstOrNull { it.contextMatcher.matches(prefix, expectedValue, actualValue) }
-            ?.let { asCustomization(it) }
+            ?.let(::asCustomization)
             ?.let {
                 try {
                     if (!it.matches(prefix, actualValue, expectedValue, result)) {
@@ -111,7 +111,8 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
             getExpectedElementCollectionMap(parsedExpectedElements, key, actualElements, actualValueMatchedIndexes)
 
         val totalMatched =
-            matchingByValue.values.asSequence().filterNotNull().count() + matchingByValidator.values.asSequence().flatten().distinct().count()
+            matchingByValue.values.asSequence().filterNotNull().count() + matchingByValidator.values.asSequence()
+                .flatten().distinct().count()
 
         if (totalMatched == actualElements.size) {
             return
