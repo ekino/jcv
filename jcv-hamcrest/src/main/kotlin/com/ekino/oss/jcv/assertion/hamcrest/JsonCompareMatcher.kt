@@ -17,21 +17,21 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator
  * @see JSONComparator
  */
 class JsonCompareMatcher(private val jsonComparator: JSONComparator, private val expectedJson: String) :
-    TypeSafeMatcher<String>() {
-    private var result: JSONCompareResult? = null
+  TypeSafeMatcher<String>() {
+  private var result: JSONCompareResult? = null
 
-    override fun describeTo(description: Description) {
+  override fun describeTo(description: Description) {
 
-        description.appendText(result?.message ?: "A valid JSON")
+    description.appendText(result?.message ?: "A valid JSON")
+  }
+
+  override fun matchesSafely(item: String): Boolean {
+    try {
+      return JSONCompare.compareJSON(expectedJson, item, jsonComparator)
+        .also { result = it }
+        .passed()
+    } catch (e: JSONException) {
+      throw IllegalArgumentException("Unable to parse expected JSON", e)
     }
-
-    override fun matchesSafely(item: String): Boolean {
-        try {
-            return JSONCompare.compareJSON(expectedJson, item, jsonComparator)
-                .also { result = it }
-                .passed()
-        } catch (e: JSONException) {
-            throw IllegalArgumentException("Unable to parse expected JSON", e)
-        }
-    }
+  }
 }

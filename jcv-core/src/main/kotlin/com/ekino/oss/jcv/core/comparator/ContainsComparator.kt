@@ -13,18 +13,19 @@ import org.skyscreamer.jsonassert.ValueMatcherException
  *
  * @see String.contains
  */
-class ContainsComparator
-/**
- * Init comparator with the value to search for.
- *
- * @param value the value to search for
- */
-(private val value: String) : JsonValueComparator<String> {
+class ContainsComparator(
+  /**
+   * Init comparator with the value to search for.
+   *
+   * @param value the value to search for
+   */
+  private val value: String
+) : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        if (actual != null && actual.contains(value)) {
-            return true
-        }
-        throw ValueMatcherException("Value should contain '$value'", expected, actual)
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    if (actual != null && actual.contains(value)) {
+      return true
     }
+    throw ValueMatcherException("Value should contain '$value'", expected, actual)
+  }
 }

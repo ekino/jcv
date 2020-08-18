@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JsonCompareMatcherTest {
 
     @Test
-    void should_match_with_default_comparator(){
+    void should_match_with_default_comparator() {
 
         assertThat(
             // language=json
@@ -36,7 +36,7 @@ class JsonCompareMatcherTest {
     }
 
     @Test
-    void should_not_match_with_default_comparator(){
+    void should_not_match_with_default_comparator() {
 
         AssertionError error = Assertions.assertThrows(
             AssertionError.class,
@@ -51,11 +51,11 @@ class JsonCompareMatcherTest {
         );
 
         assertEquals("\n" +
-            "Expected: field_name: Value should contain 'llo wor'\n" +
-            "Expected: {#contains:llo wor#}\n" +
-            "     got: hello_world!\n" +
-            "\n" +
-            "     but: was \"{\\\"field_name\\\": \\\"hello_world!\\\"}\"",
+                "Expected: field_name: Value should contain 'llo wor'\n" +
+                "Expected: {#contains:llo wor#}\n" +
+                "     got: hello_world!\n" +
+                "\n" +
+                "     but: was \"{\\\"field_name\\\": \\\"hello_world!\\\"}\"",
             error.getMessage()
         );
     }
@@ -70,7 +70,7 @@ class JsonCompareMatcherTest {
     }
 
     @Test
-    void should_match_with_custom_validator(){
+    void should_match_with_custom_validator() {
 
         JsonCompareMatcher customJsonMatcher = JsonMatcherBuilder.create()
             .validators(customValidator())
@@ -105,7 +105,7 @@ class JsonCompareMatcherTest {
     }
 
     @Test
-    void should_match_with_default_and_custom_validator(){
+    void should_match_with_default_and_custom_validator() {
 
         JsonCompareMatcher customJsonMatcher = JsonMatcherBuilder.create()
             .validators(defaultAndCustomValidators())

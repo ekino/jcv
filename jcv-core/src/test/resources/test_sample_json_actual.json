@@ -2,11 +2,14 @@
   "field_1": "some value",
   "field_2": "3716a0cf-850e-46c3-bd97-ac1f34437c43",
   "date": "2011-12-03T10:15:30Z",
-  "other_fields": [{
-    "id": "2",
-    "link": "https://another.url.com/my-base-path/query?param1=true"
-  }, {
-    "id": "1",
-    "link": "https://some.url.com"
-  }]
+  "other_fields": [
+    {
+      "id": "2",
+      "link": "https://another.url.com/my-base-path/query?param1=true"
+    },
+    {
+      "id": "1",
+      "link": "https://some.url.com"
+    }
+  ]
 }

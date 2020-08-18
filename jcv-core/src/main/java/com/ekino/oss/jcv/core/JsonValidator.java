@@ -9,7 +9,6 @@ import org.skyscreamer.jsonassert.ValueMatcher;
  * A validator composed of a matcher and a value comparator.
  *
  * @param <T> a field value type
- *
  * @author Leo Millon
  */
 public interface JsonValidator<T> {

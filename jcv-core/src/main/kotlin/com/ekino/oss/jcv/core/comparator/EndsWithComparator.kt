@@ -13,18 +13,19 @@ import org.skyscreamer.jsonassert.ValueMatcherException
  *
  * @see String.endsWith
  */
-class EndsWithComparator
-/**
- * Init comparator with the value to search for.
- *
- * @param value the value to search for
- */
-(private val value: String) : JsonValueComparator<String> {
+class EndsWithComparator(
+  /**
+   * Init comparator with the value to search for.
+   *
+   * @param value the value to search for
+   */
+  private val value: String
+) : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        if (actual != null && actual.endsWith(value)) {
-            return true
-        }
-        throw ValueMatcherException("Value should end with '$value'", expected, actual)
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    if (actual != null && actual.endsWith(value)) {
+      return true
     }
+    throw ValueMatcherException("Value should end with '$value'", expected, actual)
+  }
 }

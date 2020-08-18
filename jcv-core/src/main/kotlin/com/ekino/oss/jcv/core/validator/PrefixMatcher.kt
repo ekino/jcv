@@ -8,9 +8,9 @@ import org.skyscreamer.jsonassert.Customization
 
 internal class PrefixMatcher(path: String) : JsonContextMatcher {
 
-    private val pathCustomization: Customization = Customization.customization(path) { _, _ -> false }
+  private val pathCustomization: Customization = Customization.customization(path) { _, _ -> false }
 
-    override fun matches(prefix: String, expectedValue: Any?, actualValue: Any?): Boolean {
-        return pathCustomization.appliesToPath(prefix)
-    }
+  override fun matches(prefix: String, expectedValue: Any?, actualValue: Any?): Boolean {
+    return pathCustomization.appliesToPath(prefix)
+  }
 }

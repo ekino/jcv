@@ -9,7 +9,6 @@ import org.skyscreamer.jsonassert.ValueMatcher;
  * A JSON value comparator.
  *
  * @param <T> the field value type
- *
  * @author Leo Millon
  */
 @FunctionalInterface
@@ -25,7 +24,6 @@ public interface JsonValueComparator<T> extends ValueMatcher<T> {
      *
      * @param actual   field actual value
      * @param expected field expected value
-     *
      * @return {@code true} if the actual is valid against the expected one, otherwise {@code false}
      */
     boolean hasCorrectValue(T actual, T expected);

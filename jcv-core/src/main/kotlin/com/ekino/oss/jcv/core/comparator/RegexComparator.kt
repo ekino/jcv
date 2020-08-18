@@ -9,10 +9,10 @@ import java.util.regex.Pattern
 
 class RegexComparator(private val pattern: Pattern) : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        if (actual != null && pattern.matcher(actual).matches()) {
-            return true
-        }
-        throw ValueMatcherException("Value does not match pattern /$pattern/", expected, actual)
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    if (actual != null && pattern.matcher(actual).matches()) {
+      return true
     }
+    throw ValueMatcherException("Value does not match pattern /$pattern/", expected, actual)
+  }
 }

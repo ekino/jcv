@@ -1,2 +1,4 @@
 [*.{kt,kts}]
+indent_size = 2
+max_line_length = 180
 disabled_rules=import-ordering

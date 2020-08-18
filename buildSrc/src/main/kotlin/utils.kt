@@ -6,8 +6,8 @@ import org.gradle.kotlin.dsl.PluginDependenciesSpecScope
 import org.gradle.kotlin.dsl.extra
 
 fun Project.registerProperties(vararg properties: Pair<String, Any>) = mapOf(*properties)
-    .forEach {
-        project.extra.set(it.key, it.value)
-    }
+  .forEach {
+    project.extra.set(it.key, it.value)
+  }
 
 fun Project.prop(propertyName: String) = project.extra[propertyName]

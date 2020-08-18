@@ -8,4 +8,4 @@ import org.skyscreamer.jsonassert.ValueMatcher
 typealias KOneParameterComparatorInitializer<T> = (parameter: String?) -> ValueMatcher<T>
 
 fun <T> asOneParameterComparatorInitializer(initializer: KOneParameterComparatorInitializer<T>) =
-    OneParameterComparatorInitializer<T> { parameter -> initializer(parameter) }
+  OneParameterComparatorInitializer<T> { parameter -> initializer(parameter) }

@@ -10,12 +10,12 @@ import java.time.format.DateTimeParseException
 
 class DateTimeFormatComparator(private val dateTimeFormatter: DateTimeFormatter) : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        try {
-            dateTimeFormatter.parse(actual)
-            return true
-        } catch (e: DateTimeParseException) {
-            throw ValueMatcherException("Invalid date time format", e, expected, actual)
-        }
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    try {
+      dateTimeFormatter.parse(actual)
+      return true
+    } catch (e: DateTimeParseException) {
+      throw ValueMatcherException("Invalid date time format", e, expected, actual)
     }
+  }
 }

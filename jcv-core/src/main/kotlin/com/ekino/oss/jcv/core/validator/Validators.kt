@@ -26,107 +26,107 @@ import org.skyscreamer.jsonassert.ValueMatcher
  */
 object Validators {
 
-    /**
-     * Validator for a specific json field path.
-     *
-     * @param path the json field path
-     * @param comparator a json value comparator
-     * @param <T>        the field value type
-     *
-     * @return the validator
-     */
-    @JvmStatic
-    fun <T> forPath(path: String, comparator: ValueMatcher<T>): JsonValidator<T> =
-        DefaultJsonValidator(PrefixMatcher(path), comparator)
+  /**
+   * Validator for a specific json field path.
+   *
+   * @param path the json field path
+   * @param comparator a json value comparator
+   * @param <T>        the field value type
+   *
+   * @return the validator
+   */
+  @JvmStatic
+  fun <T> forPath(path: String, comparator: ValueMatcher<T>): JsonValidator<T> =
+    DefaultJsonValidator(PrefixMatcher(path), comparator)
 
-    /**
-     * Validator for a specific json field value type.
-     *
-     * @param id the validator id
-     * @param expectedType the expected value type
-     *
-     * @return the validator
-     */
-    @JvmStatic
-    fun type(id: String, expectedType: Class<*>): JsonValidator<Any> =
-        templatedValidator(id, TypeComparator(expectedType))
+  /**
+   * Validator for a specific json field value type.
+   *
+   * @param id the validator id
+   * @param expectedType the expected value type
+   *
+   * @return the validator
+   */
+  @JvmStatic
+  fun type(id: String, expectedType: Class<*>): JsonValidator<Any> =
+    templatedValidator(id, TypeComparator(expectedType))
 
-    /**
-     * Prepare "templated" validator for a given comparator.
-     *
-     * @param id the validator id
-     * @param comparator a custom comparator
-     * @param <T>        the field value type
-     *
-     * @return the validator
-     */
-    @JvmStatic
-    fun <T> templatedValidator(id: String, comparator: ValueMatcher<T>): JsonValidator<T> =
-        DefaultValueTemplateIdValidator(id, comparator)
+  /**
+   * Prepare "templated" validator for a given comparator.
+   *
+   * @param id the validator id
+   * @param comparator a custom comparator
+   * @param <T>        the field value type
+   *
+   * @return the validator
+   */
+  @JvmStatic
+  fun <T> templatedValidator(id: String, comparator: ValueMatcher<T>): JsonValidator<T> =
+    DefaultValueTemplateIdValidator(id, comparator)
 
-    /**
-     * Default validators.
-     *
-     * @return a list of prepared validators
-     */
-    @JvmStatic
-    fun defaultValidators(): List<JsonValidator<*>> = validators {
-        +templatedValidator<String>("contains") {
-            comparatorWith1RequiredParameter(::ContainsComparator)
-        }
-        +templatedValidator<String>("starts_with") {
-            comparatorWith1RequiredParameter(::StartsWithComparator)
-        }
-        +templatedValidator<String>("ends_with") {
-            comparatorWith1RequiredParameter(::EndsWithComparator)
-        }
-        +templatedValidator<String>("regex") {
-            comparatorWith1RequiredParameter {
-                RegexComparator(it.toRegex().toPattern())
-            }
-        }
-        +templatedValidator("uuid", UUIDComparator())
-        +templatedValidator("not_null", NotNullComparator())
-        +templatedValidator("not_empty", NotEmptyComparator())
-        +templatedValidator("url", URLComparator())
-        +templatedValidator<String>("url_ending") {
-            allOf {
-                +URLComparator()
-                +comparatorWith1RequiredParameter(::EndsWithComparator)
-            }
-        }
-        +templatedValidator<String>("url_regex") {
-            allOf {
-                +URLComparator()
-                +comparatorWith1RequiredParameter {
-                    RegexComparator(it.toRegex().toPattern())
-                }
-            }
-        }
-        +templatedValidator("templated_url", TemplatedURLComparator())
-        +templatedValidator<String>("templated_url_ending") {
-            allOf {
-                +TemplatedURLComparator()
-                +comparatorWith1RequiredParameter(::EndsWithComparator)
-            }
-        }
-        +templatedValidator<String>("templated_url_regex") {
-            allOf {
-                +TemplatedURLComparator()
-                +comparatorWith1RequiredParameter {
-                    RegexComparator(it.toRegex().toPattern())
-                }
-            }
-        }
-        +templatedValidator("boolean_type", typeComparator<Boolean>())
-        +templatedValidator("string_type", typeComparator<String>())
-        +templatedValidator("number_type", typeComparator<Number>())
-        +templatedValidator("array_type", typeComparator<JSONArray>())
-        +templatedValidator("object_type", typeComparator<JSONObject>())
-        +templatedValidator<String>("date_time_format") {
-            comparatorWithParameters {
-                DateTimeFormatComparatorInitializer().initComparator(getFirstRequiredParam(), getSecondParam())
-            }
-        }
+  /**
+   * Default validators.
+   *
+   * @return a list of prepared validators
+   */
+  @JvmStatic
+  fun defaultValidators(): List<JsonValidator<*>> = validators {
+    +templatedValidator<String>("contains") {
+      comparatorWith1RequiredParameter(::ContainsComparator)
     }
+    +templatedValidator<String>("starts_with") {
+      comparatorWith1RequiredParameter(::StartsWithComparator)
+    }
+    +templatedValidator<String>("ends_with") {
+      comparatorWith1RequiredParameter(::EndsWithComparator)
+    }
+    +templatedValidator<String>("regex") {
+      comparatorWith1RequiredParameter {
+        RegexComparator(it.toRegex().toPattern())
+      }
+    }
+    +templatedValidator("uuid", UUIDComparator())
+    +templatedValidator("not_null", NotNullComparator())
+    +templatedValidator("not_empty", NotEmptyComparator())
+    +templatedValidator("url", URLComparator())
+    +templatedValidator<String>("url_ending") {
+      allOf {
+        +URLComparator()
+        +comparatorWith1RequiredParameter(::EndsWithComparator)
+      }
+    }
+    +templatedValidator<String>("url_regex") {
+      allOf {
+        +URLComparator()
+        +comparatorWith1RequiredParameter {
+          RegexComparator(it.toRegex().toPattern())
+        }
+      }
+    }
+    +templatedValidator("templated_url", TemplatedURLComparator())
+    +templatedValidator<String>("templated_url_ending") {
+      allOf {
+        +TemplatedURLComparator()
+        +comparatorWith1RequiredParameter(::EndsWithComparator)
+      }
+    }
+    +templatedValidator<String>("templated_url_regex") {
+      allOf {
+        +TemplatedURLComparator()
+        +comparatorWith1RequiredParameter {
+          RegexComparator(it.toRegex().toPattern())
+        }
+      }
+    }
+    +templatedValidator("boolean_type", typeComparator<Boolean>())
+    +templatedValidator("string_type", typeComparator<String>())
+    +templatedValidator("number_type", typeComparator<Number>())
+    +templatedValidator("array_type", typeComparator<JSONArray>())
+    +templatedValidator("object_type", typeComparator<JSONObject>())
+    +templatedValidator<String>("date_time_format") {
+      comparatorWithParameters {
+        DateTimeFormatComparatorInitializer().initComparator(getFirstRequiredParam(), getSecondParam())
+      }
+    }
+  }
 }
