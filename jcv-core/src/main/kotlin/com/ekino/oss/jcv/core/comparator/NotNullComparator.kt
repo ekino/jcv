@@ -9,10 +9,10 @@ import java.util.Objects
 
 class NotNullComparator : JsonValueComparator<Any> {
 
-    override fun hasCorrectValue(actual: Any?, expected: Any?): Boolean {
-        if (actual != null && actual !is String && "null" != actual.toString()) {
-            return true
-        }
-        throw ValueMatcherException("Value should not be null", Objects.toString(expected), Objects.toString(actual))
+  override fun hasCorrectValue(actual: Any?, expected: Any?): Boolean {
+    if (actual != null && actual !is String && "null" != actual.toString()) {
+      return true
     }
+    throw ValueMatcherException("Value should not be null", Objects.toString(expected), Objects.toString(actual))
+  }
 }

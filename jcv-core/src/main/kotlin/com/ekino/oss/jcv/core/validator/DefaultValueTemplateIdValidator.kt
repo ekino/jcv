@@ -6,7 +6,7 @@ package com.ekino.oss.jcv.core.validator
 import org.skyscreamer.jsonassert.ValueMatcher
 
 internal class DefaultValueTemplateIdValidator<T>(validatorId: String, private val comparator: ValueMatcher<T>) :
-    ValueTemplateIdValidator<T>(validatorId) {
+  ValueTemplateIdValidator<T>(validatorId) {
 
-    override fun getValueComparator(): ValueMatcher<T> = comparator
+  override fun getValueComparator(): ValueMatcher<T> = comparator
 }

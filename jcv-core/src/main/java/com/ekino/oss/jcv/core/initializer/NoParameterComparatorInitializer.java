@@ -9,7 +9,6 @@ import org.skyscreamer.jsonassert.ValueMatcher;
  * Comparator intializer.
  *
  * @param <T> the field value type
- *
  * @author Leo Millon
  */
 @FunctionalInterface

@@ -10,7 +10,6 @@ import org.skyscreamer.jsonassert.ValueMatcher;
  * Comparator intializer given tempated validator information.
  *
  * @param <T> the field value type
- *
  * @author Leo Millon
  */
 @FunctionalInterface
@@ -20,7 +19,6 @@ public interface TemplatedComparatorInitializer<T> {
      * Init a comparator using the current templated validator info.
      *
      * @param validatorTemplateManager the validator templated manager
-     *
      * @return the initalized comparator
      */
     ValueMatcher<T> initComparator(ValidatorTemplateManager validatorTemplateManager);

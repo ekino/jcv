@@ -8,10 +8,10 @@ import org.skyscreamer.jsonassert.ValueMatcherException
 
 class TypeComparator(private val expectedType: Class<*>) : JsonValueComparator<Any> {
 
-    override fun hasCorrectValue(actual: Any?, expected: Any?): Boolean {
-        if (expectedType.kotlin.isInstance(actual)) {
-            return true
-        }
-        throw ValueMatcherException("Invalid value type", expected.toString(), actual.toString())
+  override fun hasCorrectValue(actual: Any?, expected: Any?): Boolean {
+    if (expectedType.kotlin.isInstance(actual)) {
+      return true
     }
+    throw ValueMatcherException("Invalid value type", expected.toString(), actual.toString())
+  }
 }

@@ -17,7 +17,6 @@ public interface JsonContextMatcher {
      * @param prefix        the current json field path
      * @param expectedValue the expected field value
      * @param actualValue   the actual field value
-     *
      * @return {@code true} if the context matches, otherwise {@code false}
      */
     boolean matches(String prefix, Object expectedValue, Object actualValue);

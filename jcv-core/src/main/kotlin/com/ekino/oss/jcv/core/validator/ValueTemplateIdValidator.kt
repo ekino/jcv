@@ -8,7 +8,7 @@ import com.ekino.oss.jcv.core.JsonValidator
 
 abstract class ValueTemplateIdValidator<T>(validatorId: String) : JsonValidator<T> {
 
-    private val matcher: ValidatorIdInValueMatcher = ValidatorIdInValueMatcher(validatorId)
+  private val matcher: ValidatorIdInValueMatcher = ValidatorIdInValueMatcher(validatorId)
 
-    override fun getContextMatcher(): JsonContextMatcher = matcher
+  override fun getContextMatcher(): JsonContextMatcher = matcher
 }

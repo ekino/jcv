@@ -9,10 +9,10 @@ import java.util.Objects
 
 class NotEmptyComparator : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        if (actual != null && actual.isNotEmpty()) {
-            return true
-        }
-        throw ValueMatcherException("Value should not be empty", Objects.toString(expected), Objects.toString(actual))
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    if (actual != null && actual.isNotEmpty()) {
+      return true
     }
+    throw ValueMatcherException("Value should not be empty", Objects.toString(expected), Objects.toString(actual))
+  }
 }

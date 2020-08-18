@@ -8,4 +8,4 @@ import org.skyscreamer.jsonassert.ValueMatcher
 typealias KNoParameterComparatorInitializer<T> = () -> ValueMatcher<T>
 
 fun <T> asNoParameterComparatorInitializer(initializer: KNoParameterComparatorInitializer<T>) =
-    NoParameterComparatorInitializer<T> { initializer() }
+  NoParameterComparatorInitializer<T> { initializer() }

@@ -10,12 +10,12 @@ import java.net.URL
 
 class URLComparator : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        try {
-            URL(actual)
-            return true
-        } catch (e: MalformedURLException) {
-            throw ValueMatcherException("Value is not a valid URL", e, expected, actual)
-        }
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    try {
+      URL(actual)
+      return true
+    } catch (e: MalformedURLException) {
+      throw ValueMatcherException("Value is not a valid URL", e, expected, actual)
     }
+  }
 }

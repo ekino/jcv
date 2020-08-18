@@ -15,7 +15,10 @@
   "boolean_type_validator_field": true,
   "string_type_validator_field": "some text",
   "number_type_validator_field": 12.345,
-  "array_type_validator_field": ["Value 1", "Value 2"],
+  "array_type_validator_field": [
+    "Value 1",
+    "Value 2"
+  ],
   "object_type_validator_field": {
     "some_sub_field": "some value"
   },

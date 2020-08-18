@@ -9,12 +9,12 @@ import java.util.UUID
 
 class UUIDComparator : JsonValueComparator<String> {
 
-    override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
-        try {
-            UUID.fromString(actual)
-            return true
-        } catch (e: IllegalArgumentException) {
-            throw ValueMatcherException("Value is not a valid UUID", e, expected, actual)
-        }
+  override fun hasCorrectValue(actual: String?, expected: String?): Boolean {
+    try {
+      UUID.fromString(actual)
+      return true
+    } catch (e: IllegalArgumentException) {
+      throw ValueMatcherException("Value is not a valid UUID", e, expected, actual)
     }
+  }
 }
