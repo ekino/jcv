@@ -34,4 +34,4 @@ jobs:
           PUBLISH_REPO_PASSWORD: ${{ secrets.PUBLISH_REPO_PASSWORD }}
           GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          SIGN_FILE_PATH: .github/workflows/jcv_sign.gpg
+          SIGN_FILE_PATH: "${{ github.workspace }}/.github/workflows/jcv_sign.gpg"
