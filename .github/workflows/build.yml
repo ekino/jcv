@@ -4,8 +4,8 @@ on:
     - cron: "0 5 * * 1" # every monday at 5 am
   push:
     branches:
-      - "!master"
       - "*"
+      - "!master"
 
 jobs:
   build:
