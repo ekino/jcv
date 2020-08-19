@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ekino/jcv.svg?branch=master)](https://travis-ci.org/ekino/jcv)
+[![Build Status](https://github.com/ekino/jcv/workflows/Build%20branch/badge.svg?branch=master)](https://github.com/ekino/jcv/actions?query=workflow%3A%22Build+branch%22+branch%3Amaster)
 [![GitHub (pre-)release](https://img.shields.io/github/release/ekino/jcv/all.svg)](https://github.com/ekino/jcv/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/com.ekino.oss.jcv/jcv-core)](https://search.maven.org/search?q=g:com.ekino.oss.jcv)
 [![GitHub license](https://img.shields.io/github/license/ekino/jcv.svg)](https://github.com/ekino/jcv/blob/master/LICENSE.md)
