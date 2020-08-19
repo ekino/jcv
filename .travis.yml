@@ -25,15 +25,15 @@ before_script:
 
 jobs:
   include:
-    - stage: test
-      name: Build
-      script: .travis/build.sh
-    - stage: deploy
-      name: Deploy Snapshot
-      if: |
-        branch = master AND \
-        type = push
-      script: .travis/deploy.sh
+#    - stage: test
+#      name: Build
+#      script: .travis/build.sh
+#    - stage: deploy
+#      name: Deploy Snapshot
+#      if: |
+#        branch = master AND \
+#        type = push
+#      script: .travis/deploy.sh
     - stage: deploy
       name: Deploy Release
       if: tag IS present AND tag =~ ^(\d)+\.(\d)+(\.(\d)+)*(-[\w]+)*$
