@@ -30,8 +30,8 @@ jobs:
         run: ./gradlew publish -PossrhUrl="$PUBLISH_RELEASE_REPO_URL" -PossrhUsername="$PUBLISH_REPO_USERNAME" -PossrhPassword="$PUBLISH_REPO_PASSWORD" -Psigning.keyId="$GPG_KEY_ID" -Psigning.password="$GPG_PASSPHRASE" -Psigning.secretKeyRingFile="$SIGN_FILE_PATH"
         env:
           PUBLISH_RELEASE_REPO_URL: https://oss.sonatype.org/service/local/staging/deploy/maven2/
-          PUBLISH_REPO_USERNAME: ${{ secrets.PUBLISH_REPO_USERNAME }}
-          PUBLISH_REPO_PASSWORD: ${{ secrets.PUBLISH_REPO_PASSWORD }}
+          PUBLISH_REPO_USERNAME: ${{ secrets.SONATYPE_OSS_USERNAME }}
+          PUBLISH_REPO_PASSWORD: ${{ secrets.SONATYPE_OSS_PASSWORD }}
           GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           SIGN_FILE_PATH: "${{ github.workspace }}/.github/workflows/jcv_sign.gpg"
