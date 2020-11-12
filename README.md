@@ -16,6 +16,7 @@ JSON Content Validator (JCV) allows you to compare JSON contents with embedded v
     * [Core module](#core-module)
     * [AssertJ module](#assertj-module)
     * [Hamcrest module](#hamcrest-module)
+    * [WireMock module](#wiremock-module)
 * [Validators](#validators)
 
 
@@ -243,6 +244,118 @@ dependencies {
   testImplementation 'org.skyscreamer:jsonassert:1.5.0'
   testImplementation 'org.hamcrest:hamcrest:2.1'
   testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.5.0-SNAPSHOT'
+  ...
+}
+```
+
+### WireMock module
+
+A JCV module extension for [WireMock](http://wiremock.org/).
+
+#### Example
+
+Register the extension on your WireMock server:
+```kotlin
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
+import com.ekino.oss.jcv.assertion.wiremock.JcvRequestMatcherExtension
+
+private val wireMockServer by lazy {
+  WireMockServer(
+    WireMockConfiguration()
+      .dynamicPort()
+      .extensions(JcvRequestMatcherExtension())
+  )
+}
+```
+
+Then you can stub via code:
+```kotlin
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.post
+import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import com.ekino.oss.jcv.assertion.wiremock.JcvRequestMatcherExtension
+
+wireMockServer.stubFor(
+  post(urlEqualTo("/some_url"))
+    .andMatching(
+      JcvRequestMatcherExtension.toRequestMatcher(
+        json =
+        """
+        {
+          "some_field": "{#not_empty#}"
+        }
+        """
+      )
+    )
+    .willReturn(
+      aResponse()
+        .withHeader("Content-Type", "text/plain")
+        .withStatus(200)
+        .withBody("OK")
+    )
+)
+```
+
+Or you can stub via mapping file:
+```json
+{
+  "request": {
+    "method": "POST",
+    "url": "/some_url",
+    "customMatcher": {
+      "name": "equalToJcv",
+      "parameters": {
+        "json": {
+          "some_field": "{#not_empty#}"
+        },
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": false
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "OK"
+  }
+}
+```
+
+#### Dependencies
+
+Maven
+```xml
+<dependencies>
+  ...
+  <dependency>
+    <groupId>org.skyscreamer</groupId>
+    <artifactId>jsonassert</artifactId>
+    <version>1.5.0</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.github.tomakehurst</groupId>
+    <artifactId>wiremock-jre8</artifactId>
+    <version>2.27.2</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.ekino.oss.jcv</groupId>
+    <artifactId>jcv-wiremock</artifactId>
+    <version>1.5.0-SNAPSHOT</version>
+    <scope>test</scope>
+  </dependency>
+  ...
+</dependencies>
+```
+
+Gradle
+```groovy
+dependencies {
+  ...
+  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+  testImplementation 'com.github.tomakehurst:wiremock-jre8:2.27.2'
+  testImplementation 'com.ekino.oss.jcv:jcv-wiremock:1.5.0-SNAPSHOT'
   ...
 }
 ```

@@ -25,7 +25,8 @@ allprojects {
     "assertj.version" to "3.16.1",
     "hamcrest.version" to "2.2",
     "junit-jupiter.version" to "5.6.2",
-    "assertk-jvm.version" to "0.22"
+    "assertk-jvm.version" to "0.22",
+    "wiremock.version" to "2.27.2"
   )
 }
 
