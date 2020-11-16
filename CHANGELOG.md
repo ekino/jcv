@@ -1,5 +1,155 @@
 # Changelog of {#JCV#}
 
+## 1.5.0
+### GitHub [#19](https://github.com/ekino/jcv/issues/19) Migrate to Github actions    *enhancement*  
+
+**ci: Add snapshot deployment GitHub workflow #19**
+
+
+[518d21dde0779a3](https://github.com/ekino/jcv/commit/518d21dde0779a3) Léo Millon *2020-08-19 07:56:34*
+
+**ci: Add build GitHub workflow #19**
+
+
+[da8ec81cb50483e](https://github.com/ekino/jcv/commit/da8ec81cb50483e) Léo Millon *2020-08-18 12:46:44*
+
+
+### GitHub [#20](https://github.com/ekino/jcv/issues/20) Upgrade to Kotlin 1.4    *enhancement*  
+
+**chore: Upgrade versions #20**
+
+ * - Gradle Wrapper
+ * - Kotlin version
+ * - Kotlin Quality plugin
+ * - Dependencies
+
+[9427664f538cb47](https://github.com/ekino/jcv/commit/9427664f538cb47) Léo Millon *2020-08-18 12:46:40*
+
+
+### GitHub [#22](https://github.com/ekino/jcv/issues/22) Add wiremock module    *enhancement*  
+
+**feat(wiremock): Add JCV extension for WireMock**
+
+ * See issue #22
+
+[0935e6fe47f191e](https://github.com/ekino/jcv/commit/0935e6fe47f191e) Léo Millon *2020-11-13 08:22:32*
+
+
+### Jira KT-39389   
+
+**chore: Set Kotlin api version to 1.3**
+
+ * See:
+ * Function references give runtime NoSuchMethodError when switching to 1.4
+ * https://youtrack.jetbrains.com/issue/KT-39389
+
+[2409ec617ab8be3](https://github.com/ekino/jcv/commit/2409ec617ab8be3) Léo Millon *2020-11-16 11:05:07*
+
+
+### Jira issuecomment-617208601   
+
+**ci: Add release GitHub workflow**
+
+ * Using a &quot;custom&quot; way to create a releasing with multiple artifacts following this issue:
+ * - https://github.com/actions/upload-release-asset/issues/28#issuecomment-617208601
+ * - https://github.com/hashicorp/terraform-provider-kubernetes-alpha/blob/6a94abdffa085bb3564fc3670979cd223045dd5b/.github/workflows/release_binaries.yaml
+
+[7180c29bb324135](https://github.com/ekino/jcv/commit/7180c29bb324135) Léo Millon *2020-08-19 09:16:16*
+
+
+### No issue
+
+**Release 1.5.0**
+
+
+[83ccdfe57fbaac9](https://github.com/ekino/jcv/commit/83ccdfe57fbaac9) Léo Millon *2020-11-16 11:30:55*
+
+**chore: Use Kotlin 1.4.10**
+
+
+[40df07437efd127](https://github.com/ekino/jcv/commit/40df07437efd127) Léo Millon *2020-11-16 10:50:59*
+
+**ci: Replace travis build status by GitHub action 'Build branch' status on master**
+
+
+[21bfd7feb21a106](https://github.com/ekino/jcv/commit/21bfd7feb21a106) Léo Millon *2020-08-19 09:59:48*
+
+**ci: Use SONATYPE organization secrets**
+
+
+[76e02bd650a8ae6](https://github.com/ekino/jcv/commit/76e02bd650a8ae6) Léo Millon *2020-08-19 09:31:30*
+
+**ci: Remove travis configuration files**
+
+
+[6c0945c2efc198d](https://github.com/ekino/jcv/commit/6c0945c2efc198d) Léo Millon *2020-08-19 09:17:42*
+
+**ci: Exclude master branch from the simple build workflow**
+
+
+[8780d958533b9bb](https://github.com/ekino/jcv/commit/8780d958533b9bb) Léo Millon *2020-08-19 08:47:20*
+
+**ci: Fix GPG file path**
+
+
+[ede9a7ffb2fd5b0](https://github.com/ekino/jcv/commit/ede9a7ffb2fd5b0) Léo Millon *2020-08-19 08:28:02*
+
+**format(indentation): Reformat all kt and kts files using 2 spaces indentation**
+
+
+[aee854df3bf715b](https://github.com/ekino/jcv/commit/aee854df3bf715b) Léo Millon *2020-08-18 12:46:44*
+
+**chore(gradle): Upgrade Gradle to 6.6**
+
+
+[eb46f5cb2c9ae1c](https://github.com/ekino/jcv/commit/eb46f5cb2c9ae1c) Léo Millon *2020-08-18 09:57:23*
+
+**chore: upgrade Kotlin to 1.3.70**
+
+
+[ded4474bebe4f39](https://github.com/ekino/jcv/commit/ded4474bebe4f39) Clement Stoquart *2020-03-06 14:43:29*
+
+**chore: upgrade Gradle to 6.2.2**
+
+
+[96b5a85be2679a9](https://github.com/ekino/jcv/commit/96b5a85be2679a9) Clement Stoquart *2020-03-04 15:52:24*
+
+**Move to gradle 6.2**
+
+
+[6a26b7f8efbb9f2](https://github.com/ekino/jcv/commit/6a26b7f8efbb9f2) Nicolas Gunther *2020-02-17 10:32:00*
+
+**chore: upgrade dependencies to last stable releases**
+
+
+[0aa9139796eabdb](https://github.com/ekino/jcv/commit/0aa9139796eabdb) Clement Stoquart *2020-02-11 09:21:55*
+
+**chore: upgrade Gradle to 6.1.1**
+
+
+[4dec1ecd6f2e453](https://github.com/ekino/jcv/commit/4dec1ecd6f2e453) Clement Stoquart *2020-02-05 10:41:30*
+
+**feat: add a Gradle wrapper validation action**
+
+
+[0363da9dad3c8c0](https://github.com/ekino/jcv/commit/0363da9dad3c8c0) Clement Stoquart *2020-02-05 09:57:54*
+
+**feat(contributing): add CONTRIBUTING.md**
+
+
+[11a003a0ce2b389](https://github.com/ekino/jcv/commit/11a003a0ce2b389) Sebastien Augereau *2019-11-22 12:16:50*
+
+**Set new version to 1.5.0-SNAPSHOT**
+
+
+[c1ca87d39dfbb5e](https://github.com/ekino/jcv/commit/c1ca87d39dfbb5e) Léo Millon *2019-10-28 10:39:02*
+
+**Update Changelog**
+
+
+[40981c447985923](https://github.com/ekino/jcv/commit/40981c447985923) Léo Millon *2019-10-28 10:33:23*
+
+
 ## 1.4.2
 ### No issue
 
