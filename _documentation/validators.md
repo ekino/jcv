@@ -1070,5 +1070,5 @@ assertThatJson(actualJson.trimIndent()).isValidAgainst(expectedJson.trimIndent()
 <script src="https://unpkg.com/kotlin-playground@1"
         data-selector=".kotlin-code"
         data-server="https://kotlin-jcv-compiler-server.herokuapp.com"
-        data-version="1.4.0">
+        data-version="1.4.10">
 </script>
