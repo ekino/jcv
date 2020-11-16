@@ -68,12 +68,10 @@ signing {
 }
 
 dependencies {
-
-  implementation(kotlin("stdlib-jdk8"))
-
   api(project(":jcv-core"))
+  implementation(kotlin("stdlib-jdk8"))
   implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  implementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
+  implementation(group = "com.github.tomakehurst", name = "wiremock-jre8", version = "${prop("wiremock.version")}")
 
   testImplementation(
     group = "org.junit.jupiter",
@@ -82,6 +80,13 @@ dependencies {
   )
 
   testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  testImplementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
-  testImplementation(group = "commons-io", name = "commons-io", version = "${prop("commons-io.version")}")
+  testImplementation(
+    group = "com.willowtreeapps.assertk",
+    name = "assertk-jvm",
+    version = "${prop("assertk-jvm.version")}"
+  ) {
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
+  }
+  testImplementation(group = "com.github.tomakehurst", name = "wiremock-jre8", version = "${prop("wiremock.version")}")
+  testImplementation("io.github.rybalkinsd:kohttp-jackson:0.12.0")
 }

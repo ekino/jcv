@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/via_file/test",
+    "customMatcher": {
+      "name": "equalToJcv",
+      "parameters": {
+        "json": {
+          "field_1": "Some value",
+          "field_2": "{#uuid#}"
+        },
+        "ignoreArrayOrder": false,
+        "ignoreExtraElements": false
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "OK"
+  }
+}
