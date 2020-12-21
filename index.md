@@ -59,7 +59,9 @@ You can get the JCV Assistant plugin available on IntelliJ Platforms:
 </div>
 
 <div>
-    <iframe frameborder="none" width="384px" height="319px" src="https://plugins.jetbrains.com/embeddable/card/13916"></iframe>
+    <a href="https://plugins.jetbrains.com/plugin/13916-jcv">
+        <iframe frameborder="none" width="384px" height="319px" src="https://plugins.jetbrains.com/embeddable/card/13916"></iframe>
+    </a>
 </div>
 
 <script defer src="https://plugins.jetbrains.com/assets/scripts/mp-widget.js"></script>
