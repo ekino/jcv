@@ -3,6 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.ekino.oss.jcv/jcv-core)](https://search.maven.org/search?q=g:com.ekino.oss.jcv)
 [![GitHub license](https://img.shields.io/github/license/ekino/jcv.svg)](https://github.com/ekino/jcv/blob/master/LICENSE.md)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ekino_jcv&metric=alert_status)](https://sonarcloud.io/dashboard?id=ekino_jcv)
+[![Jetbrains plugin](https://img.shields.io/jetbrains/plugin/v/13916-jcv.svg)](https://plugins.jetbrains.com/plugin/13916-jcv)
 
 Make a full json content assertion using the minimum amount of code using an expected JSON content with the possibility to add custom field validation.
 
@@ -52,16 +53,14 @@ You can try it online here : <a href="{{ '/try-jcv-online.html' | relative_url }
 
 ## Best experience on IntelliJ IDEA®
 
-You can get the JCV Assistant plugin available on IntelliJ Platforms:
+You can get the JCV Assistant plugin available on IntelliJ Platforms: [![Jetbrains plugin](https://img.shields.io/jetbrains/plugin/v/13916-jcv.svg)](https://plugins.jetbrains.com/plugin/13916-jcv)
 
 <div>
     <iframe frameborder="none" width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/13916"></iframe>
 </div>
 
-<div>
-    <a href="https://plugins.jetbrains.com/plugin/13916-jcv">
-        <iframe frameborder="none" width="384px" height="319px" src="https://plugins.jetbrains.com/embeddable/card/13916"></iframe>
-    </a>
-</div>
+![Validator documentation screenshot](https://github.com/ekino/jcv-idea-plugin/raw/master/screenshots/jcv-demo-validator_documentation.png)
+![Auto completion screencast](https://github.com/ekino/jcv-idea-plugin/raw/master/screenshots/jcv-demo-auto_completion.gif)
+
 
 <script defer src="https://plugins.jetbrains.com/assets/scripts/mp-widget.js"></script>
