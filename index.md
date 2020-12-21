@@ -49,3 +49,17 @@ More examples available here : [ekino/jcv-examples](https://github.com/ekino/jcv
 ## Try it online!
 
 You can try it online here : <a href="{{ '/try-jcv-online.html' | relative_url }}">Try JCV online</a>
+
+## Best experience on IntelliJ IDEA®
+
+You can get the JCV Assistant plugin available on IntelliJ Platforms:
+
+<div>
+    <iframe frameborder="none" width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/13916"></iframe>
+</div>
+
+<div>
+    <iframe frameborder="none" width="384px" height="319px" src="https://plugins.jetbrains.com/embeddable/card/13916"></iframe>
+</div>
+
+<script defer src="https://plugins.jetbrains.com/assets/scripts/mp-widget.js"></script>
