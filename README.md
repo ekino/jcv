@@ -17,7 +17,7 @@ JSON Content Validator (JCV) allows you to compare JSON contents with embedded v
     * [AssertJ module](#assertj-module)
     * [Hamcrest module](#hamcrest-module)
     * [WireMock module](#wiremock-module)
-* [Validators](#validators)
+* [Learn more](#learn-more)
 
 
 ## Summary
