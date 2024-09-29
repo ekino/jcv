@@ -29,7 +29,7 @@ class DateTimeFormatComparatorInitializer : TwoParametersComparatorInitializer<S
       "iso_week_date" to DateTimeFormatter.ISO_WEEK_DATE,
       "iso_instant" to DateTimeFormatter.ISO_INSTANT,
       "basic_iso_date" to DateTimeFormatter.BASIC_ISO_DATE,
-      "rfc_1123_date_time" to DateTimeFormatter.RFC_1123_DATE_TIME
+      "rfc_1123_date_time" to DateTimeFormatter.RFC_1123_DATE_TIME,
     )
 
     private fun initFormatter(pattern: String, languageTag: String?): DateTimeFormatter {
@@ -42,7 +42,6 @@ class DateTimeFormatComparatorInitializer : TwoParametersComparatorInitializer<S
     }
 
     private fun createLocalizedFormatter(pattern: String, languageTag: String): DateTimeFormatter {
-
       val locale = Locale.forLanguageTag(languageTag)
 
       require("und" != locale.toLanguageTag()) { "Invalid language tag $languageTag" }
@@ -51,7 +50,7 @@ class DateTimeFormatComparatorInitializer : TwoParametersComparatorInitializer<S
     }
 
     private fun getPredefinedFormatter(pattern: String): DateTimeFormatter? =
-      PREDEFINED_FORMATTERS[pattern.toLowerCase()]
+      PREDEFINED_FORMATTERS[pattern.lowercase()]
   }
 
   override fun initComparator(param1: String?, param2: String?): ValueMatcher<String> {

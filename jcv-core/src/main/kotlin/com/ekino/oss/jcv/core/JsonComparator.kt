@@ -31,7 +31,6 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
 
   @Throws(JSONException::class)
   override fun compareValues(prefix: String, expectedValue: Any?, actualValue: Any?, result: JSONCompareResult) {
-
     validators
       .firstOrNull { it.contextMatcher.matches(prefix, expectedValue, actualValue) }
       ?.let(::asCustomization)
@@ -57,7 +56,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
     key: String,
     expected: JSONArray,
     actual: JSONArray,
-    result: JSONCompareResult
+    result: JSONCompareResult,
   ) {
     val uniqueKey = findUniqueKey(expected)
     if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
@@ -93,7 +92,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
     key: String,
     expected: JSONArray,
     actual: JSONArray,
-    result: JSONCompareResult
+    result: JSONCompareResult,
   ) {
     val expectedElements = jsonArrayToList(expected)
     val actualElements = jsonArrayToList(actual)
@@ -121,7 +120,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
     val allMatches = sequenceOf(
       matchingByValue.asSequence()
         .map { (key, value) -> key to value?.let { listOf(it) }.orEmpty() },
-      matchingByValidator.asSequence().map { it.toPair() }
+      matchingByValidator.asSequence().map { it.toPair() },
     )
       .flatten()
       .toMap()
@@ -166,7 +165,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
   private fun getMatchingByValue(
     parsedExpectedElements: List<ExpectedElement>,
     actualElements: List<Any>,
-    actualValueMatchedIndexes: MutableSet<Int>
+    actualValueMatchedIndexes: MutableSet<Int>,
   ): Map<ExpectedElement, ActualElement?> {
     return parsedExpectedElements
       .asSequence()
@@ -177,7 +176,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
           .mapIndexedNotNull { index, actualElement ->
             actualElement
               .takeUnless { actualValueMatchedIndexes.contains(index) }
-              ?.takeIf { it -> expectedElement.key == it }
+              ?.takeIf { expectedElement.key == it }
               ?.also { actualValueMatchedIndexes.add(index) }
               ?.let { ActualElement(index, actualElement) }
           }
@@ -189,7 +188,7 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
     parsedExpectedElements: List<ExpectedElement>,
     key: String?,
     actualElements: List<Any>,
-    actualValueMatchedIndexes: Set<Int>
+    actualValueMatchedIndexes: Set<Int>,
   ): Map<ExpectedElement, Collection<ActualElement>> {
     return parsedExpectedElements
       .asSequence()
@@ -200,12 +199,14 @@ class JsonComparator(mode: JSONCompareMode, validators: List<JsonValidator<out A
           .mapIndexedNotNull { index, actualElement ->
             actualElement
               .takeUnless { actualValueMatchedIndexes.contains(index) }
-              ?.takeIf { it ->
+              ?.takeIf {
                 try {
                   expectedElement.customization
                     ?.matches(key, it, expectedElement.key, JSONCompareResult())
                     ?: false
-                } catch (e: ValueMatcherException) {
+                } catch (
+                  @Suppress("SwallowedException") e: ValueMatcherException,
+                ) {
                   false
                 }
               }

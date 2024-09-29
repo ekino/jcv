@@ -80,7 +80,7 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -97,7 +97,7 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
   testImplementation 'com.ekino.oss.jcv:jcv-core:1.6.0-SNAPSHOT'
   ...
 }
@@ -160,13 +160,13 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
     <groupId>org.assertj</groupId>
     <artifactId>assertj-core</artifactId>
-    <version>3.9.1</version>
+    <version>3.26.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -183,8 +183,8 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-  testImplementation 'org.assertj:assertj-core:3.9.1'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
+  testImplementation 'org.assertj:assertj-core:3.26.3'
   testImplementation 'com.ekino.oss.jcv:jcv-assertj:1.6.0-SNAPSHOT'
   ...
 }
@@ -218,7 +218,7 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -241,7 +241,7 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
   testImplementation 'org.hamcrest:hamcrest:2.1'
   testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.6.0-SNAPSHOT'
   ...
@@ -330,7 +330,7 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -353,7 +353,7 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
   testImplementation 'com.github.tomakehurst:wiremock-jre8:2.27.2'
   testImplementation 'com.ekino.oss.jcv:jcv-wiremock:1.6.0-SNAPSHOT'
   ...

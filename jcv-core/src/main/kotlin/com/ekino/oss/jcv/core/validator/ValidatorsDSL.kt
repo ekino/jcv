@@ -24,7 +24,7 @@ open class ValidatorBuilder {
 
   fun <T> templatedValidator(
     validatorId: String,
-    init: TemplatedComparatorBuilder<T>.() -> TemplatedComparatorInitializer<T>
+    init: TemplatedComparatorBuilder<T>.() -> TemplatedComparatorInitializer<T>,
   ) =
     Initializers.parameterizedValidator(validatorId, init(TemplatedComparatorBuilder()))
 
@@ -101,15 +101,17 @@ class AnyOfOperatorBuilder<T> {
 class ComparatorWithParameterBuilder<T>(private val validatorTemplateManager: ValidatorTemplateManager) {
 
   fun getFirstRequiredParam() = getRequiredParam(0)
+
   fun getSecondRequiredParam() = getRequiredParam(1)
 
   fun getFirstParam() = getParam(0)
+
   fun getSecondParam() = getParam(1)
 
   fun getParam(index: Int) = validatorTemplateManager.extractParameter(index)
 
   fun getRequiredParam(index: Int) = requireNotNull(
     getParam(index),
-    { "No parameter at index $index found in validator '${validatorTemplateManager.extractTemplateContent()}'" }
+    { "No parameter at index $index found in validator '${validatorTemplateManager.extractTemplateContent()}'" },
   )
 }

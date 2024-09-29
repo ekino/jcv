@@ -21,7 +21,6 @@ class JsonCompareMatcher(private val jsonComparator: JSONComparator, private val
   private var result: JSONCompareResult? = null
 
   override fun describeTo(description: Description) {
-
     description.appendText(result?.message ?: "A valid JSON")
   }
 

@@ -27,7 +27,7 @@ private val wireMockServer by lazy {
     WireMockConfiguration()
       .dynamicPort()
       .extensions(JcvRequestMatcherExtension())
-      .usingFilesUnderClasspath("src/test/resources/wiremock/config")
+      .usingFilesUnderClasspath("src/test/resources/wiremock/config"),
   )
 }
 
@@ -79,7 +79,7 @@ class WireMockEqualToJcvExtensionTest {
           "field_2": "fa04e3fc-1e14-43e1-9097-d7817755435e"
         }
         """.trimIndent(),
-        200
+        200,
       ),
       Arguments.of(
         defaultExpectedJson,
@@ -90,8 +90,8 @@ class WireMockEqualToJcvExtensionTest {
           "field_2": "non uuid value"
         }
         """.trimIndent(),
-        404
-      )
+        404,
+      ),
     )
 
     @Suppress("unused")
@@ -105,7 +105,7 @@ class WireMockEqualToJcvExtensionTest {
           "field_2": "fa04e3fc-1e14-43e1-9097-d7817755435e"
         }
         """.trimIndent(),
-        200
+        200,
       ),
       Arguments.of(
         //language=JSON
@@ -115,8 +115,8 @@ class WireMockEqualToJcvExtensionTest {
           "field_2": "non uuid value"
         }
         """.trimIndent(),
-        404
-      )
+        404,
+      ),
     )
   }
 
@@ -135,20 +135,20 @@ class WireMockEqualToJcvExtensionTest {
   fun `should use 'equalToJcv' request matcher via code config`(
     expectedJson: String,
     actualJson: String,
-    expectedResponseCode: Int
+    expectedResponseCode: Int,
   ) {
     val targetPath = "/via_code/test"
     wireMockServer.stubFor(
       post(urlEqualTo(targetPath))
         .andMatching(
-          JcvRequestMatcherExtension.toRequestMatcher(json = expectedJson)
+          JcvRequestMatcherExtension.toRequestMatcher(json = expectedJson),
         )
         .willReturn(
           aResponse()
             .withHeader("Content-Type", "text/plain")
             .withStatus(200)
-            .withBody("OK")
-        )
+            .withBody("OK"),
+        ),
     )
 
     @Suppress("unused")
@@ -161,7 +161,7 @@ class WireMockEqualToJcvExtensionTest {
   @MethodSource("viaFileDataProvider")
   fun `should use 'equalToJcv' request matcher via file config`(
     actualJson: String,
-    expectedResponseCode: Int
+    expectedResponseCode: Int,
   ) {
     val targetPath = "/via_file/test"
 

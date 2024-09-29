@@ -5,10 +5,10 @@ package com.ekino.oss.jcv.core
 
 import assertk.all
 import assertk.assertAll
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
@@ -38,19 +38,19 @@ class JsonComparatorTest {
 
     private fun comparator(
       vararg validators: JsonValidator<out Any?> = Validators.defaultValidators().toTypedArray(),
-      mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE
+      mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE,
     ) = JsonComparator(mode, validators.toList())
 
     private fun comparator(
       validators: List<JsonValidator<out Any?>>,
-      mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE
+      mode: JSONCompareMode = JSONCompareMode.NON_EXTENSIBLE,
     ) = JsonComparator(mode, validators)
 
     private fun compare(
       actualJson: String,
       expectedJson: String,
       comparator: JsonComparator = Companion.comparator,
-      body: (JSONCompareResult) -> Unit = {}
+      body: (JSONCompareResult) -> Unit = {},
     ) {
       body.invoke(JSONCompare.compareJSON(expectedJson, actualJson, comparator))
     }
@@ -62,10 +62,9 @@ class JsonComparatorTest {
 
   @Test
   fun `sample JSON validation`() {
-
     compare(
       loadJson("test_sample_json_actual.json"),
-      loadJson("test_sample_json_expected.json")
+      loadJson("test_sample_json_expected.json"),
     ) {
       assertAll {
         assertThat(it.passed()).isTrue()
@@ -76,10 +75,9 @@ class JsonComparatorTest {
 
   @Test
   fun `default validators`() {
-
     compare(
       loadJson("test_default_validators_actual.json"),
-      loadJson("test_default_validators_expected.json")
+      loadJson("test_default_validators_expected.json"),
     ) {
       assertAll {
         assertThat(it.passed()).isTrue()
@@ -90,7 +88,6 @@ class JsonComparatorTest {
 
   @Test
   fun `prefix matcher`() {
-
     compare(
       loadJson("test_prefix_matcher_actual.json"),
       loadJson("test_prefix_matcher_expected.json"),
@@ -98,8 +95,8 @@ class JsonComparatorTest {
         validators {
           +defaultValidators()
           +forPathPrefix<Any>("child.child.level", comparator { actual, _ -> actual == 9999 })
-        }
-      )
+        },
+      ),
     ) {
       assertAll {
         assertThat(it.passed()).isTrue()
@@ -110,7 +107,6 @@ class JsonComparatorTest {
 
   @Test
   fun `custom validator id in value matcher`() {
-
     compare(
       loadJson("test_validator_id_in_value_matcher_actual_invalid.json"),
       loadJson("test_validator_id_in_value_matcher_expected.json"),
@@ -126,12 +122,12 @@ class JsonComparatorTest {
               throw ValueMatcherException(
                 "Value should be '$specificValue'",
                 specificValue,
-                Objects.toString(actual)
+                Objects.toString(actual),
               )
-            }
+            },
           )
-        }
-      )
+        },
+      ),
     ) {
       assertAll {
         assertThat(it.passed()).isFalse()
@@ -141,7 +137,7 @@ class JsonComparatorTest {
           Expected: THE_VALUE
                got: {#someSpecificValue#}
 
-          """.trimIndent()
+          """.trimIndent(),
         )
       }
     }
@@ -149,15 +145,14 @@ class JsonComparatorTest {
 
   @Test
   fun `unknown date time format language tag`() {
-
-    assertThat {
+    assertFailure {
       compare(
         // language=json
         """{"field_name": "3 Feb 2011"}""",
         // language=json
-        """{"field_name": "{#date_time_format:d MMM uuu;some_TAG#}"}"""
+        """{"field_name": "{#date_time_format:d MMM uuu;some_TAG#}"}""",
       )
-    }.isFailure().all {
+    }.all {
       isInstanceOf(IllegalArgumentException::class.java)
       hasMessage("Invalid language tag some_TAG")
     }
@@ -165,15 +160,14 @@ class JsonComparatorTest {
 
   @Test
   fun `unknown date time format pattern`() {
-
-    assertThat {
+    assertFailure {
       compare(
         // language=json
         """{"field_name": "2011-12-03T10:15:30Z"}""",
         // language=json
-        """{"field_name": "{#date_time_format:some_unknown_pattern#}"}"""
+        """{"field_name": "{#date_time_format:some_unknown_pattern#}"}""",
       )
-    }.isFailure().all {
+    }.all {
       isInstanceOf(IllegalArgumentException::class.java)
       message().isNotNull().startsWith("Unknown pattern")
     }
@@ -181,7 +175,6 @@ class JsonComparatorTest {
 
   @Test
   fun `validator errors`() {
-
     tableOf("actual", "expected", "error")
       .row(
         // language=json
@@ -193,7 +186,7 @@ class JsonComparatorTest {
         Expected: {#contains:llo wor#}
              got: hello_world!
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -205,7 +198,7 @@ class JsonComparatorTest {
         Expected: {#starts_with:llo_wor#}
              got: hello_world!
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -217,7 +210,7 @@ class JsonComparatorTest {
         Expected: {#ends_with:llo_wor#}
              got: hello_world!
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -229,7 +222,7 @@ class JsonComparatorTest {
         Expected: {#regex:.*llo ?w.r.*#}
              got: hello_world!
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -241,7 +234,7 @@ class JsonComparatorTest {
         Expected: {#uuid#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -253,7 +246,7 @@ class JsonComparatorTest {
         Expected: {#not_null#}
              got: null
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -265,7 +258,7 @@ class JsonComparatorTest {
         Expected: {#not_empty#}
              got: 
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -277,7 +270,7 @@ class JsonComparatorTest {
         Expected: {#url#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -289,7 +282,7 @@ class JsonComparatorTest {
         Expected: {#url_ending:?param#}
              got: some value/?param
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -301,7 +294,7 @@ class JsonComparatorTest {
         Expected: {#url_ending:/path?param2#}
              got: http://some.url:9999/path?param
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -313,7 +306,7 @@ class JsonComparatorTest {
         Expected: {#url_regex:^.+some\.url.+/path\?param$#}
              got: some value/?param
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -325,7 +318,7 @@ class JsonComparatorTest {
         Expected: {#url_regex:^.+some\.url.+/path\?param$#}
              got: http://some_url:9999/path?param
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -337,7 +330,7 @@ class JsonComparatorTest {
         Expected: {#templated_url#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -349,7 +342,7 @@ class JsonComparatorTest {
         Expected: {#templated_url_ending:{?param}#}
              got: some value {?param}
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -361,7 +354,7 @@ class JsonComparatorTest {
         Expected: {#templated_url_ending:/path{?param2}#}
              got: http://some.url:9999/path{?param}
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -373,7 +366,7 @@ class JsonComparatorTest {
         Expected: {#templated_url_regex:^.+some\.url.+/path\{\?param\}$#}
              got: some value/{?param}
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -385,7 +378,7 @@ class JsonComparatorTest {
         Expected: {#templated_url_regex:^.+some\.url.+/path\{\?param\}$#}
              got: http://some_url:9999/path{?param}
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -397,7 +390,7 @@ class JsonComparatorTest {
         Expected: {#boolean_type#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -409,7 +402,7 @@ class JsonComparatorTest {
         Expected: {#string_type#}
              got: true
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -421,7 +414,7 @@ class JsonComparatorTest {
         Expected: {#number_type#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -433,7 +426,7 @@ class JsonComparatorTest {
         Expected: {#array_type#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -445,7 +438,7 @@ class JsonComparatorTest {
         Expected: {#object_type#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .row(
         // language=json
@@ -457,12 +450,12 @@ class JsonComparatorTest {
         Expected: {#date_time_format:iso_instant#}
              got: some value
 
-        """.trimIndent()
+        """.trimIndent(),
       )
       .forAll { actual, expected, error ->
         compare(
           actualJson = actual,
-          expectedJson = expected
+          expectedJson = expected,
         ) {
           assertAll {
             assertThat(it.passed()).isFalse()
@@ -477,13 +470,11 @@ class JsonComparatorTest {
    */
   @Nested
   inner class ArrayWithSimpleValuesTest {
-
     @Test
     fun `should handle validators in arrays with simple values`() {
-
       compare(
         loadJson("array_with_simple_values/test_actual.json"),
-        loadJson("array_with_simple_values/test_expected.json")
+        loadJson("array_with_simple_values/test_expected.json"),
       ) {
         assertAll {
           assertThat(it.passed()).isTrue()
@@ -494,7 +485,6 @@ class JsonComparatorTest {
 
     @Test
     fun `should throw an error if element count does not match between the two arrays`() {
-
       compare(
         // language=json
         """
@@ -513,7 +503,7 @@ class JsonComparatorTest {
                 "{#contains:value_#}"
             ]
         }
-        """.trimIndent()
+        """.trimIndent(),
       ) {
         assertAll {
           assertThat(it.passed()).isFalse()
@@ -524,7 +514,6 @@ class JsonComparatorTest {
 
     @Test
     fun `should throw a detailed error if some elements did not match`() {
-
       compare(
         // language=json
         """
@@ -549,7 +538,7 @@ class JsonComparatorTest {
                 "{#contains:value_#}"
             ]
         }
-        """.trimIndent()
+        """.trimIndent(),
       ) {
         assertAll {
           assertThat(it.passed()).isFalse()
@@ -562,7 +551,7 @@ class JsonComparatorTest {
             some_array[2] -> {#uuid#} matched with: [[0] -> cd820a36-aa32-42ea-879d-293ba5f3c1e5,[4] -> 839ceac0-2e60-4405-b27c-db2ac753d809]
             some_array[3] -> value_2 matched with: []
             some_array[4] -> {#contains:value_#} matched with: [[3] -> value_3]
-            """.trimIndent()
+            """.trimIndent(),
           )
         }
       }

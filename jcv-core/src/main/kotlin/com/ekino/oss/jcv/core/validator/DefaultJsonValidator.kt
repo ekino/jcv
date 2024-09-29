@@ -9,7 +9,7 @@ import org.skyscreamer.jsonassert.ValueMatcher
 
 internal class DefaultJsonValidator<T>(
   private val contextMatcher: JsonContextMatcher,
-  private val valueComparator: ValueMatcher<T>
+  private val valueComparator: ValueMatcher<T>,
 ) : JsonValidator<T> {
   override fun getContextMatcher(): JsonContextMatcher = contextMatcher
 

@@ -17,7 +17,6 @@ class JcvRequestMatcherExtensionTest {
 
   @Test
   fun `should create parameters from extension utils`() {
-
     // Given
     val json =
       //language=JSON
@@ -31,7 +30,7 @@ class JcvRequestMatcherExtensionTest {
     val parameters = JcvRequestMatcherExtension.toParameters(
       json,
       ignoreArrayOrder = ignoreArrayOrder,
-      ignoreExtraElements = ignoreExtraElements
+      ignoreExtraElements = ignoreExtraElements,
     )
 
     // Then
@@ -42,7 +41,6 @@ class JcvRequestMatcherExtensionTest {
 
   @Test
   fun `should create value matcher from extension utils`() {
-
     // Given
     val json =
       //language=JSON
@@ -56,7 +54,7 @@ class JcvRequestMatcherExtensionTest {
     val valueMatcher = JcvRequestMatcherExtension.toRequestMatcher(
       json,
       ignoreArrayOrder = ignoreArrayOrder,
-      ignoreExtraElements = ignoreExtraElements
+      ignoreExtraElements = ignoreExtraElements,
     )
 
     // Then
