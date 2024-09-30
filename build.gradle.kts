@@ -24,7 +24,7 @@ allprojects {
     "commons-io.version" to "2.17.0",
     "jsonassert.version" to "1.5.3",
     "assertj.version" to "3.26.3",
-    "hamcrest.version" to "2.2",
+    "hamcrest.version" to "3.0",
     "junit-jupiter.version" to "5.11.1",
     "assertk-jvm.version" to "0.28.1",
     "wiremock.version" to "3.9.1"

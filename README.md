@@ -224,7 +224,7 @@ Maven
   <dependency>
     <groupId>org.hamcrest</groupId>
     <artifactId>hamcrest</artifactId>
-    <version>2.1</version>
+    <version>3.0</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -242,7 +242,7 @@ Gradle
 dependencies {
   ...
   testImplementation 'org.skyscreamer:jsonassert:1.5.3'
-  testImplementation 'org.hamcrest:hamcrest:2.1'
+  testImplementation 'org.hamcrest:hamcrest:3.0'
   testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.6.0-SNAPSHOT'
   ...
 }
