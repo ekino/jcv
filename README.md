@@ -334,9 +334,9 @@ Maven
     <scope>test</scope>
   </dependency>
   <dependency>
-    <groupId>com.github.tomakehurst</groupId>
-    <artifactId>wiremock-jre8</artifactId>
-    <version>2.27.2</version>
+    <groupId>org.wiremock</groupId>
+    <artifactId>wiremock</artifactId>
+    <version>3.9.1</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -354,7 +354,7 @@ Gradle
 dependencies {
   ...
   testImplementation 'org.skyscreamer:jsonassert:1.5.3'
-  testImplementation 'com.github.tomakehurst:wiremock-jre8:2.27.2'
+  testImplementation 'org.wiremock:wiremock:3.9.1'
   testImplementation 'com.ekino.oss.jcv:jcv-wiremock:1.6.0-SNAPSHOT'
   ...
 }

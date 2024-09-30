@@ -60,7 +60,7 @@ dependencies {
   api(project(":jcv-core"))
   implementation(kotlin("stdlib"))
   implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  implementation(group = "com.github.tomakehurst", name = "wiremock-jre8", version = "${prop("wiremock.version")}")
+  implementation(group = "org.wiremock", name = "wiremock", version = "${prop("wiremock.version")}")
 
   testImplementation(
     group = "org.junit.jupiter",
@@ -76,6 +76,6 @@ dependencies {
   ) {
     exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
   }
-  testImplementation(group = "com.github.tomakehurst", name = "wiremock-jre8", version = "${prop("wiremock.version")}")
+  testImplementation(group = "org.wiremock", name = "wiremock", version = "${prop("wiremock.version")}")
   testImplementation("io.github.rybalkinsd:kohttp-jackson:0.12.0")
 }
