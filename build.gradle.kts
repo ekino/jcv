@@ -31,16 +31,17 @@ allprojects {
   )
 }
 
-tasks.create("printVersion") {
-  doLast {
-    val version: String by project
-    println(version)
+tasks {
+  register("printVersion") {
+    doLast {
+      println(project.version.toString())
+    }
   }
-}
 
-tasks.create<GitChangelogTask>("gitChangelogTask") {
-  file = File("CHANGELOG.md")
-  templateContent = file("template_changelog.mustache").readText()
+  register<GitChangelogTask>("gitChangelogTask") {
+    file = File("CHANGELOG.md")
+    templateContent = file("template_changelog.mustache").readText()
+  }
 }
 
 detekt {
