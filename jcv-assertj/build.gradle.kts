@@ -17,7 +17,7 @@ java {
 }
 
 kotlin {
-  jvmToolchain(8)
+  jvmToolchain(11)
 }
 
 val javadocJar by tasks.registering(Jar::class) {
@@ -36,7 +36,7 @@ tasks {
     dokkaSourceSets {
       configureEach {
         reportUndocumented = false
-        jdkVersion = 8
+        jdkVersion = 11
       }
     }
   }
@@ -57,8 +57,7 @@ publishing {
 }
 
 dependencies {
-
-  implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin("stdlib"))
 
   api(project(":jcv-core"))
   implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
