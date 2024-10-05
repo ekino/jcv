@@ -5,7 +5,7 @@ plugins {
   base
   `maven-publish`
   signing
-  kotlin("jvm") version "1.9.24" apply false
+  kotlin("jvm") version "2.0.20" apply false
   id("org.jlleitschuh.gradle.ktlint") version "12.1.1" apply false
   id("io.gitlab.arturbosch.detekt") version "1.23.7"
   id("net.researchgate.release") version "3.0.2"
