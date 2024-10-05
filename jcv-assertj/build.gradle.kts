@@ -60,16 +60,11 @@ dependencies {
   implementation(kotlin("stdlib"))
 
   api(project(":jcv-core"))
-  implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  implementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
+  implementation(libs.jsonassert)
+  implementation(libs.assertj.core)
 
-  testImplementation(
-    group = "org.junit.jupiter",
-    name = "junit-jupiter",
-    version = "${prop("junit-jupiter.version")}",
-  )
-
-  testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  testImplementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
-  testImplementation(group = "commons-io", name = "commons-io", version = "${prop("commons-io.version")}")
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.jsonassert)
+  testImplementation(libs.assertj.core)
+  testImplementation(libs.commons.io)
 }

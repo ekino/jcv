@@ -59,20 +59,11 @@ publishing {
 dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
-  implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
+  implementation(libs.jsonassert)
 
-  testImplementation(
-    group = "org.junit.jupiter",
-    name = "junit-jupiter",
-    version = "${prop("junit-jupiter.version")}",
-  )
-
-  testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  testImplementation(
-    group = "com.willowtreeapps.assertk",
-    name = "assertk-jvm",
-    version = "${prop("assertk-jvm.version")}",
-  ) {
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.jsonassert)
+  testImplementation(libs.assertk) {
     exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
   }
 }

@@ -59,23 +59,14 @@ publishing {
 dependencies {
   api(project(":jcv-core"))
   implementation(kotlin("stdlib"))
-  implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  implementation(group = "org.wiremock", name = "wiremock", version = "${prop("wiremock.version")}")
+  implementation(libs.jsonassert)
+  implementation(libs.wiremock)
 
-  testImplementation(
-    group = "org.junit.jupiter",
-    name = "junit-jupiter",
-    version = "${prop("junit-jupiter.version")}",
-  )
-
-  testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  testImplementation(
-    group = "com.willowtreeapps.assertk",
-    name = "assertk-jvm",
-    version = "${prop("assertk-jvm.version")}",
-  ) {
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.jsonassert)
+  testImplementation(libs.assertk) {
     exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
   }
-  testImplementation(group = "org.wiremock", name = "wiremock", version = "${prop("wiremock.version")}")
-  testImplementation("io.github.rybalkinsd:kohttp-jackson:0.12.0")
+  testImplementation(libs.wiremock)
+  testImplementation(libs.kohttp.jackson)
 }

@@ -59,16 +59,11 @@ publishing {
 dependencies {
   api(project(":jcv-core"))
   implementation(kotlin("stdlib"))
-  implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  implementation(group = "org.hamcrest", name = "hamcrest", version = "${prop("hamcrest.version")}")
+  implementation(libs.jsonassert)
+  implementation(libs.hamcrest)
 
-  testImplementation(
-    group = "org.junit.jupiter",
-    name = "junit-jupiter",
-    version = "${prop("junit-jupiter.version")}",
-  )
-
-  testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  testImplementation(group = "org.hamcrest", name = "hamcrest", version = "${prop("hamcrest.version")}")
-  testImplementation(group = "commons-io", name = "commons-io", version = "${prop("commons-io.version")}")
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.jsonassert)
+  testImplementation(libs.hamcrest)
+  testImplementation(libs.commons.io)
 }

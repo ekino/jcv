@@ -5,12 +5,12 @@ plugins {
   base
   `maven-publish`
   signing
-  kotlin("jvm") version "2.0.20" apply false
-  id("org.jlleitschuh.gradle.ktlint") version "12.1.1" apply false
-  id("io.gitlab.arturbosch.detekt") version "1.23.7"
-  id("net.researchgate.release") version "3.0.2"
-  id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "2.1.2"
-  id("org.jetbrains.dokka") version "1.9.20"
+  alias(libs.plugins.kotlin.jvm) apply false
+  alias(libs.plugins.ktlint) apply false
+  alias(libs.plugins.detekt)
+  alias(libs.plugins.release)
+  alias(libs.plugins.changelog)
+  alias(libs.plugins.dokka)
 }
 
 allprojects {
@@ -19,16 +19,6 @@ allprojects {
   repositories {
     mavenCentral()
   }
-
-  registerProperties(
-    "commons-io.version" to "2.17.0",
-    "jsonassert.version" to "1.5.3",
-    "assertj.version" to "3.26.3",
-    "hamcrest.version" to "3.0",
-    "junit-jupiter.version" to "5.11.1",
-    "assertk-jvm.version" to "0.28.1",
-    "wiremock.version" to "3.9.1"
-  )
 }
 
 tasks {
