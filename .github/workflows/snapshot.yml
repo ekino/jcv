@@ -13,6 +13,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 11
+          distribution: 'temurin'
       - name: Check version is snapshot
         run: |
           PROJECT_VERSION=$(./gradlew -q printVersion | tail -n 1)
