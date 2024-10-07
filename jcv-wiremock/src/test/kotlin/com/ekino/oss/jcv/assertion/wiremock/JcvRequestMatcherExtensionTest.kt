@@ -5,19 +5,19 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import com.github.tomakehurst.wiremock.http.ContentTypeHeader
 import com.github.tomakehurst.wiremock.http.Cookie
+import com.github.tomakehurst.wiremock.http.FormParameter
 import com.github.tomakehurst.wiremock.http.HttpHeader
 import com.github.tomakehurst.wiremock.http.HttpHeaders
 import com.github.tomakehurst.wiremock.http.QueryParameter
 import com.github.tomakehurst.wiremock.http.Request
 import com.github.tomakehurst.wiremock.http.RequestMethod
-import com.google.common.base.Optional
 import org.junit.jupiter.api.Test
+import java.util.Optional
 
 class JcvRequestMatcherExtensionTest {
 
   @Test
   fun `should create parameters from extension utils`() {
-
     // Given
     val json =
       //language=JSON
@@ -31,7 +31,7 @@ class JcvRequestMatcherExtensionTest {
     val parameters = JcvRequestMatcherExtension.toParameters(
       json,
       ignoreArrayOrder = ignoreArrayOrder,
-      ignoreExtraElements = ignoreExtraElements
+      ignoreExtraElements = ignoreExtraElements,
     )
 
     // Then
@@ -42,7 +42,6 @@ class JcvRequestMatcherExtensionTest {
 
   @Test
   fun `should create value matcher from extension utils`() {
-
     // Given
     val json =
       //language=JSON
@@ -56,7 +55,7 @@ class JcvRequestMatcherExtensionTest {
     val valueMatcher = JcvRequestMatcherExtension.toRequestMatcher(
       json,
       ignoreArrayOrder = ignoreArrayOrder,
-      ignoreExtraElements = ignoreExtraElements
+      ignoreExtraElements = ignoreExtraElements,
     )
 
     // Then
@@ -136,6 +135,14 @@ class JcvRequestMatcherExtensionTest {
         throw UnsupportedOperationException()
       }
 
+      override fun formParameter(p0: String?): FormParameter {
+        throw UnsupportedOperationException()
+      }
+
+      override fun formParameters(): MutableMap<String, FormParameter> {
+        throw UnsupportedOperationException()
+      }
+
       override fun getBody(): ByteArray = bodyAsString.toByteArray()
 
       override fun getBodyAsString(): String = stringBodyProvider()
@@ -161,6 +168,10 @@ class JcvRequestMatcherExtensionTest {
       }
 
       override fun getOriginalRequest(): Optional<Request> {
+        throw UnsupportedOperationException()
+      }
+
+      override fun getProtocol(): String {
         throw UnsupportedOperationException()
       }
     }

@@ -3,11 +3,14 @@ import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 
 plugins {
   base
-  kotlin("jvm") version "1.4.10" apply false
-  id("com.ekino.oss.plugin.kotlin-quality") version "2.0.0" apply false
-  id("net.researchgate.release") version "2.8.1"
-  id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "1.64"
-  id("org.jetbrains.dokka") version "1.4.0-rc"
+  `maven-publish`
+  signing
+  alias(libs.plugins.kotlin.jvm) apply false
+  alias(libs.plugins.ktlint) apply false
+  alias(libs.plugins.detekt)
+  alias(libs.plugins.release)
+  alias(libs.plugins.changelog)
+  alias(libs.plugins.dokka)
 }
 
 allprojects {
@@ -15,67 +18,62 @@ allprojects {
 
   repositories {
     mavenCentral()
-    jcenter()
-  }
-
-  registerProperties(
-    "kotlin.version" to "1.4.10",
-    "commons-io.version" to "2.7",
-    "jsonassert.version" to "1.5.0",
-    "assertj.version" to "3.16.1",
-    "hamcrest.version" to "2.2",
-    "junit-jupiter.version" to "5.6.2",
-    "assertk-jvm.version" to "0.22",
-    "wiremock.version" to "2.27.2"
-  )
-}
-
-tasks.create("printVersion") {
-  doLast {
-    val version: String by project
-    println(version)
   }
 }
 
-tasks.create<GitChangelogTask>("gitChangelogTask") {
-  file = File("CHANGELOG.md")
-  templateContent = file("template_changelog.mustache").readText()
+tasks {
+  register("printVersion") {
+    doLast {
+      println(project.version.toString())
+    }
+  }
+
+  register<GitChangelogTask>("gitChangelogTask") {
+    file = File("CHANGELOG.md")
+    templateContent = file("template_changelog.mustache").readText()
+  }
+}
+
+detekt {
+  buildUponDefaultConfig = true
+  config.setFrom("config/detekt.yml")
 }
 
 subprojects {
 
   apply<MavenPublishPlugin>()
   apply<ReleasePlugin>()
+  apply<SigningPlugin>()
 
-  configure<PublishingExtension> {
+  publishing {
     publications {
-      create<MavenPublication>("mavenJava") {
+      register<MavenPublication>("mavenJava") {
         pom {
-          name.set("JCV")
-          description.set("JSON Content Validator (JCV) allows you to compare JSON contents with embedded validation.")
-          url.set("https://github.com/ekino/jcv")
+          name = "JCV"
+          description = "JSON Content Validator (JCV) allows you to compare JSON contents with embedded validation."
+          url = "https://github.com/ekino/jcv"
           licenses {
             license {
-              name.set("MIT License (MIT)")
-              url.set("https://opensource.org/licenses/mit-license")
+              name = "MIT License (MIT)"
+              url = "https://opensource.org/licenses/mit-license"
             }
           }
           developers {
             developer {
-              name.set("Léo Millon")
-              email.set("leo.millon@ekino.com")
-              organization.set("ekino")
-              organizationUrl.set("https://www.ekino.com/")
+              name = "Léo Millon"
+              email = "leo.millon@ekino.com"
+              organization = "ekino"
+              organizationUrl = "https://www.ekino.com/"
             }
           }
           scm {
-            connection.set("scm:git:git://github.com/ekino/jcv.git")
-            developerConnection.set("scm:git:ssh://github.com:ekino/jcv.git")
-            url.set("https://github.com/ekino/jcv")
+            connection = "scm:git:git://github.com/ekino/jcv.git"
+            developerConnection = "scm:git:ssh://github.com:ekino/jcv.git"
+            url = "https://github.com/ekino/jcv"
           }
           organization {
-            name.set("ekino")
-            url.set("https://www.ekino.com/")
+            name = "ekino"
+            url = "https://www.ekino.com/"
           }
         }
         repositories {
@@ -94,5 +92,10 @@ subprojects {
         }
       }
     }
+  }
+
+  signing {
+    setRequired { gradle.taskGraph.hasTask("publish") }
+    sign(publishing.publications["mavenJava"])
   }
 }

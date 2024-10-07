@@ -2,7 +2,7 @@
 
 JSON Content Validator (JCV) allows you to compare JSON contents with embedded validation.
 
-[![Build Status](https://github.com/ekino/jcv/workflows/Build%20branch/badge.svg?branch=master)](https://github.com/ekino/jcv/actions?query=workflow%3A%22Build+branch%22+branch%3Amaster)
+[![Build](https://github.com/ekino/jcv/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/ekino/jcv/actions/workflows/build.yml)
 [![GitHub (pre-)release](https://img.shields.io/github/release/ekino/jcv/all.svg)](https://github.com/ekino/jcv/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/com.ekino.oss.jcv/jcv-core)](https://search.maven.org/search?q=g:com.ekino.oss.jcv)
 [![GitHub license](https://img.shields.io/github/license/ekino/jcv.svg)](https://github.com/ekino/jcv/blob/master/LICENSE.md)
@@ -17,7 +17,7 @@ JSON Content Validator (JCV) allows you to compare JSON contents with embedded v
     * [AssertJ module](#assertj-module)
     * [Hamcrest module](#hamcrest-module)
     * [WireMock module](#wiremock-module)
-* [Validators](#validators)
+* [Learn more](#learn-more)
 
 
 ## Summary
@@ -80,7 +80,7 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -97,7 +97,7 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
   testImplementation 'com.ekino.oss.jcv:jcv-core:1.6.0-SNAPSHOT'
   ...
 }
@@ -160,13 +160,13 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
     <groupId>org.assertj</groupId>
     <artifactId>assertj-core</artifactId>
-    <version>3.9.1</version>
+    <version>3.26.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -183,8 +183,8 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-  testImplementation 'org.assertj:assertj-core:3.9.1'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
+  testImplementation 'org.assertj:assertj-core:3.26.3'
   testImplementation 'com.ekino.oss.jcv:jcv-assertj:1.6.0-SNAPSHOT'
   ...
 }
@@ -218,13 +218,13 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
     <groupId>org.hamcrest</groupId>
     <artifactId>hamcrest</artifactId>
-    <version>2.1</version>
+    <version>3.0</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -241,8 +241,8 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-  testImplementation 'org.hamcrest:hamcrest:2.1'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
+  testImplementation 'org.hamcrest:hamcrest:3.0'
   testImplementation 'com.ekino.oss.jcv:jcv-hamcrest:1.6.0-SNAPSHOT'
   ...
 }
@@ -330,13 +330,13 @@ Maven
   <dependency>
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <scope>test</scope>
   </dependency>
   <dependency>
-    <groupId>com.github.tomakehurst</groupId>
-    <artifactId>wiremock-jre8</artifactId>
-    <version>2.27.2</version>
+    <groupId>org.wiremock</groupId>
+    <artifactId>wiremock</artifactId>
+    <version>3.9.1</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -353,8 +353,8 @@ Gradle
 ```groovy
 dependencies {
   ...
-  testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-  testImplementation 'com.github.tomakehurst:wiremock-jre8:2.27.2'
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
+  testImplementation 'org.wiremock:wiremock:3.9.1'
   testImplementation 'com.ekino.oss.jcv:jcv-wiremock:1.6.0-SNAPSHOT'
   ...
 }

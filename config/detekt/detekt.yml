@@ -1,0 +1,8 @@
+naming:
+  ClassNaming:
+    excludes: &testFolders
+      - '**/test/**'
+
+complexity:
+  LongMethod:
+    excludes: *testFolders

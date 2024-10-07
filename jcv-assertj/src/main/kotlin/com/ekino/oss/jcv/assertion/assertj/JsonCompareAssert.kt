@@ -31,10 +31,11 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
      * @return the created assertion object
      */
     @JvmStatic
-    fun assertThatJson(actualJson: String) = JsonCompareAssert(
-      actualJson,
-      JsonComparator(JSONCompareMode.NON_EXTENSIBLE, Validators.defaultValidators())
-    )
+    fun assertThatJson(actualJson: String) =
+      JsonCompareAssert(
+        actualJson,
+        JsonComparator(JSONCompareMode.NON_EXTENSIBLE, Validators.defaultValidators()),
+      )
   }
 
   /**
@@ -108,7 +109,6 @@ class JsonCompareAssert(actualJson: String, private val jsonComparator: JsonComp
    * @see JSONCompare.compareJSON
    */
   fun isValidAgainst(expectedJson: String): JsonCompareAssert {
-
     isNotNull
 
     Objects.requireNonNull<Any>(jsonComparator, "Json comparator definition is missing")

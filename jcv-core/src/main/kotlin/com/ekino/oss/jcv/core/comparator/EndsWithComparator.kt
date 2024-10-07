@@ -19,7 +19,7 @@ class EndsWithComparator(
    *
    * @param value the value to search for
    */
-  private val value: String
+  private val value: String,
 ) : JsonValueComparator<String> {
 
   override fun hasCorrectValue(actual: String?, expected: String?): Boolean {

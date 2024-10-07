@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
   kotlin("jvm")
   `java-library`
-  signing
-  id("com.ekino.oss.plugin.kotlin-quality")
+  id("org.jlleitschuh.gradle.ktlint")
+  id("io.gitlab.arturbosch.detekt")
   id("org.jetbrains.dokka")
 }
 
@@ -18,20 +16,17 @@ java {
   withSourcesJar()
 }
 
+kotlin {
+  jvmToolchain(11)
+}
+
 val javadocJar by tasks.registering(Jar::class) {
   dependsOn("dokkaHtml")
   archiveClassifier.set("javadoc")
-  from(buildDir.resolve("dokka"))
+  from(layout.buildDirectory.dir("dokka"))
 }
 
 tasks {
-  withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_1_8.toString()
-      apiVersion = "1.3"
-    }
-  }
-
   withType<Test> {
     useJUnitPlatform()
     jvmArgs("-Duser.language=en")
@@ -41,7 +36,7 @@ tasks {
     dokkaSourceSets {
       configureEach {
         reportUndocumented = false
-        jdkVersion = 8
+        jdkVersion = 11
       }
     }
   }
@@ -52,36 +47,24 @@ tasks {
   }
 }
 
-val publicationName = "mavenJava"
-
 publishing {
   publications {
-    named<MavenPublication>(publicationName) {
+    named<MavenPublication>("mavenJava") {
       artifact(javadocJar.get())
       from(components["java"])
     }
   }
 }
 
-signing {
-  sign(publishing.publications[publicationName])
-}
-
 dependencies {
-
-  implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin("stdlib"))
 
   api(project(":jcv-core"))
-  implementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  implementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
+  implementation(libs.jsonassert)
+  implementation(libs.assertj.core)
 
-  testImplementation(
-    group = "org.junit.jupiter",
-    name = "junit-jupiter",
-    version = "${prop("junit-jupiter.version")}"
-  )
-
-  testImplementation(group = "org.skyscreamer", name = "jsonassert", version = "${prop("jsonassert.version")}")
-  testImplementation(group = "org.assertj", name = "assertj-core", version = "${prop("assertj.version")}")
-  testImplementation(group = "commons-io", name = "commons-io", version = "${prop("commons-io.version")}")
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.jsonassert)
+  testImplementation(libs.assertj.core)
+  testImplementation(libs.commons.io)
 }

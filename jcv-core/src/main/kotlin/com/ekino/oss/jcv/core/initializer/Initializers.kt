@@ -22,7 +22,7 @@ object Initializers {
   @JvmStatic
   fun <T> parameterizedValidator(
     id: String,
-    initializer: TemplatedComparatorInitializer<T>
+    initializer: TemplatedComparatorInitializer<T>,
   ): JsonValidator<T> =
     DefaultParameterizedTemplateValidator(id, initializer)
 
@@ -34,7 +34,7 @@ object Initializers {
   @JvmOverloads
   fun <T> comparatorWith1Parameter(
     required: Boolean = true,
-    initializer: OneParameterComparatorInitializer<T>
+    initializer: OneParameterComparatorInitializer<T>,
   ): TemplatedComparatorInitializer<T> =
     TemplatedComparatorInitializer<T> { validatorTemplateManager ->
       val parameter = getOrThrowParameter(0, required, validatorTemplateManager)
@@ -45,7 +45,7 @@ object Initializers {
   fun <T> comparatorWith2Parameters(
     param1Required: Boolean = true,
     param2Required: Boolean = true,
-    initializer: TwoParametersComparatorInitializer<T>
+    initializer: TwoParametersComparatorInitializer<T>,
   ): TemplatedComparatorInitializer<T> {
     return TemplatedComparatorInitializer<T> { validatorTemplateManager ->
       val parameter1 = getOrThrowParameter(0, param1Required, validatorTemplateManager)
@@ -57,7 +57,7 @@ object Initializers {
   private fun getOrThrowParameter(
     index: Int,
     required: Boolean,
-    validatorTemplateManager: ValidatorTemplateManager
+    validatorTemplateManager: ValidatorTemplateManager,
   ): String? {
     val parameter = validatorTemplateManager.extractParameter(index)
     require(!(required && parameter == null)) {

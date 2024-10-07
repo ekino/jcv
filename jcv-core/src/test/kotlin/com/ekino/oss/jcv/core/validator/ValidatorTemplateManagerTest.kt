@@ -21,7 +21,6 @@ class ValidatorTemplateManagerTest {
 
   @Test
   fun `simple validator id extraction`() {
-
     val manager = ValidatorTemplateManager("{#my_validator#}")
 
     assertThat(manager.extractId()).isEqualTo("my_validator")
@@ -29,23 +28,20 @@ class ValidatorTemplateManagerTest {
 
   @Test
   fun `validator id extraction`() {
-
     assertThat(defaultTemplateManager.extractId()).isEqualTo("my_validator")
   }
 
   @Test
   fun `parameters extraction`() {
-
     assertThat(defaultTemplateManager.extractParameters()).containsExactly(
       "some ; param 1",
       "and another one \\; ...",
-      "and the last one"
+      "and the last one",
     )
   }
 
   @Test
   fun `parameter extraction by index`() {
-
     val manager = defaultTemplateManager
 
     assertAll {

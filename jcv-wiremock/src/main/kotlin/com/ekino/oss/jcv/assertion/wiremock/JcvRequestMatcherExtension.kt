@@ -20,13 +20,13 @@ class JcvRequestMatcherExtension : RequestMatcherExtension() {
     fun toParameters(
       json: String,
       ignoreArrayOrder: Boolean = false,
-      ignoreExtraElements: Boolean = false
+      ignoreExtraElements: Boolean = false,
     ): Parameters = Parameters.from(
       mapOf(
         PARAM_EXPECTED_JSON_NAME to json,
         PARAM_IGNORE_ARRAY_ORDER_NAME to ignoreArrayOrder,
-        PARAM_IGNORE_EXTRA_ELEMENTS_NAME to ignoreExtraElements
-      )
+        PARAM_IGNORE_EXTRA_ELEMENTS_NAME to ignoreExtraElements,
+      ),
     )
 
     @JvmStatic
@@ -34,7 +34,7 @@ class JcvRequestMatcherExtension : RequestMatcherExtension() {
     fun toRequestMatcher(
       json: String,
       ignoreArrayOrder: Boolean = false,
-      ignoreExtraElements: Boolean = false
+      ignoreExtraElements: Boolean = false,
     ): ValueMatcher<Request> = ValueMatcher { request ->
       val body = request.bodyAsString
         ?.takeIf { it.isNotBlank() }
@@ -42,7 +42,7 @@ class JcvRequestMatcherExtension : RequestMatcherExtension() {
       return@ValueMatcher EqualToJcvPattern(
         json = json,
         ignoreArrayOrder = ignoreArrayOrder,
-        ignoreExtraElements = ignoreExtraElements
+        ignoreExtraElements = ignoreExtraElements,
       )
         .match(body)
     }
@@ -54,7 +54,7 @@ class JcvRequestMatcherExtension : RequestMatcherExtension() {
     return toRequestMatcher(
       json = parameters.getJsonAsString(PARAM_EXPECTED_JSON_NAME),
       ignoreArrayOrder = parameters.getBoolean(PARAM_IGNORE_ARRAY_ORDER_NAME, false),
-      ignoreExtraElements = parameters.getBoolean(PARAM_IGNORE_EXTRA_ELEMENTS_NAME, false)
+      ignoreExtraElements = parameters.getBoolean(PARAM_IGNORE_EXTRA_ELEMENTS_NAME, false),
     )
       .match(request)
   }

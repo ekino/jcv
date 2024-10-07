@@ -17,12 +17,11 @@ class EqualToJcvPattern(
   @JsonProperty("ignoreArrayOrder")
   val ignoreArrayOrder: Boolean? = null,
   @JsonProperty("ignoreExtraElements")
-  val ignoreExtraElements: Boolean? = null
+  val ignoreExtraElements: Boolean? = null,
 ) : StringValuePattern(json) {
 
   override fun match(value: String?): MatchResult {
-
-    if (value == null || value.isBlank()) {
+    if (value.isNullOrBlank()) {
       return MatchResult.noMatch()
     }
 
@@ -49,7 +48,7 @@ class EqualToJcvPattern(
   }
 
   private fun buildJsonComparator(): JsonComparator {
-    val jsonCompareMode = JSONCompareMode.values()
+    val jsonCompareMode = JSONCompareMode.entries
       .find { it.isExtensible == (ignoreExtraElements ?: false) && it.hasStrictOrder() == !(ignoreArrayOrder ?: false) }
       ?: throw IllegalArgumentException("Cannot find json compare mode for ignoreExtraElements=$ignoreExtraElements and ignoreArrayOrder=$ignoreArrayOrder")
     return JsonComparator(jsonCompareMode, defaultValidators())
@@ -63,11 +62,12 @@ class EqualToJcvPattern(
 
   private fun toMatchResult(actual: Int, maxDistance: Int): MatchResult = object : MatchResult() {
     override fun isExactMatch(): Boolean = actual == 0
+
     override fun getDistance(): Double = actual.toDouble() / maxDistance.toDouble()
   }
 
   private fun JSONCompareResult.getDistance(): Int {
-    val fieldErrors = listOfNotNull(fieldFailures, fieldMissing, fieldUnexpected).sumBy { it.count() }
+    val fieldErrors = listOfNotNull(fieldFailures, fieldMissing, fieldUnexpected).sumOf { it.count() }
     return fieldErrors + if (failed() && fieldErrors == 0) 1 else 0
   }
 

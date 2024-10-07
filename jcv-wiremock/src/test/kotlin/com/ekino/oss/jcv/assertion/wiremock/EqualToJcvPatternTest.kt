@@ -31,7 +31,7 @@ class EqualToJcvPatternTest {
         "three": 3,
         "four": 4
       }
-      """
+      """,
     )
       .transform { it.distance }
       .isZero()
@@ -55,7 +55,7 @@ class EqualToJcvPatternTest {
         "three": 7,
         "four": 8
       }
-      """
+      """,
     )
       .transform { it.distance }
       .isEqualTo(0.5)
@@ -74,7 +74,7 @@ class EqualToJcvPatternTest {
       }
       """ equalToJcv """
       [1, 2, 3]
-      """
+      """,
     )
       .transform { it.distance }
       .isEqualTo(1.0)
@@ -93,7 +93,7 @@ class EqualToJcvPatternTest {
       }
       """ equalToJcv """
       {}
-      """
+      """,
     )
       .transform { it.distance }
       .isEqualTo(1.0)
@@ -112,7 +112,7 @@ class EqualToJcvPatternTest {
       }
       """ equalToJcv """
       []
-      """
+      """,
     )
       .transform { it.distance }
       .isEqualTo(1.0)
@@ -131,7 +131,7 @@ class EqualToJcvPatternTest {
         "three": 3,
         "four": 4
       }
-      """
+      """,
     )
       .transform { it.distance }
       .isEqualTo(1.0)
@@ -150,7 +150,7 @@ class EqualToJcvPatternTest {
         "three": 3,
         "four": 4
       }
-      """
+      """,
     )
       .transform { it.distance }
       .isEqualTo(1.0)
@@ -186,7 +186,7 @@ class EqualToJcvPatternTest {
           "four": "FOUR"
         }
       }
-      """
+      """,
     )
       .transform { it.distance }
       .isBetween(0.3, 0.4)
@@ -210,7 +210,7 @@ class EqualToJcvPatternTest {
         "two": 2,
         "four": 4
       }
-      """
+      """,
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -224,7 +224,7 @@ class EqualToJcvPatternTest {
       [1, 2, 3, 4]
       """ equalToJcv """
       [1, 3, 2, 4]
-      """
+      """,
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -240,7 +240,7 @@ class EqualToJcvPatternTest {
         """
         [1, 3, 2, 4]
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -282,7 +282,7 @@ class EqualToJcvPatternTest {
           ]
         }
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -310,7 +310,7 @@ class EqualToJcvPatternTest {
           "six": 6
         }
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -346,7 +346,7 @@ class EqualToJcvPatternTest {
           "six": 6
         }
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -372,7 +372,7 @@ class EqualToJcvPatternTest {
           }
         }
       }
-      """
+      """,
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -428,7 +428,7 @@ class EqualToJcvPatternTest {
         //language=XML
         """
         <some-xml />
-        """
+        """,
       )
     assertThat(result.isExactMatch).isFalse()
     assertThat(result.distance).isEqualTo(1.0)
@@ -468,7 +468,7 @@ class EqualToJcvPatternTest {
           }
         ]
       }
-      """
+      """,
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -505,7 +505,7 @@ class EqualToJcvPatternTest {
           "four": 4
         }
       ]
-      """
+      """,
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -526,7 +526,7 @@ class EqualToJcvPatternTest {
         "name": "BBB",
         "addresses": []
       }
-      """
+      """,
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -555,7 +555,7 @@ class EqualToJcvPatternTest {
           "addresses": []
         }
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -584,7 +584,7 @@ class EqualToJcvPatternTest {
           "addresses": {}
         }
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isFalse()
@@ -600,7 +600,7 @@ class EqualToJcvPatternTest {
         """
         ["a","b", "d","c","e","f","g","h"]
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -650,7 +650,7 @@ class EqualToJcvPatternTest {
           ]
         }
         """
-      }
+      },
     )
       .transform { it.isExactMatch }
       .isTrue()
@@ -662,6 +662,6 @@ private infix fun String.equalToJcv(actual: String?) = this.equalToJcv { actual 
 private fun String.equalToJcv(ignoreArrayOrder: Boolean? = null, ignoreExtraElements: Boolean? = null, actual: () -> String?) = EqualToJcvPattern(
   json = this,
   ignoreArrayOrder = ignoreArrayOrder,
-  ignoreExtraElements = ignoreExtraElements
+  ignoreExtraElements = ignoreExtraElements,
 )
   .match(actual())
